@@ -6,19 +6,19 @@ import { useNavigation } from '@react-navigation/native';
 export default function LoginScreen() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
+    // const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
     const navigation = useNavigation();
 
-    const loadAssetsAsync = async () => {
-        await Font.loadAsync({
-            'Giants-Bold': require('./assets/fonts/Giants-Bold.ttf'),
-        });
-        onChangeLoading(true);
-    }
+    // const loadAssetsAsync = async () => {
+    //     await Font.loadAsync({
+    //         'Giants-Bold': require('./assets/fonts/Giants-Bold.ttf'),
+    //     });
+    //     onChangeLoading(true);
+    // }
     // 폰트 로드 이후에 실행되는 useEffect 추가
-    useEffect(() => {
-        loadAssetsAsync();
-    }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때 한 번만 실행
+    // useEffect(() => {
+    //     loadAssetsAsync();
+    // }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때 한 번만 실행
 
     const handleLogin = () => {
         // 로그인 처리 로직 작성
@@ -47,7 +47,7 @@ export default function LoginScreen() {
             )} */}
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50 }}>
-                <Text style={{ fontSize: 35, fontWeight: 'bold', fontFamily: 'Giants-Bold' }}>ECOBUDDY</Text>
+                <Text style={{ fontSize: 35, fontWeight: 'bold'}}>ECOBUDDY</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
                 <Text style={{ fontSize: 25 }}>Login</Text>

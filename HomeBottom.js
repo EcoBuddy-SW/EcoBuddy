@@ -23,7 +23,12 @@ function MessageScreen() {
 
 function BottomTabNavigationApp() {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator
+      initialRouteName="Home" // 앱이 시작될 때 표시할 초기화면 지정
+      screenOptions={{
+        tabBarActiveTintColor: '#628F5D', // 눌리면 변하는 버튼 색상
+        tabBarShowLabel: false,
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
