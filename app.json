@@ -7,8 +7,8 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/ecoBuddy_Logo.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff",
       "packagerOpts": {
         "hostType": "tunnel",
@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/mother-earth-day.png",
         "backgroundColor": "#ffffff"
       }
     },
