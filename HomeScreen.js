@@ -70,13 +70,11 @@ function HomeScreen() {
       </View>
 
       <ScrollView horizontal={true} style={[styles.iconContainer, { backgroundColor: 'white' }]}>
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>꿀팁 알아가기!</Text>
-        <View style={styles.iconRow}>
-          <View style={styles.iconContainer2}></View>
-          <View style={styles.iconContainer2}></View>
-          <View style={styles.iconContainer2}></View>
-          <View style={styles.iconContainer2}></View>
-        </View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 50, }}>꿀팁 알아가기!</Text>
+        <View style={styles.iconContainer2}></View>
+        <View style={styles.iconContainer2}></View>
+        <View style={styles.iconContainer2}></View>
+        <View style={styles.iconContainer2}></View>
       </ScrollView>
     </ScrollView>
   );
@@ -126,8 +124,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2FFED',
     padding: 8,
     borderRadius: 30,
-    width: '70%',
-    height: 200,
+    width: 200,
+    height: 300,
+    marginRight: 20, // 아이콘 컨테이너 사이 간격 추가
     alignSelf: 'center',
   },
   iconRow: {
