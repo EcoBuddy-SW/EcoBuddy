@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+
+const ipv4 = "10.20.102.22";
 
 export default function LoginScreen() {
     const [username, setUsername] = useState('');
@@ -9,24 +12,25 @@ export default function LoginScreen() {
     // const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
     const navigation = useNavigation();
 
-    // const loadAssetsAsync = async () => {
-    //     await Font.loadAsync({
-    //         'Giants-Bold': require('./assets/fonts/Giants-Bold.ttf'),
-    //     });
-    //     onChangeLoading(true);
-    // }
-    // 폰트 로드 이후에 실행되는 useEffect 추가
-    // useEffect(() => {
-    //     loadAssetsAsync();
-    // }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때 한 번만 실행
-
     const handleLogin = () => {
-        // 로그인 처리 로직 작성
 
-        // 예시: 간단한 확인 메시지 출력
-        alert(`Username: ${username}, Password: ${password}`);
+        const data = {
+            email: username,
+            password: password
+        };
 
-        navigation.navigate('HomeBtn');
+        axios.post(`http://${ipv4}:3003/login`, data)
+        .then(response => {
+            if (response.data.success) {
+                alert(response.data.message);
+                navigation.navigate('Home',{eamil: username});
+            } else {
+                alert(response.data.message); // 실패 메시지 표시
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
     };
 
     const handleJoin = () => {

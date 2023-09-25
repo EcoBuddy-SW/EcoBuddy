@@ -18,31 +18,16 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     next();
   });
-// app.use(cors({
-//     origin: 'https://example.com', // 여기에 원하는 도메인을 지정
-// }));
 
 app.listen(port, '0.0.0.0', () => {
     console.log(`Express server listening on port ${port}`);
 });
-//configuration
-// app.set('port', process.env.PORT || 3003);
 
-app.get('/', (req, res) => {
-    res.send('Root');
-});
-// app.get('/users', (req, res) => {
-//     connection.query('INSERT INTO users', (error, rows) => {
-//         if (error) throw error;
-//         console.log('User info is: ', rows);
-//         res.send(rows);
-//     });
-// });
 
 app.post('/join', (req, res) => {
     const {email, password, nickname, phoneNumber} = req.body;
 
-    // 이메일이 중복 확인
+    // 이메일 중복 확인
     const checkEmail = 'SELECT * FROM users WHERE email = ?';
     connection.query(checkEmail, [email], (errCheck,resultCheck)=>{
         if(errCheck) {
@@ -100,3 +85,69 @@ app.post('/join', (req, res) => {
     });
 });
 
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    //db에서 email, password 컬럼에 있는값 가져오기
+    const sql = `SELECT email, password FROM users WHERE email='${email}'`;
+  
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('쿼리 실행 실패:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+  
+        if (results.length === 0) {
+            // 일치하는 이메일이 없는 경우
+            res.json({ success: false, message: '일치하는 이메일이 없습니다.' });
+        } else {
+            const user = results[0];
+            
+            if (user.password !== password) {
+            // 비밀번호가 일치하지 않는 경우
+            res.json({ success: false, message: '비밀번호가 일치하지 않습니다.' });
+            } else {
+            // 로그인 성공
+            res.json({ success: true, message: '로그인 성공', email: user.email });
+            }
+        }
+    });
+});
+
+app.post('/findemail', (req, res) => {
+    const { email } = req.body;
+    //db에서 email, password 컬럼에 있는값 가져오기
+    const checkEmail = 'SELECT * FROM users WHERE email = ?';
+    connection.query(checkEmail, [email], (errCheck,resultCheck)=>{
+        if(errCheck) {
+            console.error('데이터 조회 실패',errCheck);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        // 이메일이 중복이면 에러 메시지 전송 후 return
+        if(resultCheck.length > 0){
+            res.json({ //.status(400)
+                success: true,
+                message: '해당 이메일은 이미 가입되어있습니다.'
+            });
+            console.log('.');
+            return;
+        }
+    });
+    // const checkEmail = `SELECT email, password FROM users WHERE email='${email}'`;
+    // connection.query(checkEmail, (err, results) => {
+    //     if (err) {
+    //         console.error('쿼리 실행 실패:', err);
+    //         res.status(500).send('Internal Server Error');
+    //         return;
+    //     }
+  
+    //     if (results.length === 0) {
+    //         // 일치하는 이메일이 없는 경우
+    //         res.json({ success: false, message: '일치하는 이메일이 없습니다.' });
+    //     } else {
+    //         const returnPw = `SELECT `
+    //     }
+    // });
+});

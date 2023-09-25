@@ -14,6 +14,8 @@ import FindUserPW from './FindUserPWScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [location, setLocation] = useState(null);
+  
   return (
     <LocationContext.Provider value={{ location, setLocation }}>
       <NavigationContainer>
