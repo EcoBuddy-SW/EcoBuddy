@@ -4,7 +4,7 @@ import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvo
 import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
-    const [username, setUsername] = useState('');
+    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     // const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
     const navigation = useNavigation();
@@ -63,9 +63,9 @@ export default function LoginScreen() {
 
             <TextInput
                 style={styles.input}
-                placeholder="Email"
-                value={username}
-                onChangeText={(text) => setUsername(text)}
+                placeholder="Id"
+                value={userId}
+                onChangeText={(text) => setUserId(text)}
             />
             <TextInput
                 style={styles.input}

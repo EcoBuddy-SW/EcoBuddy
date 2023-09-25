@@ -13,7 +13,10 @@ function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ padding: 16 }}
+    >
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={goToNotificationScreen}>
           <Icon name="notifications" style={styles.icon1} />
@@ -27,7 +30,7 @@ function HomeScreen() {
       </View>
       <View style={styles.iconContainer}>
         {/* 2줄로 배치된 4개의 아이콘 */}
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15, padding: 20 }}>분리수거 방법 제대로 알기!</Text>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 25, padding: 5 }}>분리수거 방법 제대로 알기!</Text>
         <View style={styles.iconRow}>
           <View style={styles.iconWithText}>
             <Icon name="restore-from-trash" style={styles.icon2} />
@@ -66,8 +69,16 @@ function HomeScreen() {
         </View>
       </View>
 
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15, padding: 20 }}>꿀팁 알아가기!</Text>
-    </View>
+      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>꿀팁 알아가기!</Text>
+      <ScrollView horizontal={true} style={styles.iconContainer}>
+        <View style={styles.iconRow}>
+          <View style={styles.iconContainer2}></View>
+          <View style={styles.iconContainer2}></View>
+          <View style={styles.iconContainer2}></View>
+          <View style={styles.iconContainer2}></View>
+        </View>
+      </ScrollView>
+    </ScrollView>
   );
 }
 
@@ -75,8 +86,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'flex-start', // 왼쪽 정렬
-    justifyContent: 'flex-start', // 상단 정렬
+    // alignItems: 'flex-start', // 왼쪽 정렬
+    // justifyContent: 'flex-start', // 상단 정렬
     padding: 16,
   },
   rowContainer: {
@@ -100,7 +111,7 @@ const styles = StyleSheet.create({
     fontSize: 50, // 아이콘 크기 조정
     color: '#628F5D', // 아이콘 색상 변경
     marginHorizontal: 50,
-   
+
   },
   iconContainer: {
     marginTop: 16, // 아이콘 컨테이너와 검색창 사이 간격 조정
@@ -108,7 +119,15 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 10,
     width: '100%',
-    height: '40%',
+    height: 250,
+    alignSelf: 'center',
+  },
+  iconContainer2: {
+    backgroundColor: '#F2FFED',
+    padding: 8,
+    borderRadius: 30,
+    width: '20%',
+    height: 200,
     alignSelf: 'center',
   },
   iconRow: {
