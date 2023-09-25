@@ -76,7 +76,8 @@ export default function LoginScreen() {
             </View>
 
             <View style={{ height: 80 }} />
-            <Text style={{ fontSize: 15 }}>Did you forget?</Text>
+            <Text style={{ fontSize: 15 }}>Did yo
+            u forget?</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <TouchableOpacity onPress={handleLogin} style={[styles.buttonContainer, { width: '40%' }]}>
                     <Text style={[styles.buttonText]}>Find ID</Text>

@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text, Alert, Image, Keyb
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-const ipv4 = "10.20.102.113";
+const ipv4 = "10.20.102.22";
 
 export default function JoinScreen() {
     <View style={styles.container}>
@@ -59,7 +59,6 @@ export default function JoinScreen() {
         console.log('PhoneNumber:', phoneNumber);
 
 
-        console.log("try문 전");
         const data={
             "email": email,
             "password": password,
@@ -70,10 +69,16 @@ export default function JoinScreen() {
         axios.post(`http://${ipv4}:3003/join`, data)
         .then(response => {
             // 서버 응답 처리
-            console.log(response.data);
-            // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
-            Alert.alert("회원가입 성공!", "환영합니다")
-            navigation.navigate('Login');
+
+            if (response.data.success) {
+                console.log(response.data);
+                // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
+                Alert.alert("회원가입 성공!", "환영합니다");
+                navigation.navigate('Login');
+            }
+            else {
+                Alert.alert("회원가입 실패", response.data.message);
+            }
         })
         .catch(error => {
             console.error(error);

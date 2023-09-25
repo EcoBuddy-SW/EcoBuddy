@@ -40,25 +40,63 @@ app.get('/', (req, res) => {
 // });
 
 app.post('/join', (req, res) => {
-    console.log("성공");
     const {email, password, nickname, phoneNumber} = req.body;
 
-    const sql = `INSERT INTO users(email,password,nickname,phoneNumber)
-    VALUES('${email}','${password}','${nickname}','${phoneNumber}')`;
-
-    connection.query(sql,(err,result)=>{
-        if(err) {
-            console.error('데이터 저장 실패',err);
+    // 이메일이 중복 확인
+    const checkEmail = 'SELECT * FROM users WHERE email = ?';
+    connection.query(checkEmail, [email], (errCheck,resultCheck)=>{
+        if(errCheck) {
+            console.error('데이터 조회 실패',errCheck);
             res.status(500).send('Internal Server Error');
             return;
         }
-        else {
-            console.log('데이터 저장 성공');
-            res.send('데이터 저장 성공');
-            res.json({success: true, message: '회원가입 성공', email: email, password: password, nickname: nickname, phoneNumber: phoneNumber});
+
+        // 이메일이 중복이면 에러 메시지 전송 후 return
+        if(resultCheck.length > 0){
+            res.json({ //.status(400)
+                success: false,
+                message: '해당 이메일은 이미 가입되어있습니다.'
+            });
+            console.log('해당 이메일은 이미 가입되어있습니다.');
+            return;
         }
+
+        // 이메일이 중복이 아니면 닉네임 중복 확인
+        const checkNickname = 'SELECT * FROM users WHERE nickname = ?';
+        connection.query(checkNickname, [nickname], (errCheck,resultCheck)=>{
+            if(errCheck) {
+                console.error('데이터 조회 실패',errCheck);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+
+            if(resultCheck.length > 0){
+                res.json({ //.status(400)
+                    success: false,
+                    message: '해당 닉네임은 이미 가입되어있습니다.'
+                });
+                console.log('해당 닉네임은 이미 가입되어있습니다.');
+                return;
+            }
+                
+            const insertSql = `INSERT INTO users(email,password,nickname,phoneNumber)
+            VALUES(?,?,?,?)`;
+        
+            connection.query(insertSql,[email,password,nickname,phoneNumber],(errInsert,resultInsert)=>{
+                if(errInsert) {
+                    console.error('데이터 저장 실패',errInsert);
+                    res.json({ //.status(500)
+                        success: false,
+                        message: 'Internal Server Error'
+                    });
+                    return;
+                }
+
+                console.log('데이터 저장 성공');
+                res.json({success: true, message: '회원가입 성공'});
+
+            });
+        });
     });
-
-
-    connection.end();
 });
+
