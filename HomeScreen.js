@@ -16,7 +16,7 @@ function HomeScreen() {
     <View style={styles.container}>
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={goToNotificationScreen}>
-          <Icon name="notifications" style={styles.icon} />
+          <Icon name="notifications" style={styles.icon1} />
         </TouchableOpacity>
         <TextInput
           style={styles.input}
@@ -25,17 +25,48 @@ function HomeScreen() {
           onChangeText={(text) => setFind(text)}
         />
       </View>
-      <ScrollView horizontal style={styles.iconContainer}>
+      <View style={styles.iconContainer}>
         {/* 2줄로 배치된 4개의 아이콘 */}
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15, padding: 20 }}>분리수거 방법 제대로 알기!</Text>
         <View style={styles.iconRow}>
-          <Icon name="icon1" style={styles.icon} />
-          <Icon name="icon2" style={styles.icon} />
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
         </View>
         <View style={styles.iconRow}>
-          <Icon name="icon3" style={styles.icon} />
-          <Icon name="icon4" style={styles.icon} />
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon name="restore-from-trash" style={styles.icon2} />
+            <Text style={styles.iconText}>아이템</Text>
+          </View>
         </View>
-      </ScrollView>
+      </View>
+
+      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15, padding: 20 }}>꿀팁 알아가기!</Text>
     </View>
   );
 }
@@ -43,7 +74,7 @@ function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2FFED',
+    backgroundColor: 'white',
     alignItems: 'flex-start', // 왼쪽 정렬
     justifyContent: 'flex-start', // 상단 정렬
     padding: 16,
@@ -61,24 +92,36 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: 10,
   },
-  icon: {
+  icon1: {
     fontSize: 30, // 아이콘 크기 조정
     color: '#628F5D', // 아이콘 색상 변경
+  },
+  icon2: {
+    fontSize: 50, // 아이콘 크기 조정
+    color: '#628F5D', // 아이콘 색상 변경
+    marginHorizontal: 50,
+   
   },
   iconContainer: {
     marginTop: 16, // 아이콘 컨테이너와 검색창 사이 간격 조정
-    backgroundColor: 'white',
+    backgroundColor: '#F2FFED',
     padding: 8,
     borderRadius: 10,
+    width: '100%',
+    height: '40%',
+    alignSelf: 'center',
   },
   iconRow: {
     flexDirection: 'row',
-    marginBottom: 8, // 아이콘 로우와 로우 사이 간격 조정
+    marginBottom: 4, // 아이콘 로우와 로우 사이 간격 조정
+    justifyContent: 'space-evenly',
   },
-  icon: {
-    fontSize: 30, // 아이콘 크기 조정
-    color: '#628F5D', // 아이콘 색상 변경
-    marginRight: 8, // 아이콘과 아이콘 사이 간격 조정
+  iconWithText: {
+    alignItems: 'center', // 아이콘과 텍스트를 가로로 중앙 정렬
+  },
+  iconText: {
+    marginTop: 5,
+    marginBottom: 15,
   },
 });
 
