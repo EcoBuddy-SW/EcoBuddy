@@ -12,7 +12,6 @@ const ipv4 = "10.20.102.22";
 export default function JoinScreen() {
     //@@@
     const { location, setLocation } = useContext(LocationContext);
-
     <View style={styles.container}>
         <Text style={styles.text}>회원가입 페이지</Text>
     </View>
@@ -28,7 +27,6 @@ export default function JoinScreen() {
     const passwordInputRef = useRef(null);
     const nicknameInputRef = useRef(null);
     const phoneNumberInputRef = useRef(null);
-
     const handleSignUp = () => {
         // 간단한 유효성 검사 수행
         if (!email || !password || !nickname || !phoneNumber) {

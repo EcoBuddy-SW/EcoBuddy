@@ -26,11 +26,19 @@ export default function LoginScreen() {
         // 예시: 간단한 확인 메시지 출력
         alert(`Username: ${username}, Password: ${password}`);
 
-        navigation.navigate('Home');
+        navigation.navigate('HomeBtn');
     };
 
     const handleJoin = () => {
         navigation.navigate('Join');
+    };
+
+    const handleID = () => {
+        navigation.navigate('FindUserId');
+    };
+
+    const handlePW = () => {
+        navigation.navigate('FindUserPW');
     };
 
     return (
@@ -49,9 +57,9 @@ export default function LoginScreen() {
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50 }}>
                 <Text style={{ fontSize: 35, fontWeight: 'bold'}}>ECOBUDDY</Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                <Text style={{ fontSize: 25 }}>Login</Text>
-            </View>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                <Text style={{ fontSize: 25 }}>Login</Text> 
+            </View> */}
 
             <TextInput
                 style={styles.input}
@@ -76,13 +84,12 @@ export default function LoginScreen() {
             </View>
 
             <View style={{ height: 80 }} />
-            <Text style={{ fontSize: 15 }}>Did yo
-            u forget?</Text>
+            <Text style={{ fontSize: 15 }}>Did you forget?</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <TouchableOpacity onPress={handleLogin} style={[styles.buttonContainer, { width: '40%' }]}>
+                <TouchableOpacity onPress={handleID} style={[styles.buttonContainer, { width: '40%' }]}>
                     <Text style={[styles.buttonText]}>Find ID</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleJoin} style={[styles.buttonContainer, { width: '40%' }]}>
+                <TouchableOpacity onPress={handlePW} style={[styles.buttonContainer, { width: '40%' }]}>
                     <Text style={[styles.buttonText]}>Find PW</Text>
                 </TouchableOpacity>
             </View>
