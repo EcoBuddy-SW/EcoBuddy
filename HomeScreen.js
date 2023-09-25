@@ -15,7 +15,7 @@ function HomeScreen() {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{ padding: 16 }}
+      contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
     >
       <View style={styles.rowContainer}>
         <TouchableOpacity onPress={goToNotificationScreen}>
@@ -69,8 +69,8 @@ function HomeScreen() {
         </View>
       </View>
 
+      <ScrollView horizontal={true} style={[styles.iconContainer, { backgroundColor: 'white' }]}>
       <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>꿀팁 알아가기!</Text>
-      <ScrollView horizontal={true} style={styles.iconContainer}>
         <View style={styles.iconRow}>
           <View style={styles.iconContainer2}></View>
           <View style={styles.iconContainer2}></View>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2FFED',
     padding: 8,
     borderRadius: 30,
-    width: '20%',
+    width: '70%',
     height: 200,
     alignSelf: 'center',
   },

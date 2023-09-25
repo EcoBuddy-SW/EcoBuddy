@@ -24,7 +24,7 @@ export default function LoginScreen() {
         // 로그인 처리 로직 작성
 
         // 예시: 간단한 확인 메시지 출력
-        alert(`Username: ${username}, Password: ${password}`);
+        alert(`UserId: ${userId}, Password: ${password}`);
 
         navigation.navigate('HomeBtn');
     };
