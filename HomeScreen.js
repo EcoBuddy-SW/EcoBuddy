@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function HomeScreen() {
   const [find, setFind] = useState('');
@@ -33,38 +34,46 @@ function HomeScreen() {
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 25, padding: 5 }}>분리수거 방법 제대로 알기!</Text>
         <View style={styles.iconRow}>
           <View style={styles.iconWithText}>
-            <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Icon2 name="paper-roll-outline" style={styles.icon2} />
+            <Text style={styles.iconText}>종이팩</Text>
           </View>
           <View style={styles.iconWithText}>
-            <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Icon2 name="glass-pint-outline" style={styles.icon2} />
+            <Text style={styles.iconText}>유리병</Text>
           </View>
           <View style={styles.iconWithText}>
-            <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Icon name="local-drink" style={styles.icon2} />
+            <Text style={styles.iconText}>금속캔</Text>
           </View>
           <View style={styles.iconWithText}>
-            <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Icon name="dangerous" style={styles.icon2} />
+            <Text style={styles.iconText}>합성수지류</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon name="menu-book" style={styles.icon2} />
+            <Text style={styles.iconText}>종이류{"\n"}(고지류)</Text>
           </View>
         </View>
         <View style={styles.iconRow}>
           <View style={styles.iconWithText}>
             <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Text style={styles.iconText}>고철류</Text>
           </View>
           <View style={styles.iconWithText}>
-            <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Icon2 name="tshirt-crew-outline" style={styles.icon2} />
+            <Text style={styles.iconText}>의류 및{"\n"}원단류</Text>
           </View>
           <View style={styles.iconWithText}>
-            <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Icon name="battery-alert" style={styles.icon2} />
+            <Text style={styles.iconText}>폐전지류</Text>
           </View>
           <View style={styles.iconWithText}>
-            <Icon name="restore-from-trash" style={styles.icon2} />
-            <Text style={styles.iconText}>아이템</Text>
+            <Icon name="highlight" style={styles.icon2} />
+            <Text style={styles.iconText}>폐형광등{"\n"}폐LED등</Text>
+          </View>
+          <View style={styles.iconWithText}>
+            <Icon2 name="oil" style={styles.icon2} />
+            <Text style={styles.iconText}>식용유</Text>
           </View>
         </View>
       </View>
@@ -113,7 +122,7 @@ const styles = StyleSheet.create({
     color: '#628F5D', // 아이콘 색상 변경
   },
   icon2: {
-    fontSize: 50, // 아이콘 크기 조정
+    fontSize: 35, // 아이콘 크기 조정
     color: '#628F5D', // 아이콘 색상 변경
     marginHorizontal: 50,
 
@@ -124,7 +133,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 10,
     width: '100%',
-    height: 250,
+    height: 260,
     alignSelf: 'center',
   },
   iconContainer2: {
@@ -139,7 +148,7 @@ const styles = StyleSheet.create({
   iconRow: {
     flexDirection: 'row',
     marginBottom: 4, // 아이콘 로우와 로우 사이 간격 조정
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
   },
   iconWithText: {
     alignItems: 'center', // 아이콘과 텍스트를 가로로 중앙 정렬
