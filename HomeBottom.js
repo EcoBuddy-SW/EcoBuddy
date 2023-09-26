@@ -40,7 +40,7 @@ function BottomTabNavigationApp() {
         name="Home"
         component={HomeScreen}
         options={{
-          // title: '홈',
+          title: '홈',
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" color={color} size={size} />
           ),

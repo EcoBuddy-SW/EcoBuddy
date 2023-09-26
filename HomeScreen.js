@@ -69,13 +69,20 @@ function HomeScreen() {
         </View>
       </View>
 
+      <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop:50}}>꿀팁 알아가기!</Text>
       <ScrollView horizontal={true} style={[styles.iconContainer, { backgroundColor: 'white' }]}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 50, }}>꿀팁 알아가기!</Text>
         <View style={styles.iconContainer2}></View>
         <View style={styles.iconContainer2}></View>
         <View style={styles.iconContainer2}></View>
         <View style={styles.iconContainer2}></View>
       </ScrollView>
+
+      <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop:50}}>복지 소식 알고 있어?</Text>
+        <View style={[styles.iconContainer, { width: '90%' }]}></View>
+        <View style={[styles.iconContainer, { width: '90%' }]}></View>
+        <View style={[styles.iconContainer, { width: '90%' }]}></View>
+        <View style={[styles.iconContainer, { width: '90%' }]}></View>
+        <View style={[styles.iconContainer, { width: '90%' }]}></View>
     </ScrollView>
   );
 }
