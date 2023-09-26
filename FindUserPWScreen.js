@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
 import axios from 'axios';
 
+const ipv4 = "10.20.102.158";
+
 export default function FindUserPWScreen() {
+    const [id, setId] = useState('');
     const [email, setEmail] = useState('');
+    const [phoneNumber, setPNum] = useState('');
 
     const handleFindPassword = async () => {
 
@@ -13,23 +17,23 @@ export default function FindUserPWScreen() {
             return;
         }
 
-        try {
-            // 서버에 이메일 검증 요청 보내기
-            const response = await axios.post('서버_API_URL/verify-email', { email });
-    
-            // 서버 응답에서 결과를 확인
-            if (response.data.exists) {
-                // 이메일이 등록되어 있는 경우: 비밀번호 재설정 링크를 전송
-                Alert.alert('비밀번호 재설정 링크 전송', '비밀번호 재설정 링크를 이메일로 전송했습니다.');
+        const data = {
+            id: id,
+            email: email,
+            phoneNumber: phoneNumber
+        };
+        
+        axios.post(`http://${ipv4}:3003/findPw`, data)
+        .then(response => {
+            if (response.data.success) {
+                alert(`pw는 ${response.data.message} 입니다.`);
             } else {
-                // 이메일이 등록되어 있지 않은 경우
-                Alert.alert('비밀번호 재설정 실패', '일치하는 계정이 없습니다.');
+                alert(response.data.message); // 실패 메시지 표시
             }
-        } catch (error) {
-            console.error('이메일 검증 요청 오류:', error);
-            // 오류 처리
-            Alert.alert('비밀번호 재설정 오류', '서버와의 통신 중 오류가 발생했습니다.');
-        }
+        })
+        .catch(error => {
+            console.error(error);
+        });
     };
 
     return (
@@ -37,9 +41,21 @@ export default function FindUserPWScreen() {
             <Text style={styles.title}>비밀번호 찾기</Text>
             <Text style={styles.subtitle}>등록한 이메일 주소를 입력하세요.</Text>
             <TextInput
+                placeholder="Id"
+                value={id}
+                onChangeText={setId}
+                style={styles.input}
+            />
+            <TextInput
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
+                style={styles.input}
+            />
+            <TextInput
+                placeholder="pNum"
+                value={phoneNumber}
+                onChangeText={setPNum}
                 style={styles.input}
             />
             <TouchableOpacity onPress={handleFindPassword} style={styles.button}>

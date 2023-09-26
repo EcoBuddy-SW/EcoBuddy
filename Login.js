@@ -4,10 +4,10 @@ import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvo
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-const ipv4 = "10.20.102.22";
+const ipv4 = "10.20.102.158";
 
 export default function LoginScreen() {
-    const [userId, setUserId] = useState('');
+    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     // const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
     const navigation = useNavigation();
@@ -15,7 +15,7 @@ export default function LoginScreen() {
     const handleLogin = () => {
 
         const data = {
-            id: userId,
+            id: id,
             password: password
         };
 
@@ -23,7 +23,7 @@ export default function LoginScreen() {
         .then(response => {
             if (response.data.success) {
                 alert(response.data.message);
-                navigation.navigate('Home',{id: userId});
+                navigation.navigate('Home',{id: id});
             } else {
                 alert(response.data.message); // 실패 메시지 표시
             }
@@ -68,8 +68,8 @@ export default function LoginScreen() {
             <TextInput
                 style={styles.input}
                 placeholder="Id"
-                value={userId}
-                onChangeText={(text) => setUserId(text)}
+                value={id}
+                onChangeText={(text) => setId(text)}
             />
             <TextInput
                 style={styles.input}

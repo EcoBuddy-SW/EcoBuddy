@@ -10,6 +10,7 @@ import NotificationScreen from './Notification';
 import Mypage from './MypageScreen';
 import FindUserId from './FindUserIdScreen';
 import FindUserPW from './FindUserPWScreen';
+// import Camera from './CameraScreen';
 
 const Stack = createStackNavigator();
 
@@ -28,7 +29,7 @@ export default function App() {
           <Stack.Screen name="Mypage" component={Mypage} />
           <Stack.Screen name="FindUserId" component={FindUserId} />
           <Stack.Screen name="FindUserPW" component={FindUserPW} />
-          <Stack.Screen name="Camera" component={Camera}/>
+          {/* <Stack.Screen name="Camera" component={Camera}/> */}
         </Stack.Navigator>
       </NavigationContainer>
     </LocationContext.Provider>
