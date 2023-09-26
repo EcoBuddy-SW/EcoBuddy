@@ -7,7 +7,7 @@ import axios from 'axios';
 import LocationContext from './LocationContext';
 import * as Location from 'expo-location';
 
-const ipv4 = "10.20.102.22";
+const ipv4 = "10.20.102.158";
 
 export default function JoinScreen() {
     //@@@
@@ -16,6 +16,7 @@ export default function JoinScreen() {
         <Text style={styles.text}>회원가입 페이지</Text>
     </View>
     const [email, setEmail] = useState('');
+    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -24,6 +25,7 @@ export default function JoinScreen() {
 
     // TextInput에 ref 설정
     const emailInputRef = useRef(null);
+    const IdInputRef = useRef(null);
     const passwordInputRef = useRef(null);
     const nicknameInputRef = useRef(null);
     const phoneNumberInputRef = useRef(null);
@@ -39,6 +41,13 @@ export default function JoinScreen() {
         if (!emailRegex.test(email)) {
             Alert.alert('유효한 이메일을 입력하세요', '올바른 이메일 주소를 입력해주세요.');
             emailInputRef.current.focus();
+            return;
+        }
+
+        // 아이디 길이 검사 (6자 이상으로 설정)
+        if (IdInputRef.length < 5) {
+            Alert.alert('아이디를 더 길게 설정하세요', '아이디는 6자 이상이어야 합니다.');
+            IdInputRef.current.focus();
             return;
         }
 
@@ -59,6 +68,7 @@ export default function JoinScreen() {
 
         // 회원가입 로직 처리
         console.log('Email:', email);
+        console.log('ID:', id);
         console.log('Password:', password);
         console.log('Nickname:', nickname);
         console.log('PhoneNumber:', phoneNumber);
@@ -66,6 +76,7 @@ export default function JoinScreen() {
 
         const data={
             "email": email,
+            "id": id,
             "password": password,
             "nickname": nickname,
             "phoneNumber": phoneNumber
@@ -79,7 +90,7 @@ export default function JoinScreen() {
                 console.log(response.data);
                 // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
                 Alert.alert("회원가입 성공!", "환영합니다");
-                //navigation.navigate('Login');
+                navigation.navigate('Login');
 
                 //@@@@  
                 const getLocation = async () => {
@@ -127,7 +138,7 @@ export default function JoinScreen() {
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>ECOBUDDY</Text>
             </View>
 
-            <Text style={{ fontSize: 12, marginBottom : 10 }}>이메일 형식을 맞춰서 작성해 주세요</Text>
+            <Text style={{ fontSize: 12, marginBottom: 10 }}>이메일 형식을 맞춰서 작성해 주세요</Text>
             <TextInput
                 ref={emailInputRef} // ref 설정
                 placeholder="Email"
@@ -135,7 +146,15 @@ export default function JoinScreen() {
                 onChangeText={setEmail}
                 style={styles.input}
             />
-            <Text style={{ fontSize: 12 , marginBottom : 10}}>비밀번호는 6자 이상이어야 합니다</Text>
+            <Text style={{ fontSize: 12, marginBottom: 10 }}>아이디는 5자 이상이어야 합니다</Text>
+            <TextInput
+                ref={IdInputRef} // ref 설정
+                placeholder="ID"
+                value={id}
+                onChangeText={setId}
+                style={styles.input}
+            />
+            <Text style={{ fontSize: 12, marginBottom: 10 }}>비밀번호는 6자 이상이어야 합니다</Text>
             <TextInput
                 ref={passwordInputRef} // ref 설정
                 placeholder="Password"
@@ -144,7 +163,7 @@ export default function JoinScreen() {
                 secureTextEntry
                 style={styles.input}
             />
-            <Text style={{ fontSize: 12 , marginBottom : 10}}>본명을 권장하지 않습니다</Text>
+            <Text style={{ fontSize: 12, marginBottom: 10 }}>본명을 권장하지 않습니다</Text>
             <TextInput
                 ref={nicknameInputRef} // ref 설정
                 placeholder="Nickname"
@@ -152,7 +171,7 @@ export default function JoinScreen() {
                 onChangeText={setNickname}
                 style={styles.input}
             />
-            <Text style={{ fontSize: 12 , marginBottom : 10}}>숫자만 입력해 주세요</Text>
+            <Text style={{ fontSize: 12, marginBottom: 10 }}>숫자만 입력해 주세요</Text>
             <TextInput
                 ref={phoneNumberInputRef} // ref 설정
                 placeholder="PhoneNumber"

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeScreen from './HomeScreen'; 
 import MypageScreen from './MypageScreen';
+import CameraScreen from './CameraScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,17 +46,17 @@ function BottomTabNavigationApp() {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Search"
-        component={SearchScreen}
+      <Tab.Screen
+        name="Camera"
+        component={CameraScreen}
         options={{
-          title: '알림',
+          title: '카메라',
           tabBarIcon: ({ color, size }) => (
-            <Icon name="search" color={color} size={size} />
+            <Icon name="camera" color={color} size={size} />
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Notification"
         component={NotificationScreen}
         options={{

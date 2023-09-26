@@ -28,7 +28,7 @@ export default function App() {
           <Stack.Screen name="Mypage" component={Mypage} />
           <Stack.Screen name="FindUserId" component={FindUserId} />
           <Stack.Screen name="FindUserPW" component={FindUserPW} />
-          {/* 추가 화면을 여기에 추가할 수 있습니다 */}
+          <Stack.Screen name="Camera" component={Camera}/>
         </Stack.Navigator>
       </NavigationContainer>
     </LocationContext.Provider>

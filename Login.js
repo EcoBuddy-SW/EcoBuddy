@@ -7,7 +7,7 @@ import axios from 'axios';
 const ipv4 = "10.20.102.22";
 
 export default function LoginScreen() {
-    const [username, setUsername] = useState('');
+    const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     // const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
     const navigation = useNavigation();
@@ -15,7 +15,7 @@ export default function LoginScreen() {
     const handleLogin = () => {
 
         const data = {
-            email: username,
+            id: userId,
             password: password
         };
 
@@ -23,7 +23,7 @@ export default function LoginScreen() {
         .then(response => {
             if (response.data.success) {
                 alert(response.data.message);
-                navigation.navigate('Home',{eamil: username});
+                navigation.navigate('Home',{id: userId});
             } else {
                 alert(response.data.message); // 실패 메시지 표시
             }
@@ -67,9 +67,9 @@ export default function LoginScreen() {
 
             <TextInput
                 style={styles.input}
-                placeholder="Email"
-                value={username}
-                onChangeText={(text) => setUsername(text)}
+                placeholder="Id"
+                value={userId}
+                onChangeText={(text) => setUserId(text)}
             />
             <TextInput
                 style={styles.input}
