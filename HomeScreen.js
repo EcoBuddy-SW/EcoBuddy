@@ -18,11 +18,6 @@ function HomeScreen() {
     navigation.navigate('PaperInfo');
 };
 
- // 분리수거 페이지 이동 함수들
- const handleGlass = () => {
-  navigation.navigate('PaperInfo');
-};
-
   return (
     <ScrollView
       style={styles.container}
@@ -48,7 +43,7 @@ function HomeScreen() {
             <Text style={styles.iconText}>종이팩</Text>
           </View>
           <View style={styles.iconWithText}>
-            <Icon2 name="glass-pint-outline" style={styles.icon2} onPress={handleGlass}/>
+            <Icon2 name="glass-pint-outline" style={styles.icon2} />
             <Text style={styles.iconText}>유리병</Text>
           </View>
           <View style={styles.iconWithText}>
