@@ -13,6 +13,11 @@ function HomeScreen() {
     navigation.navigate('Notification'); // 'Notification'은 알림 페이지의 스크린 이름입니다.
   };
 
+  // 분리수거 페이지 이동 함수들
+  const handlePaper = () => {
+    navigation.navigate('PaperInfo');
+};
+
   return (
     <ScrollView
       style={styles.container}
@@ -34,7 +39,7 @@ function HomeScreen() {
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 25, padding: 5 }}>분리수거 방법 제대로 알기!</Text>
         <View style={styles.iconRow}>
           <View style={styles.iconWithText}>
-            <Icon2 name="paper-roll-outline" style={styles.icon2} />
+            <Icon2 name="paper-roll-outline" style={styles.icon2} onPress={handlePaper}/>
             <Text style={styles.iconText}>종이팩</Text>
           </View>
           <View style={styles.iconWithText}>

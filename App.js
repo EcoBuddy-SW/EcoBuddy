@@ -10,6 +10,7 @@ import Mypage from './MypageScreen';
 import FindUserId from './FindUserIdScreen';
 import FindUserPW from './FindUserPWScreen';
 import Camera from './CameraScreen';
+import PaperInfo from './PaperInfoScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function App() {
         <Stack.Screen name="FindUserId" component={FindUserId} />
         <Stack.Screen name="FindUserPW" component={FindUserPW} />
         <Stack.Screen name="Camera" component={Camera}/>
+        <Stack.Screen name="PaperInfo" component={PaperInfo}/>
         {/* 추가 화면을 여기에 추가할 수 있습니다 */}
       </Stack.Navigator>
     </NavigationContainer>
