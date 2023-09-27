@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
         height: 260,
         alignSelf: 'center',
     },
+    info:{
+        
+    },
 })
 
 export default PaperInfoScreen;
