@@ -67,7 +67,7 @@ function HomeScreen() {
 
   // 분리수거 페이지 이동 함수들
   const handlePaper = () => {
-    navigation.navigate('PaperInfo');
+    navigation.navigate('종이팩 분리수거');
 };
 
   return (
