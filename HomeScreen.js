@@ -7,6 +7,58 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 function HomeScreen() {
   const [find, setFind] = useState('');
   const navigation = useNavigation();
+  const [currentView, setCurrentView] = useState(1); // 현재 뷰의 인덱스
+  const maxViews = 4; // 총 4개의 뷰가 있다고 가정
+
+   // 다음 뷰로 이동하는 함수
+   const moveToNextView = () => {
+    setCurrentView((prevView) => (prevView % maxViews) + 1);
+  };
+
+  // 컴포넌트가 마운트될 때 타이머 시작
+  useEffect(() => {
+    const timer = setInterval(() => {
+      moveToNextView();
+    }, 5000); // 5초마다 다음 뷰로 이동 (5000 밀리초 = 5초)
+
+    // 컴포넌트가 언마운트될 때 타이머 해제
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  // 뷰 내용 및 스타일은 현재 뷰에 따라 동적으로 설정됩니다.
+  const getViewContent = () => {
+    switch (currentView) {
+      case 1:
+        return (
+          <View style={styles.iconContainer}>
+            <Text style={styles.text}>첫 번째 뷰</Text>
+          </View>
+        );
+      case 2:
+        return (
+          <View style={styles.iconContainer}>
+            <Text style={styles.text}>두 번째 뷰</Text>
+          </View>
+        );
+      case 3:
+        return (
+          <View style={styles.iconContainer}>
+            <Text style={styles.text}>세 번째 뷰</Text>
+          </View>
+        );
+      case 4:
+        return (
+          <View style={styles.iconContainer}>
+            <Text style={styles.text}>네 번째 뷰</Text>
+          </View>
+        );
+      default:
+        return null;
+    }
+  };
+
 
   // 알림 페이지로 이동하는 함수
   const goToNotificationScreen = () => {
@@ -84,12 +136,13 @@ function HomeScreen() {
       </View>
 
       <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop:50}}>꿀팁 알아가기!</Text>
-      <ScrollView horizontal={true} style={[styles.iconContainer, { backgroundColor: 'white' }]}>
+      {/* <ScrollView horizontal={true} style={[styles.iconContainer, { backgroundColor: 'white' }]}>
         <View style={styles.iconContainer2}></View>
         <View style={styles.iconContainer2}></View>
         <View style={styles.iconContainer2}></View>
         <View style={styles.iconContainer2}></View>
-      </ScrollView>
+      </ScrollView> */}
+          {getViewContent()}
 
       <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop:50}}>복지 소식 알고 있어?</Text>
         <View style={[styles.iconContainer, { width: '90%' }]}></View>
@@ -161,6 +214,10 @@ const styles = StyleSheet.create({
   iconText: {
     marginTop: 5,
     marginBottom: 15,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
