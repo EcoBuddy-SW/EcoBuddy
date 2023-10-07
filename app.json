@@ -6,6 +6,16 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(EcoBuddy) needs access to your Camera.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(EcoBuddy) needs access to your Microphone."
+        }
+      ]
+    ],
     "splash": {
       "image": "./assets/ecoBuddy_Logo.png",
       "resizeMode": "cover",
@@ -19,13 +29,22 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(EcoBuddy) needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "$(EcoBuddy) needs access to your Microphone."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/mother-earth-day.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.parkseoyun.EcoBuddy"
     },
     "web": {
       "favicon": "./assets/favicon.png"

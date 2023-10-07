@@ -2,28 +2,28 @@ import React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function PaperInfoScreen() {
+function GlassInfoScreen() {
     return (
         <ScrollView
             style={styles.container}
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
         >
             <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 종이팩</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 음료수병, 기타병류</Text>
             </View>
             <View style={[styles.infoContainer, { marginBottom: 30 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
-                    • 내용물을 비우고 물로 헹구는 등 이물질을 제거하고 {'\n'} 말린 후 배출
+                    • 내용물을 비우고 물로 헹구는 등 이물질을 제거하여 배출
                 </Text>
                 <Text style={styles.listItem}>
-                    • 빨대, 비닐 등 종이팩과 다른 재질은 제거한 후 배출
+                    • 담배꽁초 등 이물질을 넣지 않고 배출
                 </Text>
                 <Text style={styles.listItem}>
-                    • 일반 종이류와 혼합되지 않게 종이팩 전용수거함에 배출
+                    • 유리병이 깨지지 않도록 주의하여 배출
                 </Text>
                 <Text style={styles.listItem}>
-                    • 종이팩 전용수거함이 없는 경우에는 종이류와 구분할 수 {'\n'} 있도록 가급적 끈 등으로 묶어 종이류 수거함으로 배출
+                    • 소주, 맥주 등 빈용기보증금 대상 유리병은{'\n'} 소매점 등으로 반납하여 보증금 환급
                 </Text>
             </View>
 
@@ -41,14 +41,15 @@ function PaperInfoScreen() {
             <View style={[styles.infoContainer, { height: 90, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 15, }]}>
                 <Text style={[styles.listItem, { fontWeight: 'bold', fontSize: 18, }]}>해당품목</Text>
                 <Text style={styles.listItem}>
-                    • 우유팩, 두유팩, 소주팩, 쥬스팩 등
+                    • 음료수병, 와인병, 양주병, 드링크병 등
                 </Text>
             </View>
 
-            <View style={[styles.infoContainer, { height: 110, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 50 }]}>
+            <View style={[styles.infoContainer, { height: 170, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 50 }]}>
                 <Text style={[styles.listItem, { fontWeight: 'bold', fontSize: 18, }]}>비해당품목</Text>
                 <Text style={styles.listItem}>
-                    • 종이, 신문지 등 종이류, 종이컵 등{'\n'}
+                    • 깨진 유리제품은 신문지 등에 싸서 종량제 봉투 배출{'\n'}
+                    • 코팅 및 다양한 색상이 들어간 유리제품, 내열 유리제품,{'\n'}크리스탈 유리제품, 판유리, 조명기구용 유리류,{'\n'} 사기·도자기류 등{'\n'}
                     📢 종이류 수거함으로 배출
                 </Text>
             </View>
@@ -117,4 +118,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PaperInfoScreen;
+export default GlassInfoScreen;

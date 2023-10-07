@@ -3,23 +3,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import HomeScreen from './HomeScreen'; 
-import MypageScreen from './MypageScreen';
+import HomeScreen from './HomeScreen';
 import CameraScreen from './CameraScreen';
+import MypageScreen from './MypageScreen';
 
 const Tab = createBottomTabNavigator();
-
-// function SearchScreen() {
-//   return <Text>Search</Text>;
-// }
-
-// function NotificationScreen() {
-//   return <Text>Notification</Text>;
-// }
-
-// function SettingScreen() {
-//   return <Text>설정 페이지</Text>;
-// }
 
 function BottomTabNavigationApp() {
 
