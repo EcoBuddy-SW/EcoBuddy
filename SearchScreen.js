@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function SearchScreen() {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
-  
+
   // 검색을 수행하는 함수
   const handleSearch = () => {
     if (searchText.trim() === '') {
@@ -63,11 +63,13 @@ export default function SearchScreen() {
         </View>
       </View>
 
-      <View style={styles.container}>
-        <View style={[styles.shadowContainer, { borderWidth: 1, borderColor: 'black', height: 50 }]}>
-          <Text style={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }}>카테고리를 눌러서 검색하고 싶다면?</Text>
+      <TouchableOpacity>
+        <View style={styles.container}>
+          <View style={[styles.shadowContainer, { borderWidth: 1, borderColor: 'black', height: 50 }]}>
+            <Text style={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }}>카테고리를 눌러서 검색하고 싶다면?</Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }

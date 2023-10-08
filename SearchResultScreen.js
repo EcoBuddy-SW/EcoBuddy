@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -30,12 +30,12 @@ export default function SearchResultScreen() {
                             <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 분리수거 사업에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <View style={styles.btn}>
+                                <TouchableOpacity style={styles.btn}>
                                     <Text style={[styles.text]}>자세히 보기</Text>
-                                </View>
-                                <View style={[styles.btn, { backgroundColor: '#FAEDFF', marginStart: 10 }]}>
-                                    <Text style={styles.text}>정확한 위치</Text>
-                                </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
+                                    <Text style={[styles.text]}>정확한 위치</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                         {/* 여기까지가 서브컨테이너 1개 */}
@@ -50,19 +50,19 @@ export default function SearchResultScreen() {
                             <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 분리수거 사업에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <View style={styles.btn}>
+                                <TouchableOpacity style={styles.btn}>
                                     <Text style={[styles.text]}>자세히 보기</Text>
-                                </View>
-                                <View style={[styles.btn, { backgroundColor: '#FAEDFF', marginStart: 10 }]}>
-                                    <Text style={styles.text}>정확한 위치</Text>
-                                </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
+                                    <Text style={[styles.text]}>정확한 위치</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
 
                     {/* 카테고리 복지에 포함되는 검색 결과 */}
                     <View style={[styles.resultContainer, { padding: 30, marginTop: 30 }]}>
-                        <Text style={[styles.text, { marginBottom: 20, fontFamily: 'Pretendard-Bold', fontSize: 18 }]}>분리수거</Text>
+                        <Text style={[styles.text, { marginBottom: 20, fontFamily: 'Pretendard-Bold', fontSize: 18 }]}>복지</Text>
                         <View style={[styles.subContainer, { marginBottom: 15 }]}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
                                 <Text style={[styles.text, { fontSize: 15 }]}>제목 1</Text>
@@ -70,35 +70,35 @@ export default function SearchResultScreen() {
                                     <Text style={styles.text}>지역</Text>
                                 </View>
                             </View>
-                            <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 분리수거 사업에 대한 설명</Text>
+                            <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 복지에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <View style={styles.btn}>
+                                <TouchableOpacity style={styles.btn}>
                                     <Text style={[styles.text]}>자세히 보기</Text>
-                                </View>
-                                <View style={[styles.btn, { backgroundColor: '#FAEDFF', marginStart: 10 }]}>
-                                    <Text style={styles.text}>정확한 위치</Text>
-                                </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
+                                    <Text style={[styles.text]}>정확한 위치</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                         {/* 여기까지가 서브컨테이너 1개 */}
 
                         <View style={[styles.subContainer, { marginBottom: 15 }]}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <Text style={[styles.text, { fontSize: 15 }]}>제목 2 </Text>
+                                <Text style={[styles.text, { fontSize: 15 }]}>제목 2</Text>
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <Text style={styles.text}>지역</Text>
                                 </View>
                             </View>
-                            <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 분리수거 사업에 대한 설명</Text>
+                            <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 복지에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <View style={styles.btn}>
+                                <TouchableOpacity style={styles.btn}>
                                     <Text style={[styles.text]}>자세히 보기</Text>
-                                </View>
-                                <View style={[styles.btn, { backgroundColor: '#FAEDFF', marginStart: 10 }]}>
-                                    <Text style={styles.text}>정확한 위치</Text>
-                                </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
+                                    <Text style={[styles.text]}>정확한 위치</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -106,7 +106,7 @@ export default function SearchResultScreen() {
 
                 </View>
             </View>
-        </ScrollView>
+        </ScrollView >
     );
 }
 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     btn: {
-        backgroundColor: '#FFEDF2',
+        backgroundColor: '#EDF3FF',
         borderRadius: 10,
         width: '40%',
         height: 30,
