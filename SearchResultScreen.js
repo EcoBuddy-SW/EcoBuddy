@@ -2,10 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SearchResultScreen() {
     const route = useRoute();
     const { searchKeyword } = route.params;
+    const navigation = useNavigation();
+
+    const goToMap = () => {
+        navigation.navigate('지도'); // 'Map' 스크린으로 이동
+    };
 
     return (
         <ScrollView
@@ -30,10 +36,10 @@ export default function SearchResultScreen() {
                             <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 분리수거 사업에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <TouchableOpacity style={styles.btn}>
+                                <TouchableOpacity style={styles.btn} >
                                     <Text style={[styles.text]}>자세히 보기</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
+                                <TouchableOpacity onPress={goToMap} style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
                                     <Text style={[styles.text]}>정확한 위치</Text>
                                 </TouchableOpacity>
                             </View>
