@@ -33,18 +33,19 @@ export default function CategoryScreen() {
 
     const navigation = useNavigation();
 
+    // 선택된 카테고리가 0 개인지 확인
+    
+    const isAnyCategorySelected = isRegionSelected.some((selected) => selected);
+    const isAnyCategorySelected2 = isThisYearSelected.some((selected) => selected);
+    const isAnyCategorySelected3 = isCategorySelected.some((selected) => selected);
+
     const handleResult = () => {
-        if (isAnyCategorySelected) {
+        if (isAnyCategorySelected ||isAnyCategorySelected2 || isAnyCategorySelected3 ) {
             navigation.navigate('카테고리 선택 결과'); // 'Map' 스크린으로 이동
         } else {
             // 팝업 창으로 메시지 띄우기
             Alert.alert('알림', '선택된 카테고리가 없습니다.');
         }
-    };
-    const isAnyCategorySelected = isCategorySelected.some((selected) => selected);
-
-    const renderNoSelectionMessage = () => {
-        
     };
 
     return (
@@ -89,9 +90,6 @@ export default function CategoryScreen() {
                     </TouchableOpacity>
                 ))}
             </View>
-
-            {/* 선택된 카테고리가 없을 경우 함수 수행 */}
-            {renderNoSelectionMessage()} 
 
             <TouchableOpacity style={styles.shadowContainer} onPress={handleResult}>
                 <Text style={[styles.text, { fontFamily: 'Pretendard-Bold' }]}>선택 완료</Text>
