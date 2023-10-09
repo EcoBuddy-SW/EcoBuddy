@@ -51,7 +51,7 @@ export default function App() {
         <Stack.Screen name="HomeBtn" component={HomeBottom} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Join" component={JoinScreen} />
-        <Stack.Screen name="Notification" component={NotificationScreen} />
+        <Stack.Screen name="알림창" component={NotificationScreen} />
         <Stack.Screen name="Mypage" component={Mypage} />
         <Stack.Screen name="FindUserId" component={FindUserId} />
         <Stack.Screen name="FindUserPW" component={FindUserPW} />

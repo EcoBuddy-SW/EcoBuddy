@@ -60,7 +60,7 @@ class HomeScreen extends Component {
 
   goToNotificationScreen() {
     const { navigation } = this.props;
-    navigation.navigate('Notification');
+    navigation.navigate('알림창');
   }
 
   handlePaper() {
