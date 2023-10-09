@@ -7,16 +7,16 @@ import { useNavigation } from '@react-navigation/native';
 export default function SearchScreen() {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
-
+ 
   // 검색을 수행하는 함수
-  const handleSearch = () => {
+  const handleSearch = () => { 
     if (searchText.trim() === '') {
       Alert.alert('경고', '키워드를 입력하세요.');
       return;
     }
 
     navigation.navigate('검색 결과', { searchKeyword: searchText });
-    console.log('검색어:', searchText);
+    console.log('검색어:', searchText); 
   };
 
   const handleCategory = () => {
