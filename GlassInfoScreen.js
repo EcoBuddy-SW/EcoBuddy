@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 function GlassInfoScreen() {
+
+    const navigation = useNavigation();
+    const handleCategory = () => {
+        navigation.navigate('카테고리'); // 'Map' 스크린으로 이동
+    };
+
     return (
         <ScrollView
             style={styles.container}
@@ -27,7 +34,7 @@ function GlassInfoScreen() {
                 </Text>
             </View>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleCategory}>
                 <View style={[styles.shadowContainer, { width: '95%', height: 150, marginBottom: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                     <View style={{ flex: 1 }}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10, textAlign: 'left', fontFamily: 'Pretendard-Bold', marginLeft: 20 }}>분리수거 교환 사업 !</Text>
