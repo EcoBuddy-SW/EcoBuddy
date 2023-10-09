@@ -20,7 +20,7 @@ export default function SearchResultScreen() {
         >
             <View style={styles.container}>
                 <View style={{ padding: 30 }}>
-                    <Text style={[styles.text, { fontSize: 20, marginBottom: 30 }]}>검색하신 {searchKeyword} 결과</Text>
+                    <Text style={[styles.text, { fontSize: 15 , marginBottom: 30 }]}>검색하신 {searchKeyword} 결과</Text>
 
                     {/* 검색 결과 데이터 디자인이에용 ~~ */}
                     {/* 카테고리 분리수거에 포함되는 검색 결과 */}
