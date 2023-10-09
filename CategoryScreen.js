@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,9 +8,9 @@ export default function CategoryScreen() {
     const [isThisYearSelected, setIsThisYearSelected] = useState([false, false, false]);
     const [isCategorySelected, setIsCategorySelected] = useState([false, false, false, false]);
 
-    const regionTexts = ['지역1', '지역2', '지역3', '지역4']; // 각 뷰에 표시할 텍스트
+    const regionTexts = ['지역1', '지역2', '지역3', '지역4'];
     const thisYearTexts = ['올해까지', '내년까지', '시행 예정'];
-    const categoryTexts = ['카테고리', '카테고리', '카테고리', '카테고리 '];
+    const categoryTexts = ['카테고리', '카테고리', '카테고리', '카테고리'];
 
     const handleRegionPress = (index) => {
         const updatedSelection = [...isRegionSelected];
@@ -33,26 +32,25 @@ export default function CategoryScreen() {
 
     const navigation = useNavigation();
 
-    // 선택된 카테고리가 0 개인지 확인
-    
     const isAnyCategorySelected = isRegionSelected.some((selected) => selected);
     const isAnyCategorySelected2 = isThisYearSelected.some((selected) => selected);
     const isAnyCategorySelected3 = isCategorySelected.some((selected) => selected);
 
     const handleResult = () => {
-        if (isAnyCategorySelected ||isAnyCategorySelected2 || isAnyCategorySelected3 ) {
-            navigation.navigate('카테고리 선택 결과'); // 'Map' 스크린으로 이동
+        if (isAnyCategorySelected || isAnyCategorySelected2 || isAnyCategorySelected3) {
+            navigation.navigate('카테고리 선택 결과', {
+                isAnyCategorySelected: isRegionSelected.some((selected) => selected),
+                isAnyCategorySelected2: isThisYearSelected.some((selected) => selected),
+                isAnyCategorySelected3: isCategorySelected.some((selected) => selected),
+              });
         } else {
-            // 팝업 창으로 메시지 띄우기
             Alert.alert('알림', '선택된 카테고리가 없습니다.');
         }
     };
 
     return (
-
         <View style={styles.background}>
             <Text style={[styles.text, { alignSelf: 'center', marginTop: 30, marginBottom: 30 }]}>1개 이상 카테고리를 선택해 주세요</Text>
-            {/* 첫번째 줄 */}
             <View style={{ flexDirection: 'row', marginBottom: 10, justifyContent: 'space-around', marginStart: 20, marginEnd: 20, marginBottom: 20 }}>
                 {isRegionSelected.map((selected, index) => (
                     <TouchableOpacity
@@ -65,7 +63,6 @@ export default function CategoryScreen() {
                 ))}
             </View>
 
-            {/* 두번째 줄 */}
             <View style={{ flexDirection: 'row', marginBottom: 10, justifyContent: 'space-around', marginStart: 20, marginEnd: 20, marginBottom: 20 }}>
                 {isThisYearSelected.map((selected, index) => (
                     <TouchableOpacity
@@ -78,7 +75,6 @@ export default function CategoryScreen() {
                 ))}
             </View>
 
-            {/* 세번째 줄 */}
             <View style={{ flexDirection: 'row', marginBottom: 10, justifyContent: 'space-around', marginStart: 20, marginEnd: 20, marginBottom: 40 }}>
                 {isCategorySelected.map((selected, index) => (
                     <TouchableOpacity
@@ -94,7 +90,6 @@ export default function CategoryScreen() {
             <TouchableOpacity style={styles.shadowContainer} onPress={handleResult}>
                 <Text style={[styles.text, { fontFamily: 'Pretendard-Bold' }]}>선택 완료</Text>
             </TouchableOpacity>
-
         </View>
     );
 }
@@ -112,7 +107,7 @@ const styles = StyleSheet.create({
         width: '20%',
         borderWidth: 1,
         borderColor: 'lightgray',
-        alignItems: 'center', // 이번엔 얘임 ㅡㅡ 가운데 정렬
+        alignItems: 'center',
     },
     selectedContainer: {
         backgroundColor: '#EDF3FF',
@@ -121,7 +116,7 @@ const styles = StyleSheet.create({
         width: '20%',
         alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center', // 이번엔 얘임 ㅡㅡ 가운데 정렬
+        alignItems: 'center',
     },
     notSelectedContainer2: {
         backgroundColor: 'white',
@@ -130,7 +125,7 @@ const styles = StyleSheet.create({
         width: '30%',
         borderWidth: 1,
         borderColor: 'lightgray',
-        alignItems: 'center', // 이번엔 얘임 ㅡㅡ 가운데 정렬
+        alignItems: 'center',
     },
     selectedContainer2: {
         backgroundColor: '#EDF3FF',
@@ -139,17 +134,7 @@ const styles = StyleSheet.create({
         width: '30%',
         alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center', // 이번엔 얘임 ㅡㅡ 가운데 정렬
-    },
-    searchContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
-        alignSelf: 'center',
-        paddingHorizontal: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: 'lightgray',
-        height: 60,
     },
     shadowContainer: {
         width: '90%',
@@ -168,16 +153,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 2.0,
         elevation: 3,
-    },
-    input: {
-        flex: 1,
-        fontSize: 18,
-        paddingVertical: 1,
-        height: 40,
-    },
-    icon: {
-        fontSize: 30,
-        marginLeft: 20,
     },
     text: {
         fontFamily: 'Pretendard-Regular',

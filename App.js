@@ -22,6 +22,9 @@ import Map from './MapScreen';
 import Category from './CategoryScreen';
 import CategoryResult from './CateogryResultScreen';
 
+//채연 페이지
+import OptionScreen from './Option'; //설정 기능
+
 // import HomeScreen from './HomeScreen'; 
 // import MypageScreen from './MypageScreen';
 // import CameraScreen from './CameraScreen';
@@ -64,6 +67,9 @@ export default function App() {
         <Stack.Screen name="지도" component={Map}/>
         <Stack.Screen name="카테고리" component={Category}/>
         <Stack.Screen name="카테고리 선택 결과" component={CategoryResult}/>
+
+        {/* 채연 페이지 */}
+        <Stack.Screen name="Option" component={OptionScreen} />
         {/* 추가 화면을 여기에 추가할 수 있습니다 */}
       </Stack.Navigator>
     </NavigationContainer>

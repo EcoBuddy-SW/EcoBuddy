@@ -7,18 +7,16 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function CategoryResultScreen() {
 
-    return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={{ padding: .0}} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
-        >
-            <View style={styles.container}>
-                <View style={{ padding: 30 }}>
-                    <Text style={[styles.text, { fontSize: 15 }]}>선택하신 '키워드' 결과</Text>
-                </View>
+    const route = useRoute();
 
-                {/* 검색 결과 데이터 디자인이에용 ~~ */}
-                {/* 카테고리 분리수거에 포함되는 검색 결과 */}
+    // route.params가 존재하는지 확인 후 접근
+    const isAnyCategorySelected = route.params?.isAnyCategorySelected || false;
+    const isAnyCategorySelected2 = route.params?.isAnyCategorySelected2 || false;
+    const isAnyCategorySelected3 = route.params?.isAnyCategorySelected3 || false;
+
+    const renderResultContainer = (index) => {
+        if (index === 0 && isAnyCategorySelected) {
+            return (
                 <View style={[styles.resultContainer, { padding: 30 }]}>
                     <Text style={[styles.text, { marginBottom: 20, fontFamily: 'Pretendard-Bold', fontSize: 18 }]}>경기</Text>
                     <View style={[styles.subContainer, { marginBottom: 15 }]}>
@@ -56,8 +54,11 @@ export default function CategoryResultScreen() {
                         <Text style={[styles.text, { marginStart: 30, marginBottom: 15 }]}>글 제목</Text>
                     </View>
                 </View>
-
-                <View style={[styles.resultContainer, { padding: 30, marginTop:40, marginBottom: 30 }]}>
+            );
+        }
+        if (index === 1 && isAnyCategorySelected2) {
+            return (
+                <View style={[styles.resultContainer, { padding: 30 }]}>
                     <Text style={[styles.text, { marginBottom: 20, fontFamily: 'Pretendard-Bold', fontSize: 18 }]}>시행 예정</Text>
                     <View style={[styles.subContainer, { marginBottom: 15 }]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
@@ -94,8 +95,11 @@ export default function CategoryResultScreen() {
                         <Text style={[styles.text, { marginStart: 30, marginBottom: 15 }]}>글 제목</Text>
                     </View>
                 </View>
-
-                <View style={[styles.resultContainer, { padding: 30, marginTop:40, marginBottom: 30 }]}>
+            );
+        }
+        if (index === 2 && isAnyCategorySelected3) {
+            return (
+                <View style={[styles.resultContainer, { padding: 30 }]}>
                     <Text style={[styles.text, { marginBottom: 20, fontFamily: 'Pretendard-Bold', fontSize: 18 }]}>카테고리</Text>
                     <View style={[styles.subContainer, { marginBottom: 15 }]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
@@ -132,8 +136,31 @@ export default function CategoryResultScreen() {
                         <Text style={[styles.text, { marginStart: 30, marginBottom: 15 }]}>글 제목</Text>
                     </View>
                 </View>
+            );
+        }
+    };
+
+    return (
+
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={{ padding: .0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
+        >
+            <View style={styles.container}>
+                <View style={{ padding: 30 }}>
+                    <Text style={[styles.text, { fontSize: 15 }]}>선택하신 키워드 결과</Text>
+                </View>
+
+                {/* 검색 결과 데이터 디자인이에용 ~~ */}
+                {/* 카테고리 분리수거에 포함되는 검색 결과 */}
+                {/* 결과 컨테이너를 동적으로 렌더링 */}
+                {isAnyCategorySelected && renderResultContainer(0)}
+                {isAnyCategorySelected2 && renderResultContainer(1)}
+                {isAnyCategorySelected3 && renderResultContainer(2)}
 
             </View>
+
+
         </ScrollView >
     );
 }
@@ -165,6 +192,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: '100%',
         alignSelf: 'center',
+        marginBottom: 50,
     },
     subContainer: {
         backgroundColor: 'white',
