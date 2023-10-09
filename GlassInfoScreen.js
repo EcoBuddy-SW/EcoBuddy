@@ -23,7 +23,7 @@ function GlassInfoScreen() {
                 <Text style={styles.listItem}>
                     • 내용물을 비우고 물로 헹구는 등 이물질을 제거하여 배출
                 </Text>
-                <Text style={styles.listItem}>
+                <Text style={styles.listItem}> 
                     • 담배꽁초 등 이물질을 넣지 않고 배출
                 </Text>
                 <Text style={styles.listItem}>
