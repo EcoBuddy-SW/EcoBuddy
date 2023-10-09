@@ -9,7 +9,6 @@ import HomeBottom from './BottomTabNavigationApp';
 import HomeScreen from './HomeScreen';
 import JoinScreen from './Join';
 import NotificationScreen from './Notification';
-import Mypage from './MypageScreen';
 import FindUserId from './FindUserIdScreen';
 import FindUserPW from './FindUserPWScreen';
 import Camera from './CameraScreen';
@@ -21,8 +20,10 @@ import SearchResult from './SearchResultScreen';
 import Map from './MapScreen';
 import Category from './CategoryScreen';
 import CategoryResult from './CateogryResultScreen';
+import Detail from './DetailScreen';
 
 //채연 페이지
+import Mypage from './MypageScreen';
 import OptionScreen from './Option'; //설정 기능
 
 // import HomeScreen from './HomeScreen'; 
@@ -67,6 +68,7 @@ export default function App() {
         <Stack.Screen name="지도" component={Map}/>
         <Stack.Screen name="카테고리" component={Category}/>
         <Stack.Screen name="카테고리 선택 결과" component={CategoryResult}/>
+        <Stack.Screen name="세부사항" component={Detail}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />
