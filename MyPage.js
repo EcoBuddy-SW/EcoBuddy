@@ -9,7 +9,7 @@ import Icon1 from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
 
 
-function MyPageScreen() {
+ export default function MyPageScreen() {
 
   
 
@@ -150,7 +150,7 @@ function MyPageScreen() {
   );
 }
 
-export default MyPageScreen;
+
 
 const styles = StyleSheet.create({
   container: {

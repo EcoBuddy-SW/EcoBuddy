@@ -9,12 +9,15 @@ import CoinsScreen from './Coins'; // 포인트 기능
 import RecordScreen from './Record'; // 
 
 import OptionScreen from './Option'; //설정 기능
-import BellScreen from './Bell';
+
 import ProfileDialog from './ProfileDialog';
 import StatistcsScreen from './Statistcs';
 import My_InforScreen from './My_Infor';
 
+
+
 const Stack = createStackNavigator();
+
 
 export default function App() {
   return (
@@ -25,8 +28,9 @@ export default function App() {
         <Stack.Screen name="Coins" component={CoinsScreen} /> 
         <Stack.Screen name="Record" component={RecordScreen} />
    
+
         <Stack.Screen name="Option" component={OptionScreen} />
-        <Stack.Screen name="bell" component={BellScreen}/>
+        {/* <Stack.Screen name="bell" component={BellScreen}/> */}
       
         <Stack.Screen name="Statistcs" component={StatistcsScreen}/>
         <Stack.Screen name="My_Infor" component={My_InforScreen}/>

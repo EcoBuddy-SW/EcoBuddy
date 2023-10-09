@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, StatusBar } from 'react-native';
+import { useColorScheme, Appearance } from 'react-native-appearance'; // useColorScheme을 Appearance과 함께 import
 
 export default function OptionScreen() {
+  const colorScheme = useColorScheme();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedMode, setSelectedMode] = useState('light');
 
@@ -17,9 +19,7 @@ export default function OptionScreen() {
         {
           text: '확인',
           onPress: () => {
-            // 로그아웃 로직을 여기에 추가하세요 (예: AsyncStorage나 API 호출 등)
-            // 로그아웃이 성공하면 화면을 다시 로딩하거나 홈 화면으로 이동할 수 있습니다.
-            // 예: navigation.navigate('Home');
+            // 로그아웃 로직을 추가
           },
         },
       ],
@@ -27,42 +27,50 @@ export default function OptionScreen() {
     );
   };
 
-  const handleScreenModePress = () => {// 화면모드 
+  const handleScreenModePress = () => {
     setModalVisible(true);
   };
 
   const handleModeSelection = (mode) => {
     setSelectedMode(mode);
     setModalVisible(false);
-  
-    // 선택한 모드에 따른 로직을 추가할 수 있습니다.
-    // 예를 들어, 다크 모드와 라이트 모드로 화면을 변경하는 등의 작업을 수행할 수 있습니다.
+
+    // 선택한 모드에 따라 StatusBar 스타일 변경 및 기타 스타일 적용
+    if (mode === 'dark') {
+      StatusBar.setBarStyle('light-content');
+      // 여기에서 다크 모드에 필요한 스타일을 적용할 수 있습니다.
+    } else {
+      StatusBar.setBarStyle('dark-content');
+      // 여기에서 라이트 모드에 필요한 스타일을 적용할 수 있습니다.
+    }
   };
+
+  useEffect(() => {
+    // 컴포넌트가 처음 렌더링될 때 기본 StatusBar 스타일을 설정
+    StatusBar.setBarStyle(colorScheme === 'dark' ? 'light-content' : 'dark-content');
+  }, [colorScheme]);
+
+  
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 17, color: 'gray', top:5, right:160 }}>사용자</Text>
-      
+      <Text style={styles.headerText}>사용자</Text>
+
       <TouchableOpacity
         onPress={handleLogoutPress}
-        style={[styles.gridColumn,
-          { backgroundColor:'#FFFFFF', width:415,height:55,
-            flexDirection:'row', alignItems:'center', margin :5,top :20,borderWidth :1,borderColor :"#e9e9e9",}
-        ]}
+        style={styles.button}
       >
-        <Text style={[styles.textStyle,{left :20}]}>로그아웃</Text>
+        <Text style={styles.buttonText}>로그아웃</Text>
       </TouchableOpacity>
 
-      <Text style={{ fontSize :17,color :'gray' ,top :40,right :170}}>화면</Text>
+      <Text style={styles.headerText}>화면</Text>
 
-       <TouchableOpacity
-         onPress={handleScreenModePress}
-         style={[styles.gridColumn,
-           { backgroundColor:'#FFFFFF', width:415,height:55,
-             flexDirection:'row', alignItems:'center', margin :5,top :50,borderWidth :1,borderColor :"#e9e9e9", }
-         ]}
-       >
-         <Text style={[styles.textStyle,{left :20}]}>화면 모드</Text>
-       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleScreenModePress}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>화면 모드</Text>
+      </TouchableOpacity>
+
 
 
       <Text style={{ fontSize: 16, color: 'gray', top:65, right:155,}}>이용 약관</Text>
@@ -90,32 +98,31 @@ export default function OptionScreen() {
       </View>
 
       <Modal
-animationType="slide"
-transparent={true}
-visible={modalVisible}
-onRequestClose={() => {
-setModalVisible(!modalVisible);
-}}
->
-<View style={styles.centeredView}>
-<View style={styles.modalView}>
-<Text style={styles.modalText}>화면 모드를 선택하세요</Text>
-<Pressable
-style={[styles.modeButton, selectedMode === 'light' ? styles.selectedMode : null]}
-onPress={() => handleModeSelection('light')}
->
-<Text style={styles.modeButtonText}>라이트 모드</Text>
-</Pressable>
-<Pressable
-style={[styles.modeButton, selectedMode === 'dark' ? styles.selectedMode : null]}
-onPress={() => handleModeSelection('dark')}
->
-<Text style={styles.modeButtonText}>다크 모드</Text>
-</Pressable>
-</View>
-</View>
-</Modal>
-
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>화면 모드를 선택하세요</Text>
+            <Pressable
+              style={[styles.modeButton, selectedMode === 'light' ? styles.selectedMode : null]}
+              onPress={() => handleModeSelection('light')}
+            >
+              <Text style={styles.modeButtonText}>라이트 모드</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.modeButton, selectedMode === 'dark' ? styles.selectedMode : null]}
+              onPress={() => handleModeSelection('dark')}
+            >
+              <Text style={styles.modeButtonText}>다크 모드</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -123,11 +130,17 @@ onPress={() => handleModeSelection('dark')}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EDF3FF', // 원하는 배경색을 여기에 지정하세요
+    backgroundColor: '#EDF3FF',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  gridColumn: {
+  headerText: {
+    fontSize: 17,
+    color: 'gray',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  button: {
     backgroundColor: '#FFFFFF',
     width: 415,
     height: 55,
@@ -136,8 +149,10 @@ const styles = StyleSheet.create({
     margin: 5,
     borderWidth: 1,
     borderColor: "#e9e9e9",
+    justifyContent: 'center',
   },
-  textStyle: {
+  buttonText: {
+    fontSize: 16,
     left: 20,
   },
   centeredView: {
