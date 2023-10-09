@@ -19,6 +19,10 @@ export default function SearchScreen() {
     console.log('검색어:', searchText);
   };
 
+  const handleCategory = () => {
+    navigation.navigate('카테고리');
+  }
+
   return (
     <View style={[styles.background]}>
       <View style={[styles.searchContainer, { width: '80%', marginTop: 10 }]}>
@@ -63,7 +67,7 @@ export default function SearchScreen() {
         </View>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleCategory}>
         <View style={styles.container}>
           <View style={[styles.shadowContainer, { borderWidth: 1, borderColor: 'black', height: 50 }]}>
             <Text style={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }}>카테고리를 눌러서 검색하고 싶다면?</Text>
