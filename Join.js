@@ -1,16 +1,13 @@
 import React, { useContext, useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Alert, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 import axios from 'axios';
 
-//@@@
-import LocationContext from './LocationContext';
-import * as Location from 'expo-location';
-
-const ipv4 = "10.20.102.158";
+const ipv4 = "10.20.101.224";
 
 export default function JoinScreen() {
-    //@@@
+
     const { location, setLocation } = useContext(LocationContext);
     <View style={styles.container}>
         <Text style={styles.text}>회원가입 페이지</Text>
@@ -91,30 +88,6 @@ export default function JoinScreen() {
                 // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
                 Alert.alert("회원가입 성공!", "환영합니다");
                 navigation.navigate('Login');
-
-                //@@@@  
-                const getLocation = async () => {
-                    let { status } = await Location.requestForegroundPermissionsAsync();
-                    if (status !== 'granted') {
-                        console.error('Permission to access location was denied');
-                        return;
-                    }
-                    let newLocation = await Location.getCurrentPositionAsync({});
-                      
-                    // 위치 정보에서 위도와 경도 추출
-                    const { latitude, longitude } = newLocation.coords;
-
-                    // 역지오코딩 실행
-                    let addresses = await Location.reverseGeocodeAsync({ latitude, longitude });
-
-                    if (addresses && addresses.length > 0) {
-                        console.log(addresses[0]);
-                        setLocation(addresses[0]);
-
-                    }
-                };
-                getLocation();
-    
 
             }
             else {

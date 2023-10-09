@@ -4,7 +4,7 @@ import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvo
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-const ipv4 = "10.20.102.158";
+const ipv4 = "10.20.101.224";
 
 export default function LoginScreen() {
     const [id, setId] = useState('');

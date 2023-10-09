@@ -1,11 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import LocationContext from './LocationContext';
+import * as Location from 'expo-location';
+
+const ipv4 = "10.20.101.224";
+
 function HomeScreen() {
   const [find, setFind] = useState('');
   const navigation = useNavigation();
+  const { location, setLocation } = useContext(LocationContext);
+
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+    }
+    let newLocation = await Location.getCurrentPositionAsync({});
+      
+    // 위치 정보에서 위도와 경도 추출
+    const { latitude, longitude } = newLocation.coords;
+
+    // 역지오코딩 실행
+    let addresses = await Location.reverseGeocodeAsync({ latitude, longitude });
+
+    if (addresses && addresses.length > 0) {
+        console.log(addresses[0]);
+        setLocation(addresses[0]);
+    }
+};
+getLocation();
 
   // 알림 페이지로 이동하는 함수
   const goToNotificationScreen = () => {

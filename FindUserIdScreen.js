@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
 import axios from 'axios';
 
-const ipv4 = "10.20.102.158";
+const ipv4 = "10.20.101.224";
 
 export default function FindUserIdScreen() {
     const [email, setEmail] = useState('');
