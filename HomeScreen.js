@@ -160,29 +160,39 @@ class HomeScreen extends Component {
             </View>
             <View style={styles.iconRow}>
               <View style={styles.iconWithText}>
-                <Icon name="restore-from-trash" style={styles.icon2} />
+                <CircleIcon onPress={() => this.handlePaper()}>
+                  <Icon name="restore-from-trash" style={styles.icon2} />
+                </CircleIcon>
                 <Text style={styles.iconText}>고철류</Text>
               </View>
               <View style={styles.iconWithText}>
-                <Icon2 name="tshirt-crew-outline" style={styles.icon2} />
+                <CircleIcon onPress={() => this.handlePaper()}>
+                  <Icon2 name="tshirt-crew-outline" style={styles.icon2} />
+                </CircleIcon>
                 <Text style={styles.iconText}>의류 및{"\n"}원단류</Text>
               </View>
               <View style={styles.iconWithText}>
-                <Icon name="battery-alert" style={styles.icon2} />
+                <CircleIcon onPress={() => this.handlePaper()}>
+                  <Icon name="battery-alert" style={styles.icon2} />
+                </CircleIcon>
                 <Text style={styles.iconText}>폐전지류</Text>
               </View>
               <View style={styles.iconWithText}>
-                <Icon name="highlight" style={styles.icon2} />
+                <CircleIcon onPress={() => this.handlePaper()}>
+                  <Icon name="highlight" style={styles.icon2} />
+                </CircleIcon>
                 <Text style={styles.iconText}>폐형광등{"\n"}폐LED등</Text>
               </View>
               <View style={styles.iconWithText}>
-                <Icon2 name="oil" style={styles.icon2} />
+                <CircleIcon onPress={() => this.handlePaper()}>
+                  <Icon2 name="oil" style={styles.icon2} />
+                </CircleIcon>
                 <Text style={styles.iconText}>식용유</Text>
               </View>
             </View>
           </View>
 
-{/* <View style=
+          {/* <View style=
           <View style={[styles.shadowContainer,{flexDirection: 'row',}]}>
 
           </View> */}
@@ -232,13 +242,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     shadowColor: '#000', // 그림자 색상 (ios에서 그림자 효과 제공)
     shadowOffset: {
-        width: 0,          // 그림자의 수평 위치
-        height: 2,         // 그림자의 수직 위치
+      width: 0,          // 그림자의 수평 위치
+      height: 2,         // 그림자의 수직 위치
     },
     shadowOpacity: 0.2, // 그림자의 투명도
     shadowRadius: 2.0,  // 그림자의 반경
     elevation: 3,        // Android에서 그림자 효과를 제공합니다
-},
+  },
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
