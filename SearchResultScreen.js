@@ -13,6 +13,10 @@ export default function SearchResultScreen() {
         navigation.navigate('지도'); // 'Map' 스크린으로 이동
     };
 
+    const goToDetail = () => {
+        navigation.navigate('세부사항'); // 'Map' 스크린으로 이동
+    };
+
     return (
         <ScrollView
             style={styles.container}
@@ -36,7 +40,7 @@ export default function SearchResultScreen() {
                             <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 분리수거 사업에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <TouchableOpacity style={styles.btn} >
+                                <TouchableOpacity style={styles.btn} onPress={goToDetail} >
                                     <Text style={[styles.text]}>자세히 보기</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={goToMap} style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
@@ -56,7 +60,7 @@ export default function SearchResultScreen() {
                             <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 분리수거 사업에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <TouchableOpacity style={styles.btn}>
+                            <TouchableOpacity style={styles.btn} onPress={goToDetail} >
                                     <Text style={[styles.text]}>자세히 보기</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
@@ -79,7 +83,7 @@ export default function SearchResultScreen() {
                             <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 복지에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <TouchableOpacity style={styles.btn}>
+                            <TouchableOpacity style={styles.btn} onPress={goToDetail} >
                                     <Text style={[styles.text]}>자세히 보기</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
@@ -99,7 +103,7 @@ export default function SearchResultScreen() {
                             <Text style={[styles.text, { marginStart: 15, marginBottom: 30 }]}>해당 복지에 대한 설명</Text>
                             {/* 버튼 2개 */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                <TouchableOpacity style={styles.btn}>
+                            <TouchableOpacity style={styles.btn} onPress={goToDetail} >
                                     <Text style={[styles.text]}>자세히 보기</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.btn,{backgroundColor:'#FAEDFF', marginStart:10}]}>
