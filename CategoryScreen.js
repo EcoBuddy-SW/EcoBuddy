@@ -11,7 +11,7 @@ export default function CategoryScreen() {
 
     const regionTexts = ['지역1', '지역2', '지역3', '지역4']; // 각 뷰에 표시할 텍스트
     const thisYearTexts = ['올해까지', '내년까지', '시행 예정'];
-    const categoryTexts = ['카테고리', '카테고리', '카테고리', '카테고리4'];
+    const categoryTexts = ['카테고리', '카테고리', '카테고리', '카테고리 '];
 
     const handleRegionPress = (index) => {
         const updatedSelection = [...isRegionSelected];
