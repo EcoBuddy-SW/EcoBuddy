@@ -19,6 +19,7 @@ import GlassInfo from './GlassInfoScreen';
 import Search from './SearchScreen';
 import SearchResult from './SearchResultScreen';
 import Map from './MapScreen';
+import Category from './CategoryScreen';
 
 // import HomeScreen from './HomeScreen'; 
 // import MypageScreen from './MypageScreen';
@@ -60,6 +61,7 @@ export default function App() {
         <Stack.Screen name="검색 페이지" component={Search} />
         <Stack.Screen name="검색 결과" component={SearchResult} />
         <Stack.Screen name="지도" component={Map}/>
+        <Stack.Screen name="카테고리" component={Category}/>
         {/* 추가 화면을 여기에 추가할 수 있습니다 */}
       </Stack.Navigator>
     </NavigationContainer>
