@@ -2,6 +2,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Appearance, useColorScheme } from 'react-native';
 
 import MyPageScreen from './MyPage'; 
 import MapScreen from './Map'; // 분리수거 기능
@@ -16,7 +17,10 @@ import My_InforScreen from './My_Infor';
 
 
 
+
+
 const Stack = createStackNavigator();
+
 
 
 export default function App() {
