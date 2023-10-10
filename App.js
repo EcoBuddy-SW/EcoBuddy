@@ -52,8 +52,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: true , headerStyle:{borderBottomColor:'#D0FAE8', borderBottomWidth: 2}}}>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="HomeBtn" component={HomeBottom} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        {/* <Stack.Screen name="HomeBtn" component={HomeBottom} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }}/>
         <Stack.Screen name="Join" component={JoinScreen} />
         <Stack.Screen name="알림창" component={NotificationScreen} />
         <Stack.Screen name="Mypage" component={Mypage} />

@@ -26,7 +26,7 @@ export default function LoginScreen() {
         // 예시: 간단한 확인 메시지 출력
         alert(`UserId: ${userId}, Password: ${password}`);
 
-        navigation.navigate('HomeBtn');
+        navigation.navigate('Home');
     };
 
     const handleJoin = () => {
