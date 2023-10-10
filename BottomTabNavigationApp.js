@@ -1,25 +1,12 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import HomeScreen from './HomeScreen'; 
-import MypageScreen from './MypageScreen';
+import HomeScreen from './HomeScreen';
 import CameraScreen from './CameraScreen';
+import MypageScreen from './MypageScreen';
 
 const Tab = createBottomTabNavigator();
-
-// function SearchScreen() {
-//   return <Text>Search</Text>;
-// }
-
-// function NotificationScreen() {
-//   return <Text>Notification</Text>;
-// }
-
-// function SettingScreen() {
-//   return <Text>설정 페이지</Text>;
-// }
 
 function BottomTabNavigationApp() {
 
@@ -40,7 +27,7 @@ function BottomTabNavigationApp() {
         name="Home"
         component={HomeScreen}
         options={{
-          // title: '홈',
+          title: '홈',
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" color={color} size={size} />
           ),
