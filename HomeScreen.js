@@ -33,6 +33,7 @@ function BottomTabNavigationApp() {
       <Tab.Screen
         name="Home1"
         component={HomeScreen}
+        // initialParams={{ navigation }} // navigation을 전달
         options={{
           title: '홈',
           tabBarIcon: ({ color, size }) => (
@@ -91,6 +92,16 @@ class HomeScreen extends Component {
       find: '',
       currentView: 1,
     };
+  }
+
+  handleCategory() {
+    const { navigation } = this.props;
+    navigation.navigate('카테고리');
+  }
+
+  handleTip2() {
+    const { navigation } = this.props;
+    navigation.navigate('무상수거 꿀팁');
   }
 
   componentDidMount() {
@@ -185,7 +196,7 @@ class HomeScreen extends Component {
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.handleSearchPress()}>
               <View style={styles.searchContainer}>
-                <Text style={styles.searchText}>분리수거 사업을 진행하는 지역들을 검색해봐요! ?</Text>
+                <Text style={styles.searchText}>분리수거 사업을 진행하는 지역들을 검색해봐요!</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -266,16 +277,23 @@ class HomeScreen extends Component {
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, marginBottom: 10 }}>꿀팁 알아가기!</Text>
           <View style={styles.container2}>
             <Swiper style={styles.wrapper} height={200} horizontal={false} autoplay loop spaceBetween={20}>
-              <ImageBackground
-                source={require('./assets/images/v1053-004.jpg')}
-                style={styles.slide1}>
-                <Text style={styles.text}>분리수거 교환 사업{"\n"}아직도 모른다고?</Text>
-              </ImageBackground>
-              <ImageBackground
-                source={require('./assets/images/5591276.jpg')}
-                style={styles.slide1}>
-                <Text style={styles.text}>무상수거{"\n"}알고 있어?</Text>
-              </ImageBackground>
+            <TouchableOpacity
+                style={{flex:1}}  onPress={() => this.handleCategory(this.props.navigation)}>
+                <ImageBackground
+                  source={require('./assets/images/v1053-004.jpg')}
+                  style={styles.slide1}>
+                  <Text style={styles.text}>카테고리로 쉽게{"\n"}분리수거 사업 알아보기</Text>
+                </ImageBackground>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{flex:1}}  onPress={() => this.handleTip2(this.props.navigation)}>
+                <ImageBackground
+                  source={require('./assets/images/5591276.jpg')}
+                  // {/* zIndex 는 요소의 레이어 순서를 제어하는 것이고 값이 높을 수록 화면 위쪽에 표시 */}
+                  style={[styles.slide1]}>
+                  <Text style={styles.text}>무상수거{"\n"}알고 있어?</Text>
+                </ImageBackground>
+              </TouchableOpacity>
               <ImageBackground
                 source={require('./assets/images/v1053-004.jpg')}
                 style={styles.slide1}>
@@ -426,7 +444,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily:'Pretendard-Bold',
+    fontFamily: 'Pretendard-Bold',
   },
   searchText: {
     flex: 1,

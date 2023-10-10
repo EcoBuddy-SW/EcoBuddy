@@ -21,6 +21,7 @@ import Map from './MapScreen';
 import Category from './CategoryScreen';
 import CategoryResult from './CateogryResultScreen';
 import Detail from './DetailScreen';
+import Tip2 from './Tip2Screen';
 
 //채연 페이지
 import Mypage from './MypageScreen';
@@ -69,6 +70,7 @@ export default function App() {
         <Stack.Screen name="카테고리" component={Category}/>
         <Stack.Screen name="카테고리 선택 결과" component={CategoryResult}/>
         <Stack.Screen name="세부사항" component={Detail}/>
+        <Stack.Screen name="무상수거 꿀팁" component={Tip2}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />
