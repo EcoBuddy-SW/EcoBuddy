@@ -104,6 +104,11 @@ class HomeScreen extends Component {
     navigation.navigate('무상수거 꿀팁');
   }
 
+  handleTip3() {
+    const { navigation } = this.props;
+    navigation.navigate('자취생용 꿀팁');
+  }
+
   componentDidMount() {
     this.startTimer();
   }
@@ -294,11 +299,14 @@ class HomeScreen extends Component {
                   <Text style={styles.text}>무상수거{"\n"}알고 있어?</Text>
                 </ImageBackground>
               </TouchableOpacity>
-              <ImageBackground
-                source={require('./assets/images/v1053-004.jpg')}
-                style={styles.slide1}>
-                <Text style={styles.text}>자취생들위한{"\n"}분리수거 꿀팁!</Text>
-              </ImageBackground>
+              <TouchableOpacity
+                style={{flex:1}}  onPress={() => this.handleTip3(this.props.navigation)}>
+                <ImageBackground
+                  source={require('./assets/images/v1053-004.jpg')}
+                  style={styles.slide1}>
+                  <Text style={styles.text}>자취생을 위한{"\n"}분리수거 꿀팁!</Text>
+                </ImageBackground>
+              </TouchableOpacity>
             </Swiper>
           </View>
 
