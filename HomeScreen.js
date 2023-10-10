@@ -1,5 +1,5 @@
-import React, { Component , useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import React, { Component, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,13 +25,13 @@ function BottomTabNavigationApp() {
 
   return (
     <Tab.Navigator
-      initialRouteName="Home" // 앱이 시작될 때 표시할 초기화면 지정
+      initialRouteName="Home1" // 앱이 시작될 때 표시할 초기화면 지정
       screenOptions={{
         tabBarActiveTintColor: '#628F5D', // 눌리면 변하는 버튼 색상
         tabBarShowLabel: true,
       }}>
       <Tab.Screen
-        name="Home"
+        name="Home1"
         component={HomeScreen}
         options={{
           title: '홈',
@@ -178,14 +178,14 @@ class HomeScreen extends Component {
         style={styles.container}
         contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
       >
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: 'white' }]}>
           <View style={styles.rowContainer}>
             <TouchableOpacity onPress={() => this.goToNotificationScreen()}>
               <Icon name="notifications" style={styles.icon1} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.handleSearchPress()}>
               <View style={styles.searchContainer}>
-                <Text style={styles.searchText}>분리수거 사업을 진행하는 지역들을 검색해봐요! </Text>
+                <Text style={styles.searchText}>분리수거 사업을 진행하는 지역들을 검색해봐요! ?</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -266,15 +266,21 @@ class HomeScreen extends Component {
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, marginBottom: 10 }}>꿀팁 알아가기!</Text>
           <View style={styles.container2}>
             <Swiper style={styles.wrapper} height={200} horizontal={false} autoplay loop spaceBetween={20}>
-              <View style={styles.slide1}>
-                <Text style={styles.text}>꿀팁 1</Text>
-              </View>
-              <View style={styles.slide2}>
-                <Text style={styles.text}>꿀팁 2</Text>
-              </View>
-              <View style={styles.slide3}>
-                <Text style={styles.text}>꿀팁 3</Text>
-              </View>
+              <ImageBackground
+                source={require('./assets/images/v1053-004.jpg')}
+                style={styles.slide1}>
+                <Text style={styles.text}>분리수거 교환 사업{"\n"}아직도 모른다고?</Text>
+              </ImageBackground>
+              <ImageBackground
+                source={require('./assets/images/5591276.jpg')}
+                style={styles.slide1}>
+                <Text style={styles.text}>무상수거{"\n"}알고 있어?</Text>
+              </ImageBackground>
+              <ImageBackground
+                source={require('./assets/images/v1053-004.jpg')}
+                style={styles.slide1}>
+                <Text style={styles.text}>자취생들위한{"\n"}분리수거 꿀팁!</Text>
+              </ImageBackground>
             </Swiper>
           </View>
 
@@ -420,8 +426,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: 'bold',
+    fontFamily:'Pretendard-Bold',
   },
   searchText: {
+    flex: 1,
     color: '#BDBDBD',
   },
 });
