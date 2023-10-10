@@ -50,9 +50,10 @@ export default function OptionScreen() {
     <View style={[styles.container, themeContainerStyle]}>
       <Text style={{ fontSize: 16, color: 'gray', top: -30, right: 170 }}>사용자</Text>
      
-      <TouchableOpacity onPress={handleScreenModePress} style={[styles.button, themeTextStyle, { width: 415,height: 55,top:-25}]}>
-      <Text style={[styles.textStyle, { left: 10 ,top:5,}]}>로그 아웃 </Text>
-      </TouchableOpacity>
+      <TouchableOpacity onPress={handleLogoutPress} style={[styles.button, themeTextStyle, { width: 415, height: 55, top: -25 }]}>
+  <Text style={[styles.textStyle, { left: 10, top: 5, }]}>로그 아웃 </Text>
+</TouchableOpacity>
+
       
       <Text style={{ fontSize: 16, color: 'gray', top: -15, right: 170 }}>화면</Text>
       <TouchableOpacity onPress={handleScreenModePress} style={[styles.button, themeTextStyle, { width: 415,height: 55, }]}>
