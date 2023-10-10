@@ -1,29 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-
-const ipv4 = "10.20.101.224";
+import LocationContext from './LocationContext';
 
 export default function LoginScreen() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     // const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
+
     const navigation = useNavigation();
 
+    const context = useContext(LocationContext);
+
+    
     const handleLogin = () => {
+        console.log('IP value from context:', context.ip);
 
         const data = {
             id: id,
             password: password
         };
 
-        axios.post(`http://${ipv4}:3003/login`, data)
+        axios.post(`http://${context.ip}:3003/login`, data)
         .then(response => {
             if (response.data.success) {
                 alert(response.data.message);
-                navigation.navigate('Home',{id: id});
+                context.setUserId(id);
+                navigation.navigate('BottomTab');
             } else {
                 alert(response.data.message); // 실패 메시지 표시
             }

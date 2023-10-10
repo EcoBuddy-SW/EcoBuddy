@@ -1,14 +1,14 @@
 import React, { useContext, useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Alert, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import LocationContext, {getLocation} from './LocationContext';
 
 import axios from 'axios';
 
-const ipv4 = "10.20.101.224";
-
 export default function JoinScreen() {
 
-    const { location, setLocation } = useContext(LocationContext);
+    const context = useContext(LocationContext);
+
     <View style={styles.container}>
         <Text style={styles.text}>회원가입 페이지</Text>
     </View>
@@ -70,7 +70,6 @@ export default function JoinScreen() {
         console.log('Nickname:', nickname);
         console.log('PhoneNumber:', phoneNumber);
 
-
         const data={
             "email": email,
             "id": id,
@@ -79,7 +78,7 @@ export default function JoinScreen() {
             "phoneNumber": phoneNumber
         }
 
-        axios.post(`http://${ipv4}:3003/join`, data)
+        axios.post(`http://${context.ip}:3003/join`, data)
         .then(response => {
             // 서버 응답 처리
 
@@ -87,7 +86,7 @@ export default function JoinScreen() {
                 console.log(response.data);
                 // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
                 Alert.alert("회원가입 성공!", "환영합니다");
-                navigation.navigate('Login');
+                navigation.navigate('BottomTab');
 
             }
             else {

@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useContext, userRef, Component } from 'react';
-import { View, Text, Dimensions, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, Dimensions, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Swiper from 'react-native-swiper';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import LocationContext from './LocationContext';
+import LocationContext from './LocationContext'; //위치저장
 import * as Location from 'expo-location';
-
-const ipv4 = "10.20.101.224";
 
 const { width } = Dimensions.get('window');
 
@@ -25,17 +23,49 @@ function CircleIcon({ children, onPress }) {
 
 
 class HomeScreen extends Component {
+
+  static contextType = LocationContext;
+
   constructor(props) {
     super(props);
     this.state = {
       find: '',
       currentView: 1,
+      location: null,
     };
   }
 
   componentDidMount() {
+    
     this.startTimer();
+    this.getLocation();    
   }
+  
+  async getLocation() {
+
+    console.log('getLocation 실행');
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    
+    if (status !== 'granted') {
+        //console.error('Permission to access location was denied');
+        return;
+    }
+    
+    let newLocation = await Location.getCurrentPositionAsync({});
+      
+    // 위치 정보에서 위도와 경도 추출
+    const { latitude, longitude } = newLocation.coords;
+
+    // 역지오코딩 실행
+    let addresses = await Location.reverseGeocodeAsync({ latitude, longitude });
+
+    if (addresses && addresses.length > 0) {
+        console.log(addresses[0]);
+        this.setState({ location: addresses[0] });
+        this.context.setLocation(addresses[0]); //LocationContext에 위치 값 저장
+    }
+  }
+
 
   componentWillUnmount() {
     this.stopTimer();

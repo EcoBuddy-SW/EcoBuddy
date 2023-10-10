@@ -1,12 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useState, useRef } from 'react';
-import LocationContext from './LocationContext';
+import React, { useState, useContext } from 'react';
 
 import { useFonts } from 'expo-font';
 import { useCallback } from 'react';
 import * as Font from "expo-font";
 
+import BottomTab from './BottomTabNavigationApp';
 import LoginScreen from './Login';
 import HomeBottom from './BottomTabNavigationApp';
 import HomeScreen from './HomeScreen';
@@ -24,19 +24,23 @@ import Map from './MapScreen';
 import Category from './CategoryScreen';
 import CategoryResult from './CateogryResultScreen';
 import Detail from './DetailScreen';
+import KakaoMap from './Kakaomap';
 
 //채연 페이지
 import Mypage from './MypageScreen';
 import OptionScreen from './Option'; //설정 기능
+import BottomTabNavigationApp from './BottomTabNavigationApp';
 
-// import HomeScreen from './HomeScreen'; 
-// import MypageScreen from './MypageScreen';
-// import CameraScreen from './CameraScreen';
+import LocationContext from './LocationContext'; //위치 저장용
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [location, setLocation] = useState(null);
+
+  const [location, setLocation] = useState(null); //위치
+  const [userId, setUserId] = useState(null);
+  const [ip, setIp] = useState('10.20.102.171');
+
   const [fontsLoaded] = useFonts({
     // 글씨체는 임의로 넣었어용
     'Giants-Bold': require('./assets/fonts/Giants-Bold.ttf'),
@@ -53,11 +57,12 @@ export default function App() {
   }
 
   return (
-    <LocationContext.Provider value={{ location, setLocation }}>
+    <LocationContext.Provider value={{ location, setLocation, userId, setUserId, ip, setIp }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: true }}>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="HomeBtn" component={HomeBottom} options={{ headerShown: false }} />
+        <Stack.Screen name="BottomTab" component={BottomTab} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Join" component={JoinScreen} />
         <Stack.Screen name="알림창" component={NotificationScreen} />
@@ -74,6 +79,7 @@ export default function App() {
         <Stack.Screen name="카테고리" component={Category}/>
         <Stack.Screen name="카테고리 선택 결과" component={CategoryResult}/>
         <Stack.Screen name="세부사항" component={Detail}/>
+        <Stack.Screen name="카카오맵" component={KakaoMap}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />

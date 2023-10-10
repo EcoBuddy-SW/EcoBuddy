@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
+import LocationContext from './LocationContext';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,12 +12,11 @@ import { useNavigation } from '@react-navigation/native';
 
 function MyPageScreen() {
 
-  
-
   const navigation = useNavigation();
+  const context = useContext(LocationContext);
 
   const goToMap = () => {
-    navigation.navigate('Map'); // 'Map' 스크린으로 이동
+    navigation.navigate('카카오맵'); // 'Map' 스크린으로 이동
   };
   const goToCoins = () => {
     navigation.navigate('Coins'); // 'Coins' 스크린으로 이동
@@ -46,7 +46,6 @@ function MyPageScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Ionicons name="ios-earth" size={50} color="green" style={{ marginBottom: 10, top: 3 }} />
       <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', width: 405, height: 30, marginBottom: 100, flexDirection: 'row', alignItems: 'center', margin: 5, borderRadius: 10, elevation: 5 }]}>
-
 
 
   {/* 프로필 */}
@@ -81,7 +80,7 @@ function MyPageScreen() {
   shadowOpacity: 0.1, // 그림자 투명도 (0에서 1 사이의 값)
   shadowRadius: 2, // 그림자의 퍼지는 정도
 }}>
-  <Text style={{ color: 'black' }}> 님</Text>
+  <Text style={{ color: 'black' }}> {context.userId} 님</Text>
 </View>
 
 
