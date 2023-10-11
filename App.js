@@ -23,10 +23,13 @@ import CategoryResult from './CateogryResultScreen';
 import Detail from './DetailScreen';
 import Tip2 from './Tip2Screen';
 import Tip3 from './Tip3Screen';
+import sub1 from './SubScreen';
 
 //채연 페이지
 import Mypage from './MypageScreen';
 import OptionScreen from './Option'; //설정 기능
+
+import KakaoMap from './KakaoMap';
 
 // import HomeScreen from './HomeScreen'; 
 // import MypageScreen from './MypageScreen';
@@ -73,6 +76,8 @@ export default function App() {
         <Stack.Screen name="세부사항" component={Detail}/>
         <Stack.Screen name="무상수거 꿀팁" component={Tip2}/>
         <Stack.Screen name="자취생용 꿀팁" component={Tip3}/>
+        <Stack.Screen name="국민 취업 제도" component={sub1}/>
+        <Stack.Screen name="카카오맵" component={KakaoMap}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />

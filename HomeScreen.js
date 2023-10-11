@@ -155,6 +155,12 @@ class HomeScreen extends Component {
     navigation.navigate('유리병');
   }
 
+  handleSub1() {
+    const { navigation } = this.props;
+    navigation.navigate('국민 취업 제도');
+  }
+
+
   render() {
     const { currentView } = this.state;
 
@@ -282,8 +288,8 @@ class HomeScreen extends Component {
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, marginBottom: 10 }}>꿀팁 알아가기!</Text>
           <View style={styles.container2}>
             <Swiper style={styles.wrapper} height={200} horizontal={false} autoplay loop spaceBetween={20}>
-            <TouchableOpacity
-                style={{flex:1}}  onPress={() => this.handleCategory(this.props.navigation)}>
+              <TouchableOpacity
+                style={{ flex: 1 }} onPress={() => this.handleCategory(this.props.navigation)}>
                 <ImageBackground
                   source={require('./assets/images/v1053-004.jpg')}
                   style={styles.slide1}>
@@ -291,7 +297,7 @@ class HomeScreen extends Component {
                 </ImageBackground>
               </TouchableOpacity>
               <TouchableOpacity
-                style={{flex:1}}  onPress={() => this.handleTip2(this.props.navigation)}>
+                style={{ flex: 1 }} onPress={() => this.handleTip2(this.props.navigation)}>
                 <ImageBackground
                   source={require('./assets/images/5591276.jpg')}
                   // {/* zIndex 는 요소의 레이어 순서를 제어하는 것이고 값이 높을 수록 화면 위쪽에 표시 */}
@@ -300,7 +306,7 @@ class HomeScreen extends Component {
                 </ImageBackground>
               </TouchableOpacity>
               <TouchableOpacity
-                style={{flex:1}}  onPress={() => this.handleTip3(this.props.navigation)}>
+                style={{ flex: 1 }} onPress={() => this.handleTip3(this.props.navigation)}>
                 <ImageBackground
                   source={require('./assets/images/v1053-004.jpg')}
                   style={styles.slide1}>
@@ -311,7 +317,8 @@ class HomeScreen extends Component {
           </View>
 
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, }}>복지 소식 알고 있어?</Text>
-          <View style={[styles.iconContainer, { width: '90%' }]}></View>
+          <TouchableOpacity onPress={() => this.handleSub1(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
+          </TouchableOpacity>
           <View style={[styles.iconContainer, { width: '90%' }]}></View>
           <View style={[styles.iconContainer, { width: '90%' }]}></View>
           <View style={[styles.iconContainer, { width: '90%' }]}></View>

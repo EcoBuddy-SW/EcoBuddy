@@ -16,7 +16,7 @@ function MyPageScreen() {
   const navigation = useNavigation();
 
   const goToMap = () => {
-    navigation.navigate('Map'); // 'Map' 스크린으로 이동
+    navigation.navigate('카카오맵'); // 'Map' 스크린으로 이동
   };
   const goToCoins = () => {
     navigation.navigate('Coins'); // 'Coins' 스크린으로 이동
