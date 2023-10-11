@@ -1,4 +1,6 @@
-const express = require("express");
+const express = require('express');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const axios = require("axios");
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -8,10 +10,21 @@ const connection = mysql.createConnection(dbconfig);
 connection.connect();
 
 const app = express();
-const port = 3003;
+const sessionStore = new MySQLStore(dbconfig);
 
 app.use(bodyParser.json());
 app.use(cors());
+
+const port = 3003;
+
+app.use(session({
+    key: 'userInfo',
+    secret: 'nhth453recasd',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: true,
+}));
+
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -23,7 +36,11 @@ app.listen(port, '0.0.0.0', () => {
     console.log(`Express server listening on port ${port}`);
 });
 
+// app.get('/', (req, res) => {
+//     res.send('Welcome to my website!');
+// });
 
+  
 app.post('/join', (req, res) => {
     const {email, id, password, nickname, phoneNumber} = req.body;
 
@@ -93,6 +110,18 @@ app.post('/join', (req, res) => {
                     }
 
                     console.log('데이터 저장 성공');
+
+                    req.session.uid = id;
+                    req.session.uemail = email;
+                    req.session.isLogined = true;
+                    
+                    req.session.save(err => {
+                        if (err) {
+                            console.error('세션 저장 실패:', err);
+                            res.status(500).send('Internal Server Error');
+                            return;
+                        }
+                    });
                     res.json({success: true, message: '회원가입 성공'});
 
                 });
@@ -104,9 +133,9 @@ app.post('/join', (req, res) => {
 app.post('/login', (req, res) => {
     const { id, password } = req.body;
     //db에서 email, password 컬럼에 있는값 가져오기
-    const sql = `SELECT id, password FROM users WHERE id='${id}'`;
+    const sql = `SELECT id, password FROM users WHERE id=?`;
   
-    connection.query(sql, (err, results) => {
+    connection.query(sql, [id], (err, results) => {
         if (err) {
             console.error('쿼리 실행 실패:', err);
             res.status(500).send('Internal Server Error');
@@ -120,11 +149,22 @@ app.post('/login', (req, res) => {
             const user = results[0];
             
             if (user.password !== password) {
-            // 비밀번호가 일치하지 않는 경우
-            res.json({ success: false, message: '비밀번호가 일치하지 않습니다.' });
+                // 비밀번호가 일치하지 않는 경우
+                res.json({ success: false, message: '비밀번호가 일치하지 않습니다.' });
             } else {
-            // 로그인 성공
-            res.json({ success: true, message: '로그인 성공', id: user.id });
+                // 로그인 성공
+                req.session.uid = user.id;
+                req.session.uemail = user.email;
+                req.session.isLogined = true;
+
+                req.session.save(err => {
+                    if (err) {
+                        console.error('세션 저장 실패: ', err);
+                        res.status(500).send('Internal Server Error');
+                        return;
+                    }
+                })
+                res.json({ success: true, message: '로그인 성공', id: user.id, email: user.email });
             }
         }
     });
@@ -173,3 +213,15 @@ app.post('/findPw', (req, res) => {
         }
     });
 });
+
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+      if(err) {
+        console.log(err);
+        return;
+      } else {
+        res.json({ success: true, message: '로그아웃 성공' });
+      }
+    });
+});
+  

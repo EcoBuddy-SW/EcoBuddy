@@ -5,32 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import LocationContext from './LocationContext';
 
-export default function KakaoMapScreen() {
-    const navigation = useNavigation();
-    const locationContext = useContext(LocationContext);
 
-    useEffect(() => {
-        (async () => {
-            let location = await locationContext.getLocation();
-            if (!location) {
-                // 위치 정보가 없으면 앱 설정 화면으로 이동하도록 유도하는 알림창 띄우기
-                Alert.alert(
-                    "Location Permission Required",
-                    "This app needs location permissions to work correctly.",
-                    [
-                        {
-                            text: "Go to Settings",
-                            onPress: () => Linking.openSettings(), // 앱 설정 화면 열기
-                        },
-                        {
-                            text: "Cancel",
-                            style: "cancel"
-                        },
-                    ]
-                );
-            }
-        })();
-    }, []);
+export default function KakaoMapScreen() {
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">

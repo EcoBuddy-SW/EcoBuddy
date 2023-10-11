@@ -1,13 +1,14 @@
 
 import React, { useContext } from 'react';
 import LocationContext from './LocationContext';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Icon from 'react-native-vector-icons/Foundation';
 import Icon1 from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
+import * as Location from 'expo-location';
 
 
 function MyPageScreen() {
@@ -16,6 +17,11 @@ function MyPageScreen() {
   const context = useContext(LocationContext);
 
   const goToMap = () => {
+    
+    if (context.setLocstate !== 'granted') {
+        Alert.alert('설정에서 위치 정보 권한을 허용해주세요'); // "제목", "소제목"
+        return;
+    }
     navigation.navigate('카카오맵'); // 'Map' 스크린으로 이동
   };
   const goToCoins = () => {

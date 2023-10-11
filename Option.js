@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, StatusBar } from 'react-native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
+import axios from 'axios';
+import LocationContext from './LocationContext';
+
 
 export default function OptionScreen() {
+    const navigation = useNavigation();
+    const context = useContext(LocationContext);
+
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedMode, setSelectedMode] = useState('light');
 
@@ -17,9 +24,29 @@ export default function OptionScreen() {
                 {
                     text: '확인',
                     onPress: () => {
-                        // 로그아웃 로직을 여기에 추가하세요 (예: AsyncStorage나 API 호출 등)
-                        // 로그아웃이 성공하면 화면을 다시 로딩하거나 홈 화면으로 이동할 수 있습니다.
-                        // 예: navigation.navigate('Home');
+                        axios.post(`http://${context.ip}:3003/logout`)
+                        .then(response => {
+                            if (response.data.success) {
+                                alert(response.data.message);
+                                context.setUserId(null);
+                                context.setUserEmail(null);
+
+                                navigation.dispatch(
+                                    CommonActions.reset({
+                                        index: 0,
+                                        routes: [
+                                            {name: 'Login'},
+                                        ],
+                                    })
+                                );
+                                //navigation.navigate('BottomTab');
+                            } else {
+                                alert(response.data.message); // 실패 메시지 표시
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
                     },
                 },
             ],

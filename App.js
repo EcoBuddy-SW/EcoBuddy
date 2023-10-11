@@ -39,7 +39,9 @@ export default function App() {
 
   const [location, setLocation] = useState(null); //위치
   const [userId, setUserId] = useState(null);
-  const [ip, setIp] = useState('10.20.102.171');
+  const [userEmail, setUserEmail] = useState(null);
+  const [ip, setIp] = useState('10.20.102.144');
+  const [locstate, setLocstate] = useState(null);
 
   const [fontsLoaded] = useFonts({
     // 글씨체는 임의로 넣었어용
@@ -57,7 +59,7 @@ export default function App() {
   }
 
   return (
-    <LocationContext.Provider value={{ location, setLocation, userId, setUserId, ip, setIp }}>
+    <LocationContext.Provider value={{ location, setLocation, userId, setUserId, userEmail, setUserEmail, ip, setIp, locstate, setLocstate }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: true }}>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>

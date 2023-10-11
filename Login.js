@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import axios from 'axios';
 import LocationContext from './LocationContext';
 
@@ -28,7 +28,17 @@ export default function LoginScreen() {
             if (response.data.success) {
                 alert(response.data.message);
                 context.setUserId(id);
-                navigation.navigate('BottomTab');
+                context.setUserEmail(email);
+
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            {name: 'BottomTab'},
+                        ],
+                    })
+                );
+                //navigation.navigate('BottomTab');
             } else {
                 alert(response.data.message); // 실패 메시지 표시
             }

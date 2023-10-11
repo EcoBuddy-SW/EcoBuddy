@@ -36,7 +36,6 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    
     this.startTimer();
     this.getLocation();    
   }
@@ -50,6 +49,8 @@ class HomeScreen extends Component {
         //console.error('Permission to access location was denied');
         return;
     }
+    
+    this.context.setLocstate(status);
     
     let newLocation = await Location.getCurrentPositionAsync({});
       
