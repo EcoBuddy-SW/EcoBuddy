@@ -154,7 +154,6 @@ app.post('/login', (req, res) => {
             } else {
                 // 로그인 성공
                 req.session.uid = user.id;
-                req.session.uemail = user.email;
                 req.session.isLogined = true;
 
                 req.session.save(err => {

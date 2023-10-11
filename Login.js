@@ -28,7 +28,6 @@ export default function LoginScreen() {
             if (response.data.success) {
                 alert(response.data.message);
                 context.setUserId(id);
-                context.setUserEmail(email);
 
                 navigation.dispatch(
                     CommonActions.reset({
