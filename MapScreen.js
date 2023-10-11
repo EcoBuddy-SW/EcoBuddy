@@ -128,6 +128,7 @@ export default function MapScreen() {
   );
 }
 
+
 // 아래의 함수를 추가하여 지도 영역을 계산합니다.
 function getMapRegion(origin, destination) {
   if (!origin || !destination) {
