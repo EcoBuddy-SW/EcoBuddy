@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text , ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import MapViewDirections from 'react-native-maps-directions'; // Import MapViewDirections
@@ -10,6 +10,7 @@ export default function MapScreen() {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [steps, setSteps] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (origin && destination) {
@@ -49,6 +50,7 @@ export default function MapScreen() {
       } catch (error) {
         console.error('Error:', error);
       }
+      setIsLoading(false);
     }
   };
 
@@ -87,13 +89,14 @@ export default function MapScreen() {
     })();
   }, []);
 
-  if (!origin || !destination) {
+  if (!origin || !destination || isLoading) { 
     return (
-      <Text style={{ fontFamily: 'Pretendard-Bold', marginTop: 30, alignSelf: 'center', }}>
-        Loading...
-      </Text>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#628F5D" />
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
     );
-  }
+ }
 
   return (
     <View style={styles.container}>
@@ -114,9 +117,10 @@ export default function MapScreen() {
           mode="TRANSIT"
         />
       </MapView>
+      {/* Scrollable view for steps */}
       <ScrollView contentContainerStyle={{ ...styles.directionsContainer, paddingBottom: 60 }}>
         {steps.map((step, index) => (
-          <View key={index} style={styles.stepContainer}>
+          <View key={index} style={[styles.stepContainer, index === steps.length - 1 && styles.lastStepContainer]}>
             <Text>{`Step ${index + 1}`}</Text>
             <Text>{`Distance : ${step.distance}`}</Text>
             <Text>{`Duration : ${step.duration}`}</Text>
@@ -127,8 +131,6 @@ export default function MapScreen() {
     </View>
   );
 }
-
-
 // 아래의 함수를 추가하여 지도 영역을 계산합니다.
 function getMapRegion(origin, destination) {
   if (!origin || !destination) {
@@ -168,5 +170,18 @@ const styles = StyleSheet.create({
   stepContainer: {
     marginVertical: 10,
     marginBottom: 10,
+  },
+  lastStepContainer: {
+    marginBottom: 80,
+  }, 
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  loadingText: {
+    fontFamily: 'Pretendard-Bold',
+    marginTop: 10,
   },
 });
