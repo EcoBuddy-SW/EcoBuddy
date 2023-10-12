@@ -160,6 +160,10 @@ class HomeScreen extends Component {
     navigation.navigate('국민 취업 제도');
   }
 
+  handleSub2() {
+    const { navigation } = this.props;
+    navigation.navigate('내집마련 디딤돌 대출');
+  }
 
   render() {
     const { currentView } = this.state;
@@ -318,11 +322,12 @@ class HomeScreen extends Component {
 
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, }}>복지 소식 알고 있어?</Text>
           <TouchableOpacity onPress={() => this.handleSub1(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
+            <View style={[styles.iconContainer, { width: '90%' }]}><Text>국민취업제도</Text></View>
           </TouchableOpacity>
-          <View style={[styles.iconContainer, { width: '90%' }]}><Text>국민취업제도</Text></View>
-          <View style={[styles.iconContainer, { width: '90%' }]}></View>
-          <View style={[styles.iconContainer, { width: '90%' }]}></View>
-          <View style={[styles.iconContainer, { width: '90%' }]}></View>
+          <TouchableOpacity onPress={() => this.handleSub2(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
+            <View style={[styles.iconContainer, { width: '90%' }]}><Text>내집마련 디딤돌 대출</Text></View>
+
+          </TouchableOpacity>
         </View>
       </ScrollView>
     );

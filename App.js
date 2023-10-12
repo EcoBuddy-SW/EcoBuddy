@@ -24,6 +24,7 @@ import Detail from './DetailScreen';
 import Tip2 from './Tip2Screen';
 import Tip3 from './Tip3Screen';
 import sub1 from './SubScreen';
+import sub2 from './Sub2Screen';
 
 //채연 페이지
 import Mypage from './MypageScreen';
@@ -77,6 +78,7 @@ export default function App() {
         <Stack.Screen name="무상수거 꿀팁" component={Tip2}/>
         <Stack.Screen name="자취생용 꿀팁" component={Tip3}/>
         <Stack.Screen name="국민 취업 제도" component={sub1}/>
+        <Stack.Screen name="내집마련 디딤돌 대출" component={sub2}/>
         <Stack.Screen name="카카오맵" component={KakaoMap}/>
 
         {/* 채연 페이지 */}

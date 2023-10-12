@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 
-export default function SubScreen() {
+export default function Sub2Screen() {
     const [selectedText, setSelectedText] = useState("주요내용");
 
     // 본문 토글 함수
@@ -15,17 +15,17 @@ export default function SubScreen() {
 
     const handleBtn = () => {
         // 웹사이트 URL을 여기에 넣으세요.
-        const url = "https://www.kua.go.kr/uaptm010/selectMain.do";
+        const url = "https://enhuf.molit.go.kr/";
         Linking.openURL(url);
     };
 
     return (
         <View style={styles.container}>
             <Text style={[styles.text, { marginTop: 30, alignSelf: 'center', justifyContent: 'center' }]}>
-                근로능력과 구직의사가 있음에도 불구하고
-                {"\n"}취업에 어려움을 겪고 있는 구직자에게 통합적인{"\n"}
-                취업지원 서비스를 제공하고 생계를{"\n"}
-                지원함으로써 구직활동 및 생계안정 도모
+                저소득, 무주택자에 대해 주택 구입자금 대출이자율을{"\n"}
+                추가 감면하여 주택 마련 부담을 완화하고{"\n"}
+                내 집 마련 지원을 통해 주거생활의 안정을 도모{"\n"}
+
             </Text>
 
             <View style={{ marginBottom: 30 }}></View>
@@ -54,24 +54,28 @@ export default function SubScreen() {
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>신청 기간</Text>
-                            <Text style={styles.content}>상시 신청</Text>
+                            <Text style={styles.content}>접수기관 별 상이</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>전화 문의</Text>
-                            <Text style={styles.content}>고용노동부 고객상담센터{"\n"}(1350)</Text>
+                            <Text style={styles.content}>국토교통부 (1599-0001), 주택도시보증공사 (1566-9009),{"\n"}
+                                한국주택금융공사 (1688-8114), 우리은행 (1599-0800), {"\n"}
+                                민은행 (1599-1771), 기업은행 (1566-2566),{"\n"}
+                                농협은행 (1588-2100), 신한은행 (1599-8000)</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>신청 방법</Text>
-                            <Text style={styles.content}>참여를 희망하는 본인이 직접{"\n"}거주지 관할 고용센터에 방문하거나{"\n"}
-                                온라인(www.kua.go.kr)을{"\n"}통해 신청</Text>
+                            <Text style={styles.content}>한국주택금융공사 및 기금e든든 웹사이트 신청 {"\n"}
+                                또는 수탁은행(우리, 국민, 기업, 농협, 신한) 방문 신청</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>접수 기관</Text>
-                            <Text style={styles.content}>전국 고용센터</Text>
+                            <Text style={styles.content}>국토교통부, 주택도시보증공사,{"\n"}
+                                한국주택금융공사, 주택도시기금 수탁은행</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>지원 형태</Text>
-                            <Text style={styles.content}>현금, 기타(상담)</Text>
+                            <Text style={styles.content}>현금(융자)</Text>
                         </View>
                     </View>
                 </>
@@ -81,19 +85,17 @@ export default function SubScreen() {
                     <View style={[styles.line, { marginTop: 10 }]}></View>
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.title}> I유형</Text>
-                            <Text style={styles.content}>(요건심사형) 중위소득 60% 이하,{"\n"}
-                                재산 4억 이하(18~34세 청년은 재산 5억원 이하){"\n"}
-                                이면서, 최근 2년 이내 100일 또는{"\n"}
-                                800시간 이상의 취업경험이 있는 분
+                            <Text style={styles.title}> 🙍‍♀️🙍‍♂️</Text>
+                            <Text style={styles.content}>연소득(부부합산) 6천만 원 이하인 자{"\n"}
+                                (단, 생애 최초 주택구입자는 연소득(부부합산){"\n"}
+                                7천만 원 이하인 자)로서, {"\n"}
+                                만 19세 이상 무주택자로서 전용면적 85㎡ 이하{"\n"}
+                                (단, 수도권 제외, 읍·면 지역은 100㎡ 이하){"\n"}
+                                평가액 5억 원 이하 주택을 구입하는 경우
                                 {"\n"}{"\n"}
                                 (선발형) 요건심사형 중 취업경험 요건을{"\n"}
                                 충족하지 못한 분( 18~34세 청년은 중위소득{"\n"}
                                 120% 이하, 재산 5억원 이하, 취업경험 무관)</Text>
-                        </View>
-                        <View style={styles.rowContainer}>
-                            <Text style={styles.title}>II유형</Text>
-                            <Text style={styles.content}>I유형에 해당하지 않는 가구단위{"\n"}중위소득 100% 이하(청년은 소득 무관)</Text>
                         </View>
                     </View>
                 </>
@@ -103,26 +105,47 @@ export default function SubScreen() {
                     <View style={[styles.line, { marginTop: 10 }]}></View>
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.title}> 지원내용</Text>
-                            <Text style={styles.content}>취업취약계층(저소득층, 청년, 경력단절여성 등){"\n"}
-                                에게 취업지원서비스를 제공하고,{"\n"}
-                                저소득 구직자에게는 생계안정을 위한{"\n"}
-                                소득도 결합하여 지원
-                                {"\n"}{"\n"}
-                                (선발형) 요건심사형 중 취업경험 요건을{"\n"}
-                                충족하지 못한 분( 18~34세 청년은 중위소득{"\n"}
-                                120% 이하, 재산 5억원 이하, 취업경험 무관)</Text>
+                            <Text style={styles.title}> 대출한도 </Text>
+                            <Text style={styles.content}>호당 2.5억 원 이내
+                            </Text>
                         </View>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.title}>지원내용</Text>
-                            <Text style={styles.content}>취업지원(I,II유형 공통){"\n"}
-                                개인별 역량, 의지에 따른 직업훈련, 일경험,{"\n"}
-                                복지 프로그램 연계 등 취업지원서비스 제공
+                            <Text style={styles.title}>대출금리 </Text>
+                            <Text style={styles.content}> 연 2.15% ~ 3.00%(소득과 만기에 따라 차등)</Text>
+                        </View>
+                        <View style={styles.rowContainer}>
+                            <Text style={styles.title}>금리우대 </Text>
+                            <Text style={styles.content}> - 다자녀 가구 0.7%p, 2자녀 가구 0.5%p, 1자녀 가구 0.3%p,{"\n"}
+                                연소득 6천만 원 이하 한부모 가구 0.5%p, {"\n"}
+                                다문화 가구, 장애인 가구, 생애 최초 주택구입자, {"\n"}
+                                , 신혼 가구(결혼예정자 포함) 각각 0.2%p 금리우대{"\n"}
+                                (우대금리 중 택1, 중복적용 불가하나 다자녀 가구 0.7%p, {"\n"}
+                                2자녀 가구 0.5%p, 1자녀 가구 0.3%p는 상기 타{"\n"}
+                                우대금리와 중복적용 가능)
                                 {"\n"}{"\n"}
-                                소득지원(I유형){"\n"}
-                                구직촉진수당(월 50만원*6개월) 지원
+
+                                - 본인 또는 배우자 명의의 청약(종합)저축 가입 중인 경우 금리우대{"\n"}
+                                가입기간 1년 이상(3년 이상)이고 12회차(36회차){"\n"}
+                                이상 납입한 경우 0.1% p(0.2%p)(타 우대금리와 중복 적용 가능)
                                 {"\n"}{"\n"}
-                                취업활동비용지원(II유형): 훈련참여지원수당 등</Text>
+
+                                - 국토교통부 전자계약시스템 활용 매매계약 체결시{"\n"}
+                                0.1%p 우대(2023.12.31 신규 접수분까지 한시적 운영)
+                                {"\n"}{"\n"}
+
+
+                                - 청약저축, 부동산 전자계약 우대금리는{"\n"}
+                                타 우대금리와 중복 적용 가능
+                                {"\n"}{"\n"}
+
+                                - 우대금리 적용결과 최종 대출금리가{"\n"}
+                                1.5%p 미만인 경우에는 1.5%p 적용
+                                {"\n"}{"\n"}
+
+                                - 생애 최초 주택구입 연소득 7천이하{"\n"}
+                                신혼가구 최대 0.3%p 추가인하(하한선 연1.2%){"\n"}
+
+                            </Text>
                         </View>
                     </View>
                 </>
@@ -133,21 +156,16 @@ export default function SubScreen() {
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}> 신청기간</Text>
-                            <Text style={styles.content}>상시신청</Text>
+                            <Text style={styles.content}>접수기관 별 상이</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>신청방법</Text>
-                            <Text style={styles.content}>참여를 희망하는 본인이 직접 거주지{"\n"}관할 고용센터에
-                                방문하거나 {"\n"}온라인(www.kua.go.kr)을 통해 신청</Text>
+                            <Text style={styles.content}>한국주택금융공사 및 기금e든든 웹사이트 신청
+                                {"\n"}또는 수탁은행(우리, 국민, 기업, 농협, 신한) 방문 신청</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>제출서류</Text>
-                            <Text style={styles.content}>(필수) 취업지원신청서 및 지원자격 확인을{"\n"}위한 개인정보 수집,
-                                이용 및 제공 동의서 {"\n"}방문하거나 온라인(www.kua.go.kr)을 통해 신청{"\n"}(필요시 추가서류){"\n"}
-                                - 가구단위 증빙서류: 가족관계증명원,{"\n"} 이혼소송확인서, 실종신고서 등{"\n"}
-                                - 특정취약계층 증빙서류: 관련 추천서, 확인서 등{"\n"}
-                                - 전산망으로 확인불가 또는 전산망에{"\n"}실시간 연계되지 않은 소득,{"\n"}
-                                재산, 취업경험 관련정보: 사업주 확인자료 등{"\n"}관련 증빙자료
+                            <Text style={styles.content}>소득 및 재직 증빙 서류, 개인 정보 제공동의서 등
                             </Text>
                         </View>
                     </View>
@@ -159,15 +177,19 @@ export default function SubScreen() {
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>접수기관</Text>
-                            <Text style={styles.content}>전국 고용센터</Text>
+                            <Text style={styles.content}>국토교통부, 주택도시보증공사, {"\n"}한국주택금융공사, 주택도시기금 수탁은행</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>문의처</Text>
-                            <Text style={styles.content}>고용노동부 고객상담센터 (☎1350)</Text>
-                        </View>
-                        <View style={styles.rowContainer}>
-                            <Text style={styles.title}>홈페이지</Text>
-                            <Text style={styles.content}>http://www.kua.go.kr</Text>
+                            <Text style={styles.content}>국토교통부 (☎1599-0001){"\n"}
+                                주택도시보증공사 (☎1566-9009){"\n"}
+                                한국주택금융공사 (☎1688-8114){"\n"}
+                                우리은행 (☎1599-0800){"\n"}
+                                국민은행 (☎1599-1771){"\n"}
+                                기업은행 (☎1566-2566) {"\n"}
+                                농협은행 (☎1588-2100){"\n"}
+                                신한은행 (☎1599-8000){"\n"}
+                            </Text>
                         </View>
                     </View>
                 </>
