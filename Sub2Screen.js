@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Sub2Screen() {
     const [selectedText, setSelectedText] = useState("주요내용");
@@ -51,22 +52,22 @@ export default function Sub2Screen() {
             {selectedText === "주요내용" && (
                 <>
                     <View style={[styles.line, { marginTop: 10 }]}></View>
-                    <View style={{ flex: 1, padding: 20 }}>
+                    <ScrollView style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>신청 기간</Text>
                             <Text style={styles.content}>접수기관 별 상이</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>전화 문의</Text>
-                            <Text style={styles.content}>국토교통부 (1599-0001), 주택도시보증공사 (1566-9009),{"\n"}
-                                한국주택금융공사 (1688-8114), 우리은행 (1599-0800), {"\n"}
-                                민은행 (1599-1771), 기업은행 (1566-2566),{"\n"}
-                                농협은행 (1588-2100), 신한은행 (1599-8000)</Text>
+                            <Text style={styles.content}>국토교통부 (1599-0001),{"\n"} 주택도시보증공사 (1566-9009),{"\n"}
+                                한국주택금융공사 (1688-8114),{"\n"} 우리은행 (1599-0800), {"\n"}
+                                민은행 (1599-1771),{"\n"}기업은행 (1566-2566),{"\n"}
+                                농협은행 (1588-2100),{"\n"}신한은행 (1599-8000)</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>신청 방법</Text>
                             <Text style={styles.content}>한국주택금융공사 및 기금e든든 웹사이트 신청 {"\n"}
-                                또는 수탁은행(우리, 국민, 기업, 농협, 신한) 방문 신청</Text>
+                                또는 수탁은행(우리, 국민, 기업, 농협, 신한) {"\n"} 방문 신청</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>접수 기관</Text>
@@ -77,13 +78,13 @@ export default function Sub2Screen() {
                             <Text style={styles.title}>지원 형태</Text>
                             <Text style={styles.content}>현금(융자)</Text>
                         </View>
-                    </View>
+                    </ScrollView>
                 </>
             )}
             {selectedText === "지원대상" && (
                 <>
                     <View style={[styles.line, { marginTop: 10 }]}></View>
-                    <View style={{ flex: 1, padding: 20 }}>
+                    <ScrollView style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}> 🙍‍♀️🙍‍♂️</Text>
                             <Text style={styles.content}>연소득(부부합산) 6천만 원 이하인 자{"\n"}
@@ -97,13 +98,13 @@ export default function Sub2Screen() {
                                 충족하지 못한 분( 18~34세 청년은 중위소득{"\n"}
                                 120% 이하, 재산 5억원 이하, 취업경험 무관)</Text>
                         </View>
-                    </View>
+                    </ScrollView>
                 </>
             )}
             {selectedText === "지원내용" && (
                 <>
                     <View style={[styles.line, { marginTop: 10 }]}></View>
-                    <View style={{ flex: 1, padding: 20 }}>
+                    <ScrollView style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}> 대출한도 </Text>
                             <Text style={styles.content}>호당 2.5억 원 이내
@@ -115,22 +116,22 @@ export default function Sub2Screen() {
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>금리우대 </Text>
-                            <Text style={styles.content}> - 다자녀 가구 0.7%p, 2자녀 가구 0.5%p, 1자녀 가구 0.3%p,{"\n"}
-                                연소득 6천만 원 이하 한부모 가구 0.5%p, {"\n"}
-                                다문화 가구, 장애인 가구, 생애 최초 주택구입자, {"\n"}
-                                , 신혼 가구(결혼예정자 포함) 각각 0.2%p 금리우대{"\n"}
-                                (우대금리 중 택1, 중복적용 불가하나 다자녀 가구 0.7%p, {"\n"}
+                            <Text style={styles.content}> - 다자녀 가구 0.7%p, 2자녀 가구 0.5%p,{"\n"}
+                                1자녀 가구 0.3%p, 연소득 6천만 원 이하  {"\n"}한부모 가구 0.5%p,
+                                다문화 가구, 장애인 가구,{"\n"} 생애 최초 주택구입자,{"\n"}
+                                , 신혼 가구(결혼예정자 포함){"\n"} 각각 0.2%p 금리우대
+                                (우대금리 중 택1,{"\n"}중복적용 불가하나 다자녀 가구 0.7%p, {"\n"}
                                 2자녀 가구 0.5%p, 1자녀 가구 0.3%p는 상기 타{"\n"}
                                 우대금리와 중복적용 가능)
                                 {"\n"}{"\n"}
 
-                                - 본인 또는 배우자 명의의 청약(종합)저축 가입 중인 경우 금리우대{"\n"}
+                                - 본인 또는 배우자 명의의 청약(종합){"\n"}저축 가입 중인 경우 금리우대{"\n"}
                                 가입기간 1년 이상(3년 이상)이고 12회차(36회차){"\n"}
-                                이상 납입한 경우 0.1% p(0.2%p)(타 우대금리와 중복 적용 가능)
+                                이상 납입한 경우 0.1% p(0.2%p){"\n"}(타 우대금리와 중복 적용 가능)
                                 {"\n"}{"\n"}
 
-                                - 국토교통부 전자계약시스템 활용 매매계약 체결시{"\n"}
-                                0.1%p 우대(2023.12.31 신규 접수분까지 한시적 운영)
+                                - 국토교통부 전자계약시스템 활용{"\n"}매매계약 체결시{"\n"}
+                                0.1%p 우대{"\n"}(2023.12.31 신규 접수분까지 한시적 운영)
                                 {"\n"}{"\n"}
 
 
@@ -147,13 +148,13 @@ export default function Sub2Screen() {
 
                             </Text>
                         </View>
-                    </View>
+                    </ScrollView>
                 </>
             )}
             {selectedText === "신청방법" && (
                 <>
                     <View style={[styles.line, { marginTop: 10 }]}></View>
-                    <View style={{ flex: 1, padding: 20 }}>
+                    <ScrollView style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}> 신청기간</Text>
                             <Text style={styles.content}>접수기관 별 상이</Text>
@@ -161,20 +162,20 @@ export default function Sub2Screen() {
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>신청방법</Text>
                             <Text style={styles.content}>한국주택금융공사 및 기금e든든 웹사이트 신청
-                                {"\n"}또는 수탁은행(우리, 국민, 기업, 농협, 신한) 방문 신청</Text>
+                                {"\n"}또는 수탁은행(우리, 국민, 기업, 농협, 신한){"\n"}방문 신청</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>제출서류</Text>
                             <Text style={styles.content}>소득 및 재직 증빙 서류, 개인 정보 제공동의서 등
                             </Text>
                         </View>
-                    </View>
+                    </ScrollView>
                 </>
             )}
             {selectedText === "접수/문의" && (
                 <>
                     <View style={[styles.line, { marginTop: 10 }]}></View>
-                    <View style={{ flex: 1, padding: 20 }}>
+                    <ScrollView style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>접수기관</Text>
                             <Text style={styles.content}>국토교통부, 주택도시보증공사, {"\n"}한국주택금융공사, 주택도시기금 수탁은행</Text>
@@ -191,7 +192,7 @@ export default function Sub2Screen() {
                                 신한은행 (☎1599-8000){"\n"}
                             </Text>
                         </View>
-                    </View>
+                    </ScrollView>
                 </>
             )}
 

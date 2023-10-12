@@ -103,15 +103,13 @@ export default function SubScreen() {
                     <View style={[styles.line, { marginTop: 10 }]}></View>
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.title}> 지원내용</Text>
-                            <Text style={styles.content}>취업취약계층(저소득층, 청년, 경력단절여성 등){"\n"}
-                                에게 취업지원서비스를 제공하고,{"\n"}
-                                저소득 구직자에게는 생계안정을 위한{"\n"}
-                                소득도 결합하여 지원
-                                {"\n"}{"\n"}
-                                (선발형) 요건심사형 중 취업경험 요건을{"\n"}
-                                충족하지 못한 분( 18~34세 청년은 중위소득{"\n"}
-                                120% 이하, 재산 5억원 이하, 취업경험 무관)</Text>
+                            <Text style={styles.title}> 취업취약계층</Text>
+                            <Text style={styles.content}>저소득층, 청년, 경력단절여성 등에게{"\n"}
+                                에게 취업지원서비스를 제공</Text>
+                        </View>
+                        <View style={styles.rowContainer}>
+                            <Text style={styles.title}> 저소득 구직자</Text>
+                            <Text style={styles.content}>생계안정을 위한 소득도 결합하여 지원</Text>
                         </View>
                         <View style={styles.rowContainer}>
                             <Text style={styles.title}>지원내용</Text>

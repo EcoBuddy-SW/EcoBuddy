@@ -322,11 +322,10 @@ class HomeScreen extends Component {
 
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, }}>복지 소식 알고 있어?</Text>
           <TouchableOpacity onPress={() => this.handleSub1(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
-            <View style={[styles.iconContainer, { width: '90%' }]}><Text>국민취업제도</Text></View>
+            <Text>국민취업제도</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.handleSub2(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
-            <View style={[styles.iconContainer, { width: '90%' }]}><Text>내집마련 디딤돌 대출</Text></View>
-
+            <Text>내집마련 디딤돌 대출</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
