@@ -38,8 +38,14 @@ const AttendanceScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Calendar style={styles.calendar} markedDates={markedDates} theme={{ selectedDayBackgroundColor: 'green' }}
-                calendarStyle={{ arrowColor: 'green' }} />
+            <Text style={styles.title}>출석 이벤트 진행!</Text>
+            <View style={{marginBottom : 30}}></View>
+            <Text style={styles.text}>포인트 쌓고 마이페이지 → 상점에서 {"\n"}모바일 쿠폰으로 교환하세요</Text>
+            <Calendar style={styles.calendar} markedDates={markedDates} theme={{
+                selectedDayBackgroundColor: 'green', // 선택된 날짜의 배경색
+                arrowColor: 'green', // 화살표 아이콘의 색상
+            }}
+            />
             <Button title="출석" onPress={handleAttendance} />
 
             <Modal isVisible={isModalVisible}>
@@ -52,7 +58,7 @@ const AttendanceScreen = () => {
             </Modal>
         </View>
     );
-};
+}; 
 
 
 const styles = StyleSheet.create({
@@ -61,9 +67,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     calendar: {
-        width: '90%',
+        width:'95%',
         marginTop: 20,
     },
     messageContainer: {
@@ -86,6 +93,16 @@ const styles = StyleSheet.create({
     modalText: {
         fontSize: 18,
         marginBottom: 10,
+    },
+    title: {
+        fontSize: 20,
+
+        fontFamily: 'Pretendard-Bold',
+    },
+    text: {
+        fontSize: 15,
+
+        fontFamily: 'Pretendard-Regular',
     },
 });
 
