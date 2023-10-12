@@ -165,6 +165,11 @@ class HomeScreen extends Component {
     navigation.navigate('내집마련 디딤돌 대출');
   }
 
+  handleSub3() {
+    const { navigation } = this.props;
+    navigation.navigate('다함께 돌봄');
+  }
+
   render() {
     const { currentView } = this.state;
 
@@ -326,6 +331,9 @@ class HomeScreen extends Component {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.handleSub2(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
             <Text>내집마련 디딤돌 대출</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.handleSub3(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
+            <Text>다함께 돌봄</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
