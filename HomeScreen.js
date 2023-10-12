@@ -319,7 +319,7 @@ class HomeScreen extends Component {
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, }}>복지 소식 알고 있어?</Text>
           <TouchableOpacity onPress={() => this.handleSub1(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
           </TouchableOpacity>
-          <View style={[styles.iconContainer, { width: '90%' }]}></View>
+          <View style={[styles.iconContainer, { width: '90%' }]}><Text>국민취업제도</Text></View>
           <View style={[styles.iconContainer, { width: '90%' }]}></View>
           <View style={[styles.iconContainer, { width: '90%' }]}></View>
           <View style={[styles.iconContainer, { width: '90%' }]}></View>
