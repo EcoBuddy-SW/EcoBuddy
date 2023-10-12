@@ -23,9 +23,9 @@
       ]
     ],
     "splash": {
-      "image": "./assets/ecoBuddy_Logo.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/ecoBuddy_Logo-removebg-preview.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#5A8C6B"
     },
     "packagerOpts": {
       "hostType": "tunnel",
