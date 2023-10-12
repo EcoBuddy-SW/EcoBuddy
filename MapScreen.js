@@ -93,7 +93,7 @@ export default function MapScreen() {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#628F5D" />
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>현재 위치를 로딩 중입니다...</Text>
       </View>
     );
  }
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor:'white',
   },
 
   loadingText: {
