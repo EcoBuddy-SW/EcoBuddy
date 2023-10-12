@@ -26,6 +26,7 @@ import Tip3 from './Tip3Screen';
 import Sub1 from './SubScreen';
 import Sub2 from './Sub2Screen';
 import Sub3 from './Sub3Screen';
+import Attendance from './Attendance';
 
 //채연 페이지
 import Mypage from './MypageScreen';
@@ -82,6 +83,7 @@ export default function App() {
         <Stack.Screen name="내집마련 디딤돌 대출" component={Sub2}/>
         <Stack.Screen name="다함께 돌봄" component={Sub3}/>
         <Stack.Screen name="카카오맵" component={KakaoMap}/>
+        <Stack.Screen name="출석 이벤트" component={Attendance}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />

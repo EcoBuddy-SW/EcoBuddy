@@ -94,9 +94,9 @@ class HomeScreen extends Component {
     };
   }
 
-  handleCategory() {
+  handleAttendance() {
     const { navigation } = this.props;
-    navigation.navigate('카테고리');
+    navigation.navigate('출석 이벤트');
   }
 
   handleTip2() {
@@ -298,11 +298,11 @@ class HomeScreen extends Component {
           <View style={styles.container2}>
             <Swiper style={styles.wrapper} height={200} horizontal={false} autoplay loop spaceBetween={20}>
               <TouchableOpacity
-                style={{ flex: 1 }} onPress={() => this.handleCategory(this.props.navigation)}>
+                style={{ flex: 1 }} onPress={() => this.handleAttendance(this.props.navigation)}>
                 <ImageBackground
                   source={require('./assets/images/v1053-004.jpg')}
                   style={styles.slide1}>
-                  <Text style={styles.text}>카테고리로 쉽게{"\n"}분리수거 사업 알아보기</Text>
+                  <Text style={styles.text}>출석 포인트 받고{"\n"}쿠폰으로 교환하자!</Text>
                 </ImageBackground>
               </TouchableOpacity>
               <TouchableOpacity
@@ -325,15 +325,36 @@ class HomeScreen extends Component {
             </Swiper>
           </View>
 
-          <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, }}>복지 소식 알고 있어?</Text>
-          <TouchableOpacity onPress={() => this.handleSub1(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
-            <Text>국민취업제도</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, marginBottom: 15, }}>복지 소식 알고 있어?</Text>
+          <TouchableOpacity onPress={() => this.handleSub1(this.props.navigation)} style={{ flex: 1 }}>
+            <ImageBackground
+              source={require('./assets/images/6207681.jpg')}
+              style={[styles.iconContainer3, { opacity: 0.5, }]}
+            >
+              <View style={styles.transparentView}>
+                <Text style={styles.text2}>국민 취업 제도</Text>
+              </View>
+            </ImageBackground>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.handleSub2(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
-            <Text>내집마련 디딤돌 대출</Text>
+          <TouchableOpacity onPress={() => this.handleSub2(this.props.navigation)} style={{ flex: 1 }}>
+            <ImageBackground
+              source={require('./assets/images/4341846.jpg')}
+              style={[styles.iconContainer3, { opacity: 0.5, }]}
+            >
+              <View style={styles.transparentView}>
+                <Text style={styles.text2}>내집마련 디딤돌 대출</Text>
+              </View>
+            </ImageBackground>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.handleSub3(this.props.navigation)} style={[styles.iconContainer, { width: '90%' }]}>
-            <Text>다함께 돌봄</Text>
+          <TouchableOpacity onPress={() => this.handleSub3(this.props.navigation)} style={{ flex: 1 }}>
+            <ImageBackground
+              source={require('./assets/images/5968832.jpg')}
+              style={[styles.iconContainer3, { opacity: 0.5, }]}
+            >
+              <View style={styles.transparentView}>
+                <Text style={styles.text2}>다함께 돌봄</Text>
+              </View>
+            </ImageBackground>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -454,6 +475,18 @@ const styles = StyleSheet.create({
     marginRight: 20,
     alignSelf: 'center',
   },
+  iconContainer3: {
+    backgroundColor: '#F2FFED',
+    padding: 8,
+    borderRadius: 30,
+    width: 350, // 원하는 너비로 조절
+    height: 300, // 원하는 높이로 조절
+    alignSelf: 'center',
+    justifyContent: 'center', // 수직 정렬을 중앙으로 설정
+    alignItems: 'center', // 수평 정렬을 중앙으로 설정
+    marginBottom: 30,
+    overflow: 'hidden',
+  },
   iconRow: {
     flexDirection: 'row',
     marginBottom: 4,
@@ -476,6 +509,20 @@ const styles = StyleSheet.create({
   searchText: {
     flex: 1,
     color: '#BDBDBD',
+  },
+  transparentView: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // 투명한 배경 색상
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text2: {
+    color: 'white', // 검정색으로 설정, 더 진하게 원하면 색상 코드를 'black' 대신 'rgba(0, 0, 0, 1)'로 변경
+    fontSize: 24,
+    fontFamily: 'Pretendard-Bold',
+    alignItems: 'center',
+    padding: 10, // 텍스트 주위의 여백
+
   },
 });
 
