@@ -15,7 +15,7 @@ export default function SubScreen() {
 
     const handleBtn = () => {
         // 웹사이트 URL을 여기에 넣으세요.
-        const url = "https://www.kua.go.kr/uaptm010/selectMain.do";
+        const url = "https://www.data.go.kr/tcs/dss/selectDataSetList.do?dType=TOTAL&keyword=%ED%8F%90%EC%9D%98%EC%95%BD%ED%92%88+%EC%88%98%EA%B1%B0%ED%95%A8&operator=AND&detailKeyword=&publicDataPk=&recmSe=&detailText=&relatedKeyword=&commaNotInData=&commaAndData=&commaOrData=&must_not=&tabId=&dataSetCoreTf=&coreDataNm=&sort=&relRadio=&orgFullName=&orgFilter=&org=&orgSearch=&currentPage=1&perPage=10&brm=&instt=&svcType=&kwrdArray=&extsn=&coreDataNmArray=&pblonsipScopeCode=";
         Linking.openURL(url);
     };
 

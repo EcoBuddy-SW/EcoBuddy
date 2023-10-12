@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ImageBackground, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -92,6 +92,17 @@ class HomeScreen extends Component {
       find: '',
       currentView: 1,
     };
+  }
+
+  handleBtn2 = () => {
+    // 웹사이트 URL을 여기에 넣으세요.
+    const url = "https://www.data.go.kr/tcs/dss/selectDataSetList.do?dType=TOTAL&keyword=%ED%8F%90%EC%9D%98%EC%95%BD%ED%92%88+%EC%88%98%EA%B1%B0%ED%95%A8&operator=AND&detailKeyword=&publicDataPk=&recmSe=&detailText=&relatedKeyword=&commaNotInData=&commaAndData=&commaOrData=&must_not=&tabId=&dataSetCoreTf=&coreDataNm=&sort=&relRadio=&orgFullName=&orgFilter=&org=&orgSearch=&currentPage=1&perPage=10&brm=&instt=&svcType=&kwrdArray=&extsn=&coreDataNmArray=&pblonsipScopeCode=";
+    Linking.openURL(url);
+};
+
+  handleBtn() {
+    const { navigation } = this.props;
+    navigation.navigate('출석 이벤트');
   }
 
   handleAttendance() {
@@ -293,6 +304,13 @@ class HomeScreen extends Component {
           <View style={[styles.shadowContainer,{flexDirection: 'row',}]}>
 
           </View> */}
+          <View style={{marginBottom:30}}></View>
+          <TouchableOpacity
+            style={{ flex: 1 }} onPress={() => this.handleBtn2(this.props.navigation)}>
+            <View style={[styles.shadowContainer, { width: '100%', borderWidth: 1, borderColor: 'black', height: 100 }]}>
+              <Text style={{ fontFamily: 'Pretendard-Bold', textAlign: 'center' }}>폐의약품 수거함 위치 확인하러 가기</Text>
+            </View>
+          </TouchableOpacity>
 
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 50, marginBottom: 10 }}>꿀팁 알아가기!</Text>
           <View style={styles.container2}>
@@ -300,7 +318,7 @@ class HomeScreen extends Component {
               <TouchableOpacity
                 style={{ flex: 1 }} onPress={() => this.handleAttendance(this.props.navigation)}>
                 <ImageBackground
-                  source={require('./assets/images/v1053-004.jpg')}
+                  source={require('./assets/images/5892437.jpg')}
                   style={styles.slide1}>
                   <Text style={styles.text}>출석 포인트 받고{"\n"}쿠폰으로 교환하자!</Text>
                 </ImageBackground>
