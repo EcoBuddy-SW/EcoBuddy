@@ -103,12 +103,12 @@ export default function SubScreen() {
                     <View style={[styles.line, { marginTop: 10 }]}></View>
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.title}> 취업취약계층</Text>
+                            <Text style={styles.title}>취업취약계층</Text>
                             <Text style={styles.content}>저소득층, 청년, 경력단절여성 등에게{"\n"}
                                 에게 취업지원서비스를 제공</Text>
                         </View>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.title}> 저소득 구직자</Text>
+                            <Text style={styles.title}>저소득 구직자</Text>
                             <Text style={styles.content}>생계안정을 위한 소득도 결합하여 지원</Text>
                         </View>
                         <View style={styles.rowContainer}>
@@ -130,7 +130,7 @@ export default function SubScreen() {
                     <View style={[styles.line, { marginTop: 10 }]}></View>
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={styles.rowContainer}>
-                            <Text style={styles.title}> 신청기간</Text>
+                            <Text style={styles.title}>신청기간</Text>
                             <Text style={styles.content}>상시신청</Text>
                         </View>
                         <View style={styles.rowContainer}>
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         // justifyContent: 'space-between',
-        padding: 20,
+        padding: 10,
     },
     shadowContainer: {
         width: '90%',
@@ -238,12 +238,12 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     title: {
-        width: '20%',
+        width: '25%',
         fontSize: 16,
         fontFamily: 'Pretendard-Bold',
-        marginRight: 20,
+        marginRight: 5,
         alignSelf: 'flex-start', // 상단으로 변경
-        justifyContent: 'center',
+        alignContent: 'flex-end',
     },
     content: {
         fontSize: 14,

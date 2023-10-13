@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
         width: '20%',
         fontSize: 16,
         fontFamily: 'Pretendard-Bold',
-        marginRight: 20,
+        marginRight: 5,
         alignSelf: 'flex-start', // 상단으로 변경
         justifyContent: 'center',
     },
