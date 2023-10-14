@@ -18,14 +18,14 @@ function PaperHighCurrentInfoScreen() {
             <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 신문지 등</Text>
             </View>
-            <View style={[styles.infoContainer, { marginBottom: 30 }]}>
+            <View style={[styles.infoContainer, { marginBottom: 30, height: 150 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
-                    •물기에 젖지 않도록 하고, 반듯하게 펴서 차곡차곡 쌓은 후 흩날리지 않도록{'\n'}끈 등으로 묶어서 배출
+                    •물기에 젖지 않도록 하고, 반듯하게 펴서 차곡차곡 쌓은 후{'\n'}흩날리지 않도록 끈 등으로 묶어서 배출
                 </Text>
             </View>
 
-            <View style={[styles.infoContainer, { height: 90, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 15, }]}>
+            <View style={[styles.infoContainer, { height: 150, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 15, }]}>
                 <Text style={[styles.listItem, { fontWeight: 'bold', fontSize: 18, }]}>해당품목</Text>
                 <Text style={styles.listItem}>
                     • 비닐 코팅 종이(광고지, 치킨 속포장재 등), {'\n'}금박·은박지, 벽지, 자석전단지, 이물질을 제거하기 어려운 경우 등{'\n'}
@@ -47,7 +47,7 @@ function PaperHighCurrentInfoScreen() {
             <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 책자, 노트 등</Text>
             </View>
-            <View style={[styles.infoContainer, { marginBottom: 30, height: 150 }]}>
+            <View style={[styles.infoContainer, { marginBottom: 30, height: 100 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
                     • 스프링 등 종이류와 다른 재질은 제거한 후 배출
@@ -64,7 +64,7 @@ function PaperHighCurrentInfoScreen() {
             <View style={[styles.infoContainer, { height: 110, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 50 }]}>
                 <Text style={[styles.listItem, { fontWeight: 'bold', fontSize: 18, }]}>비해당품목</Text>
                 <Text style={styles.listItem}>
-                    • 비닐 코팅된 표지, 공책의 스프링 등
+                    • 비닐 코팅된 표지, 공책의 스프링 등{'\n'}
                     📢 부속 재질에 따라 분리배출하거나 종량제봉투 등으로 배출{'\n'}
                 </Text>
             </View>
@@ -73,7 +73,7 @@ function PaperHighCurrentInfoScreen() {
             <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 종이컵</Text>
             </View>
-            <View style={[styles.infoContainer, { marginBottom: 30, height: 150 }]}>
+            <View style={[styles.infoContainer, { marginBottom: 30, height: 100 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
                     • 내용물을 비우고 물로 헹구는 등 이물질을 제거하여 배출
@@ -84,7 +84,7 @@ function PaperHighCurrentInfoScreen() {
             <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 상자류</Text>
             </View>
-            <View style={[styles.infoContainer, { marginBottom: 30, height: 150 }]}>
+            <View style={[styles.infoContainer, { marginBottom: 30, height: 100 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
                     • 테이프 등 종이류와 다른 재질은 제거한 후 배출
@@ -101,7 +101,7 @@ function PaperHighCurrentInfoScreen() {
             <View style={[styles.infoContainer, { height: 110, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 50 }]}>
                 <Text style={[styles.listItem, { fontWeight: 'bold', fontSize: 18, }]}>비해당품목</Text>
                 <Text style={styles.listItem}>
-                    • 비닐코팅 부분, 상자에 붙어있는 테이프, 철핀 등
+                    • 비닐코팅 부분, 상자에 붙어있는 테이프, 철핀 등{'\n'}
                     📢 부속 재질에 따라 분리배출하거나 종량제봉투 등으로 배출
                 </Text>
             </View>

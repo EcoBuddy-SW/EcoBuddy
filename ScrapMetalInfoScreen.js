@@ -15,10 +15,10 @@ function ScrapMetalInfoScreen() {
             style={styles.container}
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
         >
-            <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={[styles.shadowContainer, { marginTop: 20, height: 80, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 고철, 비철금속{'\n'}(알미늄, 스텐류 등)</Text>
             </View>
-            <View style={[styles.infoContainer, { marginBottom: 30 }]}>
+            <View style={[styles.infoContainer, { marginBottom: 30, height:100 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
                     • 이물질이 섞이지 않도록 한 후 배출
@@ -35,14 +35,14 @@ function ScrapMetalInfoScreen() {
                 </View>
             </TouchableOpacity>
 
-            <View style={[styles.infoContainer, { height: 90, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 15, }]}>
+            <View style={[styles.infoContainer, { height: 120, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 15, }]}>
                 <Text style={[styles.listItem, { fontWeight: 'bold', fontSize: 18, }]}>해당품목</Text>
                 <Text style={styles.listItem}>
                     • 공기구, 철사, 못 등 고철류, 알루미늄, 스테인레스 제품 등{'\n'}비철금속류
                 </Text>
             </View>
 
-            <View style={[styles.infoContainer, { height: 110, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 50 }]}>
+            <View style={[styles.infoContainer, { height: 150, backgroundColor: 'white', borderWidth: 2, borderColor: '#86B381', marginBottom: 50 }]}>
                 <Text style={[styles.listItem, { fontWeight: 'bold', fontSize: 18, }]}>비해당품목</Text>
                 <Text style={styles.listItem}>
                     • 금속 이외의 재질(천, 고무, 플라스틱 등)이 부착된 {'\n'}우산, 프라이팬, 전기용품 등{'\n'}

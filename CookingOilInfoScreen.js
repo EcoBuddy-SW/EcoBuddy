@@ -15,14 +15,14 @@ function CookingOilInfoScreen() {
             style={styles.container}
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
         >
-            <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={[styles.shadowContainer, { marginTop: 20, height: 150, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 식물성 폐식용유{'\n'}
-                주의사항(폐유 제외, 한강유역환경청 문의☎031-790-2813)</Text>
+                주의사항(폐유 제외,{'\n'}한강유역환경청 문의☎031-790-2813)</Text>
             </View>
             <View style={[styles.infoContainer, { marginBottom: 30 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
-                    • 이물질이 섞이지 않게 모아 동주민센터 또는 공동주택에 비치된{'\n'}수거장소, 전용수거함 등에 배출 {'\n'}
+                    • 이물질이 섞이지 않게 모아 동주민센터 또는{'\n'}공동주택에 비치된 수거장소, 전용수거함 등에 배출 {'\n'}
                     📢 식물성 폐식용유 처리업체 명단(서울시 위탁업체){'\n'}
                     식물성 폐식용유 : ㈜ 신흥물산 ☎ 031-703-4516{'\n'}
                     동물성 폐식용유 : 민간폐식용유 수거업체 문의

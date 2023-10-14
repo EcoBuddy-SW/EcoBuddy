@@ -15,11 +15,11 @@ function WasteElectricCurrentInfoScreen() {
             style={styles.container}
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
         >
-            <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={[styles.shadowContainer, { marginTop: 20, height: 90, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 수은전지, 산화은전지, 니켈카드뮴전지,{'\n'}
-                 리튬1차전지, 망간전지·알칼리망간전지,{'\n'}니켈수소전지, 폐납산배터리</Text>
+                    리튬1차전지, 망간전지·알칼리망간전지,{'\n'}니켈수소전지, 폐납산배터리</Text>
             </View>
-            <View style={[styles.infoContainer, { marginBottom: 30 }]}>
+            <View style={[styles.infoContainer, { marginBottom: 30, height: 320 }]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
                     • 전지를 제품에서 분리하여 배출
@@ -29,14 +29,14 @@ function WasteElectricCurrentInfoScreen() {
                 </Text>
                 <Text style={styles.listItem}>
                     • 망간, 수은, 카드뮴 등 중금속 유해물질을 함유하므로{'\n'}전용수거함에 안전하게 배출{'\n'}
-                    📢 리튬이차(이온/폴리머/인산철)전지는 화재·폭발 위험성이{'\n'}있어 전용수거함에 바로 배출하지 않고{'\n'}구청 담당부서에 문의하거나 동주민센터 담당자에게{'\n'}직접 배출
+                    📢 리튬이차(이온/폴리머/인산철)전지는 화재·폭발{'\n'}위험성이 있어 전용수거함에 바로 배출하지 않고{'\n'}구청 담당부서에 문의하거나 동주민센터 담당자에게{'\n'}직접 배출
                 </Text>
                 <Text style={styles.listItem}>
                     • 종이팩 전용수거함이 없는 경우에는 종이류와 구분할 수 {'\n'} 있도록 가급적 끈 등으로 묶어 종이류 수거함으로 배출
                 </Text>
             </View>
 
-            <TouchableOpacity onPress={handleCategory}> 
+            <TouchableOpacity onPress={handleCategory}>
                 <View style={[styles.shadowContainer, { width: '95%', height: 150, marginBottom: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
                     <View style={{ flex: 1 }}>
                         <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10, textAlign: 'left', fontFamily: 'Pretendard-Bold', marginLeft: 20 }}>분리수거 교환 사업 !</Text>

@@ -15,10 +15,10 @@ function ClothingInfoScreen() {
             style={styles.container}
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
         >
-            <View style={[styles.shadowContainer, { marginTop: 20, height: 50, justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={[styles.shadowContainer, { marginTop: 20, height: 80, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 면의류, 기타 의류,{'\n'}동·식물성 섬유, 합성섬유류</Text>
             </View>
-            <View style={[styles.infoContainer, { marginBottom: 30 }]}>
+            <View style={[styles.infoContainer, { marginBottom: 30 , heigh: 170}]}>
                 <Text style={[styles.listItem, { fontFamily: 'Pretendard-Bold', fontSize: 16 }]}>배출 방법</Text>
                 <Text style={styles.listItem}>
                     • 지자체 또는 민간 재활용사업자가 비치한 폐의류{'\n'}전용수거함에 배출
