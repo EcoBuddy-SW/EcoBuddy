@@ -20,6 +20,7 @@ function CalendarView() {
             <View style={{ marginTop: 50, }}>
                 {/* 함수를 호출하지 않고 JSX로 렌더링 */}
                 <Calendar
+                //  markedDates={markedDates}
                     theme={{ selectedDayBackgroundColor: 'green' }}
                     calendarStyle={{ arrowColor: 'green' }}
                 />

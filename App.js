@@ -15,6 +15,14 @@ import Camera from './CameraScreen';
 import CheckPhoto from './CheckPhoto';
 import PaperInfo from './PaperInfoScreen';
 import GlassInfo from './GlassInfoScreen';
+import MetalCanInfo from './MetalCanInfoScreen';
+import SyntheticResinsInfo from './SyntheticResinsInfoScreen';
+import PaperHighCurrentInfo from './PaperHighCurrentInfoScreen';
+import ScrapMetalInfo from './ScrapMetalInfoScreen';
+import ClothingInfo from './ClothingInfoScreen';
+import WasteElectricCurrentInfo from './WasteElectricCurrentInfoScreen';
+import LedLightInfo from './LedLightInfoScreen';
+import CookingOilInfo from './CookingOilInfoScreen';
 import Search from './SearchScreen';
 import SearchResult from './SearchResultScreen';
 import Map from './MapScreen';
@@ -71,6 +79,14 @@ export default function App() {
         <Stack.Screen name="결과 확인" component={CheckPhoto} />
         <Stack.Screen name="종이팩" component={PaperInfo} />
         <Stack.Screen name="유리병" component={GlassInfo} />
+        <Stack.Screen name="금속캔" component={MetalCanInfo} />
+        <Stack.Screen name="합성수지류" component={SyntheticResinsInfo} />
+        <Stack.Screen name="종이류(고지류)" component={PaperHighCurrentInfo} />
+        <Stack.Screen name="고철류" component={ScrapMetalInfo} />
+        <Stack.Screen name="의류 및 원단류" component={ClothingInfo} />
+        <Stack.Screen name="폐건전지류" component={WasteElectricCurrentInfo} />
+        <Stack.Screen name="폐형광등, 폐LED등" component={LedLightInfo} />
+        <Stack.Screen name="식용유" component={CookingOilInfo} />
         <Stack.Screen name="검색 페이지" component={Search} />
         <Stack.Screen name="검색 결과" component={SearchResult} />
         <Stack.Screen name="지도" component={Map}/>

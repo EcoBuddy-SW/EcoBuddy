@@ -38,6 +38,7 @@ export default function Tip3Screen() {
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
             ref={scrollViewRef}
         >
+            <Text style={[styles.title,{alignSelf:'center', alignItems:'center', marginTop: 30}]}>키워드를 누르면 해당 리스트 번호로 이동합니다!</Text>
             <View style={[styles.rowContainer, { marginTop: 30 }]}>
                 <TouchableOpacity onPress={() => scrollToCategory(0)}>
                     <Text style={styles.categoryTitle}>#1. 컵라면 용기</Text>

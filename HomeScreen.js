@@ -161,14 +161,59 @@ class HomeScreen extends Component {
     navigation.navigate('종이팩');
   }
 
+  handlePaper2() {
+    const { navigation } = this.props;
+    navigation.navigate('종이류(고지류)');
+  }
+
   handleGlass() {
     const { navigation } = this.props;
     navigation.navigate('유리병');
   }
 
-  handleSub1() {
+  handleMetalCan() {
     const { navigation } = this.props;
-    navigation.navigate('국민 취업 제도');
+    navigation.navigate('금속캔');
+  }
+
+  handleSyntheicResins() {
+    const { navigation } = this.props;
+    navigation.navigate('합성수지류');
+  }
+
+  handleSyntheicResins() {
+    const { navigation } = this.props;
+    navigation.navigate('종이류(고지류)');
+  }
+
+  handleScrapMetal() {
+    const { navigation } = this.props;
+    navigation.navigate('고철류');
+  }
+
+  handleClothing() {
+    const { navigation } = this.props;
+    navigation.navigate('의류 및 원단류');
+  }
+
+  handleClothing() {
+    const { navigation } = this.props;
+    navigation.navigate('의류 및 원단류');
+  }
+
+  handleWasteElectricCurrent() {
+    const { navigation } = this.props;
+    navigation.navigate('폐건전지류');
+  }
+
+  handleLED() {
+    const { navigation } = this.props;
+    navigation.navigate('폐형광등, 폐LED등');
+  }
+
+  handleOil() {
+    const { navigation } = this.props;
+    navigation.navigate('식용유');
   }
 
   handleSub2() {
@@ -248,19 +293,19 @@ class HomeScreen extends Component {
                 <Text style={styles.iconText}>유리병</Text>
               </View>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handleMetalCan()}>
                   <Icon name="local-drink" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>금속캔</Text>
               </View>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handleSyntheicResins()}>
                   <Icon name="dangerous" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>합성수지류</Text>
               </View>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handlePaper2()}>
                   <Icon name="menu-book" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>종이류{"\n"}(고지류)</Text>
@@ -268,31 +313,31 @@ class HomeScreen extends Component {
             </View>
             <View style={styles.iconRow}>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handleScrapMetal()}>
                   <Icon name="restore-from-trash" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>고철류</Text>
               </View>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handleClothing()}>
                   <Icon2 name="tshirt-crew-outline" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>의류 및{"\n"}원단류</Text>
               </View>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handleWasteElectricCurrent()}>
                   <Icon name="battery-alert" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>폐전지류</Text>
               </View>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handleLED()}>
                   <Icon name="highlight" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>폐형광등{"\n"}폐LED등</Text>
               </View>
               <View style={styles.iconWithText}>
-                <CircleIcon onPress={() => this.handlePaper()}>
+                <CircleIcon onPress={() => this.handleOil()}>
                   <Icon2 name="oil" style={styles.icon2} />
                 </CircleIcon>
                 <Text style={styles.iconText}>식용유</Text>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
 import Modal from 'react-native-modal';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, DateObject } from 'react-native-calendars';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const AttendanceScreen = () => {
@@ -11,25 +11,6 @@ const AttendanceScreen = () => {
     const today = '2023-10-13'; // 임의로 날짜 넣음!
     const [modalMessage, setModalMessage] = useState(''); // 모달에 표시될 메시지
     // const [points, setPoints] = useState(0); // 유저의 포인트
-
-    useEffect(() => {
-        // 사용자의 포인트를 서버에서 가져오는 코드 
-        // 포인트를 가져오기 위한 API를 호출하고 가져온 포인트를 setPoints로 설정
-        // 이 부분은 백엔드와의 통신이 필요
-        fetchUserPoints();
-    }, []);
-
-    // 포인트를 가져오는 함수 (백엔드 API를 호출하도록 설정 필요)
-    const fetchUserPoints = async () => {
-        try {
-            // 서버로 요청을 보내어 사용자의 포인트를 가져옵니다.
-            const response = await fetch('서버의_포인트_조회_API_URL');
-            const data = await response.json();
-            setPoints(data.points); // 가져온 포인트를 상태에 저장
-        } catch (error) {
-            console.error('포인트를 가져오는 동안 오류 발생: ', error);
-        }
-    };
 
 
     const handleAttendance = () => {
@@ -50,6 +31,7 @@ const AttendanceScreen = () => {
                 ...markedDates,
                 [today]: { marked: true, dotColor: 'green' },
             };
+            
             setMarkedDates(updatedMarkedDates);
 
             // 알림 창에 출석 완료 메시지 설정
@@ -95,11 +77,10 @@ const AttendanceScreen = () => {
                     <Text style={[styles.text, { marginLeft: 10 }]}>~ 2024.01.01 까지</Text>
                 </View>
             </ImageBackground>
-            <Calendar
-                style={{ width: '100%' }}
-                markedDates={markedDates}
-                theme={{ selectedDayBackgroundColor: 'green' }}
-                calendarStyle={{ arrowColor: 'green' }}
+            <Calendar style={styles.calendar} markedDates={markedDates} theme={{
+                selectedDayBackgroundColor: 'green', // 선택된 날짜의 배경색
+                arrowColor: 'green', // 화살표 아이콘의 색상
+            }}
             />
             <View style={{ marginBottom: 50 }}></View>
             <View style={styles.shadowContainer}>
@@ -171,6 +152,25 @@ const styles = StyleSheet.create({
         shadowRadius: 2.0,  // 그림자의 반경
         elevation: 3,        // Android에서 그림자 효과를 제공합니다
     },
+    dayContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    dayText: {
+        fontSize: 16,
+        fontFamily: 'Pretendard-Regular',
+        color: 'black'
+    },
+    attendanceIconContainer: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    attendanceIconText: {
+        fontSize: 24,
+        color: '#fff'
+    }
 });
 
 export default AttendanceScreen;
