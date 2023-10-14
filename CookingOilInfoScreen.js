@@ -15,7 +15,7 @@ function CookingOilInfoScreen() {
             style={styles.container}
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
         >
-            <View style={[styles.shadowContainer, { marginTop: 20, height: 150, justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={[styles.shadowContainer, { marginTop: 20, height: 80, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: 식물성 폐식용유{'\n'}
                 주의사항(폐유 제외,{'\n'}한강유역환경청 문의☎031-790-2813)</Text>
             </View>

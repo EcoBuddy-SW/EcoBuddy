@@ -15,7 +15,7 @@ function LedLightInfoScreen() {
             style={styles.container}
             contentContainerStyle={{ padding: 0 }} // props 설정해줘야 함, 0 이어도 지우지 않기 , , 
         >
-            <View style={[styles.shadowContainer, { marginTop: 20, height: 90, justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={[styles.shadowContainer, { marginTop: 20, height: 80, justifyContent: 'center', alignItems: 'center' }]}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', fontFamily: 'Pretendard-Bold' }}>세부품목: {'\n'} 폐형광등 (직관형(FL), 환형(FCL), {'\n'} 안정기 내장형(CFL), 콤팩트형(FPL), {'\n'} 기타 수은을 함유한 조명제품),{'\n'} 
                 폐LED등 (전구형, 직관형 LED램프만 배출)</Text>
             </View>
