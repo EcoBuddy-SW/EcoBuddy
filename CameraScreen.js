@@ -6,20 +6,29 @@ function CameraScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
 
-  useEffect(() => {
-    const requestCameraPermission = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    };
+  const requestCameraPermission = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    setHasPermission(status === 'granted');
+  };
 
+  useEffect(() => {
     requestCameraPermission();
   }, []);
+
 
   if (hasPermission === null) {
     return <View />;
   }
+  
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <View style={{ flex:1 , justifyContent:'center', alignItems:'center'}}>
+        <Text>No access to camera</Text>
+        <TouchableOpacity onPress={requestCameraPermission}>
+          <Text>Grant Permission</Text>
+        </TouchableOpacity>
+      </View>
+    )
   }
 
   const takePicture = async () => {

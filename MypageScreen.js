@@ -18,7 +18,7 @@ function MyPageScreen() {
 
   const goToMap = () => {
     
-    if (context.setLocstate !== 'granted') {
+    if (context.locstate !== 'granted') {
         Alert.alert('설정에서 위치 정보 권한을 허용해주세요'); // "제목", "소제목"
         return;
     }
@@ -108,7 +108,7 @@ function MyPageScreen() {
       
      <TouchableOpacity onPress={goToCoins}>
      <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', borderRadius: 10, width: 405, flexDirection: 'row', alignItems: 'center' }]}>
-  <FontAwesome5 name="coins" size={30} color="#333" style={{ Left: 40 }} />
+  <FontAwesome5 name="coins" size={30} color="#333" style={{ left: 40 }} />
   <Text style={styles.gridText}>포인트</Text>
 </View>
 

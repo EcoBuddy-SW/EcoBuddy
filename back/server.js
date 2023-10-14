@@ -110,18 +110,6 @@ app.post('/join', (req, res) => {
                     }
 
                     console.log('데이터 저장 성공');
-
-                    req.session.uid = id;
-                    req.session.uemail = email;
-                    req.session.isLogined = true;
-                    
-                    req.session.save(err => {
-                        if (err) {
-                            console.error('세션 저장 실패:', err);
-                            res.status(500).send('Internal Server Error');
-                            return;
-                        }
-                    });
                     res.json({success: true, message: '회원가입 성공'});
 
                 });
@@ -222,5 +210,27 @@ app.post('/logout', (req, res) => {
         res.json({ success: true, message: '로그아웃 성공' });
       }
     });
+});
+
+app.post('/delAccount', (req, res) => {
+    const { id } = req.body;
+    const sql = `DELETE FROM users WHERE id=?`;
+    req.session.destroy((err) => {
+      if(err) {
+        console.log(err);
+        return;
+      } else {
+        connection.query(sql, [id], (err, results) => {
+            if (err) {
+                console.error('쿼리 실행 실패:', err);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            res.json({ success: true });
+        });
+    
+      }
+    });
+    
 });
   

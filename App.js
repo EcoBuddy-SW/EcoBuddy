@@ -40,7 +40,7 @@ export default function App() {
   const [location, setLocation] = useState(null); //위치
   const [userId, setUserId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
-  const [ip, setIp] = useState('10.20.102.144');
+  const [ip, setIp] = useState('10.20.101.226');
   const [locstate, setLocstate] = useState(null);
 
   const [fontsLoaded] = useFonts({

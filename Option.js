@@ -54,6 +54,50 @@ export default function OptionScreen() {
         );
     };
 
+    const handleDelAccountPress = () => {
+        Alert.alert(
+            '탈퇴',
+            '탈퇴하시겠습니까?',
+            [
+                {
+                    text: '취소',
+                    style: 'cancel',
+                },
+                {
+                    text: '확인',
+                    onPress: () => {
+                        const data = {
+                            id: context.userId
+                        };
+                        axios.post(`http://${context.ip}:3003/delAccount`, data)
+                        .then(response => {
+                            if (response.data.success) {
+                                alert(response.data.message);
+                                context.setUserId(null);
+                                context.setUserEmail(null);
+
+                                navigation.dispatch(
+                                    CommonActions.reset({
+                                        index: 0,
+                                        routes: [
+                                            {name: 'Login'},
+                                        ],
+                                    })
+                                );
+                                //navigation.navigate('BottomTab');
+                            } else {
+                                alert(response.data.message); // 실패 메시지 표시
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+    };
     const handleScreenModePress = () => {// 화면모드 
         setModalVisible(true);
     };
@@ -129,13 +173,16 @@ export default function OptionScreen() {
             }]}>
                 <Text style={[styles.textStyle, { left: 20, }]}>번역 </Text>
             </View>
-            <View style={[styles.gridColumn, {
-                backgroundColor: '#FFFFFF', width: 415,
-                height: 55, flexDirection: 'row',
-                alignItems: 'center', margin: 5, top: 150, borderWidth: 1, borderColor: "#e9e9e9",
-            }]}>
+            <TouchableOpacity
+                onPress={handleDelAccountPress}
+                style={[styles.gridColumn, {
+                    backgroundColor: '#FFFFFF', width: 415,
+                    height: 55, flexDirection: 'row',
+                    alignItems: 'center', margin: 5, top: 150, borderWidth: 1, borderColor: "#e9e9e9",
+                }]}
+            >
                 <Text style={[styles.textStyle, { left: 20 }]}>탈퇴 </Text>
-            </View>
+            </TouchableOpacity>
 
             <Modal
                 animationType="slide"

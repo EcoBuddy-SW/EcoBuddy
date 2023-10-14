@@ -5,7 +5,8 @@ import { Button } from 'react-native-paper'; // react-native-paper의 Button을 
 function CheckPhoto({ route, navigation }) {
   const { photo } = route.params;
 
-  const description = "이 사진에 대한 설명을 여기에 추가하세요.";
+  const description = `photo.uri: ${photo.uri}`;
+  //"이 사진에 대한 설명을 여기에 추가하세요.";
 
   // 확인 버튼을 눌렀을 때 Home으로 이동합니다.
   const handleConfirm = () => {
