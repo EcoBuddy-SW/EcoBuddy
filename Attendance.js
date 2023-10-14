@@ -8,7 +8,12 @@ const AttendanceScreen = () => {
     const [attendance, setAttendance] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
     const [markedDates, setMarkedDates] = useState({});
-    const today = '2023-10-13'; // 임의로 날짜 넣음!
+    // 오늘 날짜를 자동으로 가져옴
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1 해주고 두 자리로 만듭니다.
+    const day = currentDate.getDate().toString().padStart(2, '0'); // 날짜도 두 자리로 만듭니다.
+    const today = `${year}-${month}-${day}`;    
     const [modalMessage, setModalMessage] = useState(''); // 모달에 표시될 메시지
     // const [points, setPoints] = useState(0); // 유저의 포인트
 
