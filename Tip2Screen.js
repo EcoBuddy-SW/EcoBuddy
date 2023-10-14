@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Linking } from 'react-native';
 
 // 데이터: 지역 정보
 const regions = [
@@ -9,12 +8,51 @@ const regions = [
 
 // 데이터: 시 단위 지역 정보
 const citiesByRegion = {
-    '서울': ['강남구', '강서구', '서초구', /*...*/],
-    '경기도': ['수원시', '성남시', '용인시', /*...*/],
-    '강원도': ['강릉시', /*...*/],
-    '충청북도': ['청주시', /*...*/],
-    '충청남도': ['아산시', '천안시', /*...*/],
-    // 다른 지역도 추가해야 됨!!
+    '서울': [
+        {
+            name: '강남구',
+            collectionDay: '매주 월요일',
+            description: '강남구 무상수거에 대한 상세 정보...',
+            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+        },
+        {
+            name: '강서구',
+            collectionDay: '매주 화요일',
+            description: '강서구 무상수거에 대한 상세 정보...',
+            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+        },
+        // 다른 지역 정보...
+    ],
+    '경기도': [
+        {
+            name: '수원시',
+            collectionDay: '매주 수요일',
+            description: '수원시 무상수거에 대한 상세 정보...',
+            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+        },
+        {
+            name: '성남시',
+            collectionDay: '매주 목요일',
+            description: '성남시 무상수거에 대한 상세 정보...',
+            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+        },
+        // 다른 지역 정보...
+    ],
+    '충청남도': [
+        {
+            name: '아산시',
+            collectionDay: '매주 수요일',
+            description: '아산시 무상수거에 대한 상세 정보...',
+            websiteUrl: 'https://www.asan.go.kr/town/baebang/board/?tb_nm=notice&m_mode=view&pds_no=2017080811181048510&PageNo=31',
+        },
+        {
+            name: '천안시',
+            collectionDay: '매주 목요일',
+            description: '천안시 무상수거에 대한 상세 정보...',
+            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+        },
+        // 다른 지역도 추가해야 됨!!
+    ],
 };
 
 function Tip2Screen() {
@@ -34,6 +72,12 @@ function Tip2Screen() {
 
     const closeModal = () => {
         setModalVisible(false); // 모달 닫기
+    };
+
+    const gotoUrl = () => {
+        if (selectedCity && selectedCity.websiteUrl) {
+            Linking.openURL(selectedCity.websiteUrl); // 해당 도시의 웹 사이트로 이동
+        }
     };
 
     return (
@@ -60,14 +104,14 @@ function Tip2Screen() {
                         <View style={styles.cityItemContainer}>
                             {citiesByRegion[selectedRegion].map((city, index) => (
                                 <TouchableOpacity
-                                    key={city}
+                                    key={city.name}  // 각 도시의 이름을 키로 사용
                                     onPress={() => handleCityPress(city)}
                                     style={[
                                         styles.cityItem,
                                         selectedCity === city && styles.selectedCityItem,
                                     ]}
                                 >
-                                    <Text style={styles.cityText}>{city}</Text>
+                                    <Text style={styles.cityText}>{city.name}</Text>
                                 </TouchableOpacity>
                             ))}
                         </View>
@@ -76,6 +120,7 @@ function Tip2Screen() {
             </View>
 
             {/* citiesByRegion 모달 */}
+
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -84,12 +129,24 @@ function Tip2Screen() {
             >
                 <View style={styles.modalBackground}>
                     <View style={styles.modalContainer}>
-                        <View style={styles.modalContent}>
-                            <Text style={styles.modalTitle}>선택한 도시: {selectedCity}</Text>
-                            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-                                <Text style={styles.text}>확인</Text>
-                            </TouchableOpacity>
-                        </View>
+                        {selectedCity && citiesByRegion[selectedRegion] && (
+                            <View style={styles.modalContent}>
+                                <Text style={styles.modalTitle}>{selectedCity.name} 무상수거</Text>
+                                <View style={styles.rowContainer}>
+                                    <Text style={styles.text}>수거 요일: {selectedCity.collectionDay}</Text>
+                                </View>
+                                <Text style={styles.text}>상세 정보:</Text>
+                                <Text style={styles.text}>{selectedCity.description}</Text>
+                                <View style={styles.rowContainer}>
+                                    <TouchableOpacity onPress={closeModal} style={[styles.closeButton,{marginRight:5}]}>
+                                        <Text style={styles.text}>확인</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={gotoUrl} style={[styles.closeButton,{marginLeft:5}]}>
+                                        <Text style={styles.text}>해당 사이트로 이동</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )}
                     </View>
                 </View>
             </Modal>
@@ -145,10 +202,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    
     closeButton: {
-        width: '90%',
-        height: 50,
+        width: '60%',
+        height: 30,
         backgroundColor: '#F2FFED',
         borderWidth: 1,
         alignSelf: 'center',
@@ -176,10 +232,10 @@ const styles = StyleSheet.create({
         padding: 16,
         width: '50%', // 화면에 2개의 도시가 나오도록 50%로 설정
         alignItems: 'center',
-
     },
     selectedCityItem: {
-        backgroundColor: '#white',
+        backgroundColor: '#6DC933',
+        // color:'white',
     },
     cityText: {
         fontSize: 15,
@@ -189,6 +245,11 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'Pretendard-Regular',
         fontSize: 14
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop:30,
     },
 });
 
