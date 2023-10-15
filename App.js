@@ -6,9 +6,7 @@ import { useFonts } from 'expo-font';
 import { useCallback } from 'react';
 import * as Font from "expo-font";
 
-import BottomTab from './BottomTabNavigationApp';
 import LoginScreen from './Login';
-import HomeBottom from './BottomTabNavigationApp';
 import HomeScreen from './HomeScreen';
 import JoinScreen from './Join';
 import NotificationScreen from './Notification';
@@ -34,7 +32,7 @@ import Attendance from './Attendance';
 //채연 페이지
 import Mypage from './MypageScreen';
 import OptionScreen from './Option'; //설정 기능
-//import BottomTabNavigationApp from './BottomTabNavigationApp';
+import Profile from './ProfileEdit';
 
 import KakaoMap from './KakaoMap';
 
@@ -47,8 +45,9 @@ export default function App() {
   const [location, setLocation] = useState(null); //위치
   const [userId, setUserId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
-  const [ip, setIp] = useState('10.20.101.226');
+  const [ip, setIp] = useState('10.20.102.109');
   const [locstate, setLocstate] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   const [fontsLoaded] = useFonts({
     // 글씨체는 임의로 넣었어용
@@ -66,11 +65,11 @@ export default function App() {
   }
 
   return (
-    <LocationContext.Provider value={{ location, setLocation, userId, setUserId, userEmail, setUserEmail, ip, setIp, locstate, setLocstate }}>
+    <LocationContext.Provider value={{ location, setLocation, userId, setUserId, userEmail, setUserEmail, ip, setIp, locstate, setLocstate, profileImage, setProfileImage }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: true }}>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
-        {/* <Stack.Screen name="HomeBtn" component={HomeBottom} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="HomeBtn" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }}/>
         <Stack.Screen name="Join" component={JoinScreen} />
         <Stack.Screen name="알림창" component={NotificationScreen} />
@@ -94,6 +93,7 @@ export default function App() {
         <Stack.Screen name="다함께 돌봄" component={Sub3}/>
         <Stack.Screen name="카카오맵" component={KakaoMap}/>
         <Stack.Screen name="출석 이벤트" component={Attendance}/>
+        <Stack.Screen name="Profile" component={Profile}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />

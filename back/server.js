@@ -1,6 +1,8 @@
 const express = require('express');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 const axios = require("axios");
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -201,14 +203,38 @@ app.post('/findPw', (req, res) => {
     });
 });
 
+app.post('/updateprofile', (req, res) => {
+    const { id, img } = req.body; 
+
+    console.log(id);
+    console.log(img);
+
+    const update = "UPDATE users SET img = ? WHERE id = ?";
+
+    connection.query(update, [img, id], (errUpdate,resultUpdate)=>{
+        if(errUpdate) {
+            console.error('데이터 업데이트 실패', errUpdate);
+            res.status(500).json({
+                success: false,
+                message: 'Internal Server Error'
+            });
+            return;
+        }
+
+        console.log('데이터 업데이트 성공');
+        res.json({success: true, message: '프로필 이미지 업데이트 성공'});
+    });
+});
+
+
 app.post('/logout', (req, res) => {
     req.session.destroy((err) => {
-      if(err) {
-        console.log(err);
-        return;
-      } else {
-        res.json({ success: true, message: '로그아웃 성공' });
-      }
+        if(err) {
+            console.log(err);
+            return;
+        } else {
+            res.json({ success: true, message: '로그아웃 성공' });
+        }
     });
 });
 
@@ -216,20 +242,20 @@ app.post('/delAccount', (req, res) => {
     const { id } = req.body;
     const sql = `DELETE FROM users WHERE id=?`;
     req.session.destroy((err) => {
-      if(err) {
-        console.log(err);
-        return;
-      } else {
-        connection.query(sql, [id], (err, results) => {
-            if (err) {
-                console.error('쿼리 실행 실패:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
-            res.json({ success: true });
-        });
-    
-      }
+        if(err) {
+            console.log(err);
+            return;
+        } else {
+            connection.query(sql, [id], (err, results) => {
+                if (err) {
+                    console.error('쿼리 실행 실패:', err);
+                    res.status(500).send('Internal Server Error');
+                    return;
+                }
+                res.json({ success: true });
+            });
+        
+        }
     });
     
 });

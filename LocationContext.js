@@ -12,6 +12,8 @@ const LocationContext = createContext({
     setUserEmail: () => {},
     locstate: null,
     setLocstate: () => {},
+    profileImage: null,
+    setProfileImage: () => {},
 });
 
 export default LocationContext;

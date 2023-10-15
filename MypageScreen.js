@@ -1,7 +1,7 @@
 
 import React, { useContext } from 'react';
 import LocationContext from './LocationContext';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -44,7 +44,7 @@ function MyPageScreen() {
 
   };
   const goToMy_Infor =() =>{
-    navigation.navigate('My_Infor')// 프로필
+    navigation.navigate('Profile')// 프로필
   };
  
   return (
@@ -66,7 +66,13 @@ function MyPageScreen() {
     top: 35, // 원하는 위치로 조정하세요.
     left: 30, // 원하는 위치로 조정하세요.
   }}>
-    <FontAwesome name="user" size={80} color="#333" />
+    {context.profileImage 
+    ? < Image source={ {uri : context.profileImage}} style= {{width :80,height :80 }}/>
+    :< Image source={ require('./assets/mother-earth-day.png')} style= {{width :80, height :80 }}/>
+}
+
+
+
   </View>
 
   <View style={{

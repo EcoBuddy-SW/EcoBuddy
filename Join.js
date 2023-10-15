@@ -86,7 +86,7 @@ export default function JoinScreen() {
                 console.log(response.data);
                 // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
                 Alert.alert("회원가입 성공!", "환영합니다");
-                navigation.navigate('BottomTab');
+                navigation.navigate('Login');
 
             }
             else {

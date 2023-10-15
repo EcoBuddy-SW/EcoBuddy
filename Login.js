@@ -33,7 +33,7 @@ export default function LoginScreen() {
                     CommonActions.reset({
                         index: 0,
                         routes: [
-                            {name: 'BottomTab'},
+                            {name: 'HomeBtn'},
                         ],
                     })
                 );
