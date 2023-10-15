@@ -24,12 +24,19 @@ import Map from './MapScreen';
 import Category from './CategoryScreen';
 import CategoryResult from './CateogryResultScreen';
 import Detail from './DetailScreen';
-import KakaoMap from './Kakaomap';
+import Tip2 from './Tip2Screen';
+import Tip3 from './Tip3Screen';
+import Sub1 from './SubScreen';
+import Sub2 from './Sub2Screen';
+import Sub3 from './Sub3Screen';
+import Attendance from './Attendance';
 
 //채연 페이지
 import Mypage from './MypageScreen';
 import OptionScreen from './Option'; //설정 기능
-import BottomTabNavigationApp from './BottomTabNavigationApp';
+//import BottomTabNavigationApp from './BottomTabNavigationApp';
+
+import KakaoMap from './KakaoMap';
 
 import LocationContext from './LocationContext'; //위치 저장용
 
@@ -63,9 +70,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: true }}>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name="HomeBtn" component={HomeBottom} options={{ headerShown: false }} />
-        <Stack.Screen name="BottomTab" component={BottomTab} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        {/* <Stack.Screen name="HomeBtn" component={HomeBottom} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }}/>
         <Stack.Screen name="Join" component={JoinScreen} />
         <Stack.Screen name="알림창" component={NotificationScreen} />
         <Stack.Screen name="Mypage" component={Mypage} />
@@ -81,7 +87,13 @@ export default function App() {
         <Stack.Screen name="카테고리" component={Category}/>
         <Stack.Screen name="카테고리 선택 결과" component={CategoryResult}/>
         <Stack.Screen name="세부사항" component={Detail}/>
+        <Stack.Screen name="무상수거 꿀팁" component={Tip2}/>
+        <Stack.Screen name="자취생용 꿀팁" component={Tip3}/>
+        <Stack.Screen name="국민 취업 제도" component={Sub1}/>
+        <Stack.Screen name="내집마련 디딤돌 대출" component={Sub2}/>
+        <Stack.Screen name="다함께 돌봄" component={Sub3}/>
         <Stack.Screen name="카카오맵" component={KakaoMap}/>
+        <Stack.Screen name="출석 이벤트" component={Attendance}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />

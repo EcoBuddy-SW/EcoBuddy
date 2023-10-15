@@ -14,7 +14,8 @@
           "enableMicrophonePermission": true,
           "microphonePermissionText": "$(EcoBuddy) needs access to your Microphone."
         }
-      ],[
+      ],
+      [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(ECOBUDDY) to use your location."
@@ -22,9 +23,9 @@
       ]
     ],
     "splash": {
-      "image": "./assets/ecoBuddy_Logo.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/ecoBuddy_Logo-removebg-preview.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#5A8C6B"
     },
     "packagerOpts": {
       "hostType": "tunnel",
@@ -38,6 +39,9 @@
       "infoPlist": {
         "NSCameraUsageDescription": "$(EcoBuddy) needs access to your Camera.",
         "NSMicrophoneUsageDescription": "$(EcoBuddy) needs access to your Microphone."
+      },
+      "config": {
+        "googleMapsApiKey": "d1d59c3959f65eca05bdfc46b8679b77"
       }
     },
     "android": {
@@ -49,7 +53,12 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.parkseoyun.EcoBuddy"
+      "package": "com.parkseoyun.EcoBuddy",
+      "config": {
+        "googleMaps": {
+          "apiKey": "d1d59c3959f65eca05bdfc46b8679b77"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

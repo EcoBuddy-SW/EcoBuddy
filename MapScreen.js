@@ -1,104 +1,188 @@
 import React, { useState, useEffect } from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View, Text } from 'react-native';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import { StyleSheet, View, Text , ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
-import MapViewDirections from 'react-native-maps-directions';
+import axios from 'axios';
+import MapViewDirections from 'react-native-maps-directions'; // Import MapViewDirections
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function MapScreen() {
-  // const [origin, setOrigin] = useState(null); // 출발지 좌표
-  // const [origin, setOrigin] = useState({ latitude: 37.5557, longitude: 126.9707 }); // 출발지 좌표 (서울역)
-  const [origin, setOrigin] = useState({ latitude: 37.55470, longitude: 126.9707 }); // 출발지 좌표, 임의로 서울역 위치 넣음
-  const [destination, setDestination] = useState({ latitude: 36.80055, longitude: 127.0773 }); // 목적지 좌표 , 임의로 선문대학교 위치 넣음
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const [steps, setSteps] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  //서버로부터 도착지 위치 요청 하기
-  //   const axios = require('axios');
+  useEffect(() => {
+    if (origin && destination) {
+      getDirections();
+    }
+  }, [origin, destination]);
 
-  // // 사용할 Google Maps Geocoding API 키
-  // const apiKey = 'AIzaSyD8u3lg4QLT6d9149vckWqfu90X2DXRsJI';
+  const getDirections = async () => {
+    if (origin && destination) {
+      try {
+        let responseDirectionsAPI = await axios.get(
+          `https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&mode=transit&key=AIzaSyD8u3lg4QLT6d9149vckWqfu90X2DXRsJI`
+        );
 
-  // // 변환할 주소
-  // const address = '충청남도 아산시 탕정면 선문로221번길 70';
+        if (responseDirectionsAPI.data.status === 'OK') {
+          if (responseDirectionsAPI.data.routes.length > 0 && responseDirectionsAPI.data.routes[0].legs.length > 0) {
+            let steps = responseDirectionsAPI.data.routes[0].legs[0].steps;
 
-  // // Google Maps Geocoding API 요청 URL
-  // const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+            // Get the details of each step
+            let stepDetails = [];
+            steps.forEach((step) => {
+              stepDetails.push({
+                distance: step.distance.text,
+                duration: step.duration.text,
+                instructions: step.html_instructions.replace(/<[^>]*>?/gm, ''), // Remove HTML tags
+              });
+            });
 
-  // axios.get(geocodingUrl)
-  //   .then((response) => {
-  //     const results = response.data.results;
-  //     if (results.length > 0) {
-  //       const location = results[0].geometry.location;
-  //       const latitude = location.lat;
-  //       const longitude = location.lng;
-  //       console.log(`선문대학교의 좌표: 위도 ${latitude}, 경도 ${longitude}`);
-  //     } else {
-  //       console.error('주소를 좌표로 변환할 수 없습니다.');
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error('API 요청 중 오류가 발생했습니다.', error);
-  //   });
-  // const destination = {
-  //   latitude: 선문대학교의 위도,
-  //   longitude: 선문대학교의 경도,
-  // };
+            // Set the state variable for steps
+            setSteps(stepDetails);
+          } else {
+            console.error('No routes or legs found in the response.');
+          }
+        } else {
+          console.error('Error with Google Maps Directions API:', responseDirectionsAPI.data.status);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Location permission denied');
+        return;
+      }
 
-  // useEffect(() => {
-  //   // 위치 권한을 요청하고 현재 위치를 얻어옵니다.
-  //   (async () => {
-  //     const { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       console.error('Location permission denied');
-  //       return;
-  //     }
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude: currentLatitude, longitude: currentLongitude } = location.coords;
 
-  //     const location = await Location.getCurrentPositionAsync({});
-  //     const { latitude, longitude } = location.coords;
-  //     // setOrigin({ latitude, longitude });
-  //   })();
-  // }, []);
+      setOrigin({ latitude: currentLatitude, longitude: currentLongitude });
+    })();
+  }, []);
 
-  // if (!origin) {
-  //   // 현재 위치가 아직 얻어지지 않았다면 로딩 상태를 표시하거나 에러 처리를 할 수 있습니다.
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Loading...</Text>
-  //     </View>
-  //   );
-  // }
+  useEffect(() => {
+    (async () => {
+      const apiKey = 'AIzaSyD8u3lg4QLT6d9149vckWqfu90X2DXRsJI';
+      const address = encodeURIComponent('서울특별시 중구 소공동 세종대로18길 2');
+
+      try {
+        const response = await axios.get(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
+        );
+
+        if (response.data.results.length > 0) {
+          const { lat, lng } = response.data.results[0].geometry.location;
+          setDestination({ latitude: lat, longitude: lng });
+        }
+      } catch (error) {
+        console.error('API request error:', error);
+      }
+    })();
+  }, []);
+
+  if (!origin || !destination || isLoading) { 
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#628F5D" />
+        <Text style={styles.loadingText}>현재 위치를 로딩 중입니다...</Text>
+      </View>
+    );
+ }
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{ // 경복궁으로 함
-          latitude: 37.5786, // 경복궁의 북위 37° 34′ 43″
-          longitude: 126.9783, // 경복궁의 동경 126° 58′ 38″
-          latitudeDelta: 5,
-          longitudeDelta: 1,
-        }}
-      >
+      <MapView style={styles.map} region={getMapRegion(origin, destination)}>
+        <Marker coordinate={origin} title="현위치" />
+        <Marker coordinate={destination} title="도착지" />
+        {steps.map((step, index) => {
+          const stepCoordinates = []; // Replace with actual coordinates
+          return <Polyline key={index} coordinates={stepCoordinates} strokeColor="#F00" strokeWidth={2} />;
+        })}
+        {/* Use MapViewDirections component to draw directions */}
         <MapViewDirections
           origin={origin}
           destination={destination}
-          apikey={'AIzaSyD8u3lg4QLT6d9149vckWqfu90X2DXRsJI'}
+          apikey="AIzaSyD8u3lg4QLT6d9149vckWqfu90X2DXRsJI"
           strokeWidth={3}
           strokeColor="hotpink"
-          mode={'TRANSIT'} // 방향을 계산할 때 사용할 교통 모드
+          mode="TRANSIT"
         />
-        <Marker coordinate={origin} title="출발지" />
-        <Marker coordinate={destination} title="선문대학교" />
       </MapView>
+      {/* Scrollable view for steps */}
+      <ScrollView contentContainerStyle={{ ...styles.directionsContainer, paddingBottom: 60 }}>
+        {steps.map((step, index) => (
+          <View key={index} style={[styles.stepContainer, index === steps.length - 1 && styles.lastStepContainer]}>
+            <Text>{`Step ${index + 1}`}</Text>
+            <Text>{`Distance : ${step.distance}`}</Text>
+            <Text>{`Duration : ${step.duration}`}</Text>
+            <Text>{`${step.instructions}`}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
+}
+// 아래의 함수를 추가하여 지도 영역을 계산합니다.
+function getMapRegion(origin, destination) {
+  if (!origin || !destination) {
+    return null;
+  }
+
+  const allCoordinates = [origin, destination];
+  const minX = Math.min(...allCoordinates.map(coord => coord.latitude));
+  const maxX = Math.max(...allCoordinates.map(coord => coord.latitude));
+  const minY = Math.min(...allCoordinates.map(coord => coord.longitude));
+  const maxY = Math.max(...allCoordinates.map(coord => coord.longitude));
+
+  return {
+    latitude: (minX + maxX) / 2,
+    longitude: (minY + maxY) / 2,
+    latitudeDelta: (maxX - minX) * 1.2, // 작은 값으로 조절
+    longitudeDelta: (maxY - minY) * 1.2, // 작은 값으로 조절
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   map: {
+    flex: 2,
     width: '100%',
-    height: '100%',
+  },
+  directionsContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: 20,
+  },
+  stepContainer: {
+    marginVertical: 10,
+    marginBottom: 10,
+  },
+  lastStepContainer: {
+    marginBottom: 80,
+  }, 
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor:'white',
+  },
+
+  loadingText: {
+    fontFamily: 'Pretendard-Bold',
+    marginTop: 10,
   },
 });

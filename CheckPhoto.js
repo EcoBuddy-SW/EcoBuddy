@@ -10,7 +10,7 @@ function CheckPhoto({ route, navigation }) {
 
   // 확인 버튼을 눌렀을 때 Home으로 이동합니다.
   const handleConfirm = () => {
-    navigation.navigate('HomeBtn');
+    navigation.navigate('Home');
   };
 
   return (
