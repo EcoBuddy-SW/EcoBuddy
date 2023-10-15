@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal, StyleSheet, Linking } from 'react-
 
 // 데이터: 지역 정보
 const regions = [
-    '서울', '경기도', '강원도', '충청북도', '충청남도', '경상북도', '경상남도', '전라북도', '전라남도',
+    '서울', '경기도', '강원도', '충청도', '경상북도', '경상남도', '전라북도', '전라남도',
 ];
 
 // 데이터: 시 단위 지역 정보
@@ -11,45 +11,27 @@ const citiesByRegion = {
     '서울': [
         {
             name: '강남구',
-            collectionDay: '매주 월요일',
-            description: '강남구 무상수거에 대한 상세 정보...',
-            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
-        },
-        {
-            name: '강서구',
-            collectionDay: '매주 화요일',
-            description: '강서구 무상수거에 대한 상세 정보...',
-            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+            collectionDay: '전화 문의',
+            description: '소형가전 1~4개 ☎ 1522-3833',
+            websiteUrl: 'https://www.gangnam.go.kr/waste/apply/info.do?mid=ID03_020704',
         },
         // 다른 지역 정보...
     ],
     '경기도': [
         {
-            name: '수원시',
-            collectionDay: '매주 수요일',
-            description: '수원시 무상수거에 대한 상세 정보...',
-            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
-        },
-        {
-            name: '성남시',
-            collectionDay: '매주 목요일',
-            description: '성남시 무상수거에 대한 상세 정보...',
-            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+            name: '광명시',
+            collectionDay: '월~일(10:00~19:00)',
+            description: '광명시 재활용센터 ☎ 02-891-2543',
+            websiteUrl: 'https://www.gm.go.kr/pt/partInfo/en/cleaning/recycle/PTMN227.jsp',
         },
         // 다른 지역 정보...
     ],
-    '충청남도': [
+    '충청도': [
         {
-            name: '아산시',
-            collectionDay: '매주 수요일',
-            description: '아산시 무상수거에 대한 상세 정보...',
-            websiteUrl: 'https://www.asan.go.kr/town/baebang/board/?tb_nm=notice&m_mode=view&pds_no=2017080811181048510&PageNo=31',
-        },
-        {
-            name: '천안시',
-            collectionDay: '매주 목요일',
-            description: '천안시 무상수거에 대한 상세 정보...',
-            websiteUrl: 'https://www.cheonan.go.kr/kor/sub01_03_06.do',
+            name: '통합',
+            collectionDay: '전화 문의',
+            description: '☎ 1599-0903',
+            websiteUrl: 'https://www.15990903.or.kr/portal/main/main.do',
         },
         // 다른 지역도 추가해야 됨!!
     ],
