@@ -53,7 +53,7 @@ function CameraScreen({ navigation }) {
             }}
             onPress={takePicture}
           >
-            <Text style={{ fontSize: 20, color: 'black' }}>Take Photo</Text>
+            <Text style={{ fontSize: 20, color: 'black' }}>촬영하기</Text>
           </TouchableOpacity>
         </View>
       </Camera>

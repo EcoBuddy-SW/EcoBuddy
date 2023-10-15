@@ -19,7 +19,7 @@ function MyPageScreen() {
     navigation.navigate('카카오맵'); // 'Map' 스크린으로 이동
   };
   const goToCoins = () => {
-    navigation.navigate('Coins'); // 'Coins' 스크린으로 이동
+    navigation.navigate('포인트'); // '포인트' 스크린으로 이동
   };
   const goToRecord = () =>{
     navigation.navigate('Record'); // record 스크린으로 이동
