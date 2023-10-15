@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   question: {
     marginTop: 20,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Pretendard-Bold',
   },
   buttonGroup: {
     flexDirection: 'column',
@@ -137,6 +137,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#74A16F',
     color: 'black', // 버튼의 글자 색상을 검정색으로 설정
   },
+  description: {
+    fontFamily: 'Pretendard-Regular',
+  }
 });
 
 export default CheckPhoto;
