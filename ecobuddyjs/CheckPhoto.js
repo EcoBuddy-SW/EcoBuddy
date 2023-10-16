@@ -26,6 +26,7 @@ function CheckPhoto({ route, navigation }) {
       })
       .then(function (response) {
         console.log(response.data);
+        navigation.navigate('Home');
       })
       .catch(function (error) {
         console.log(error);

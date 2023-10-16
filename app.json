@@ -1,8 +1,5 @@
 {
   "expo": {
-    "initialPreferences": {
-      "theme": "light" 
-    },
     
     "name": "EcoBuddy",
     "slug": "EcoBuddy",

@@ -32,16 +32,14 @@ import Attendance from './Attendance';
 
 //채연 페이지
 import MypageScreen from './MypageScreen';
+import MyPage from './MyPage';
 import MapScreen from './Map'; // 분리수거 기능
 import OptionScreen from './Option'; //설정 기능
-import Profile from './ProfileEdit';
 import CoinsScreen from './Coins'; // 포인트 기능
 import RecordScreen from './Record'; // 
 import ProfileDialog from './ProfileDialog';
 import StatistcsScreen from './Statistcs';
 import My_InforScreen from './My_Infor';
-
-import KakaoMap from './KakaoMap';
 
 import LocationContext from './LocationContext'; //위치 저장용
 
@@ -52,7 +50,7 @@ export default function App() {
   const [location, setLocation] = useState(null); //위치
   const [userId, setUserId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
-  const [ip, setIp] = useState('10.20.102.109');
+  const [ip, setIp] = useState('172.16.101.218');
   const [locstate, setLocstate] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
 
@@ -80,7 +78,6 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }}/>
         <Stack.Screen name="Join" component={JoinScreen} />
         <Stack.Screen name="알림창" component={NotificationScreen} />
-        <Stack.Screen name="Mypage" component={Mypage} />
         <Stack.Screen name="FindUserId" component={FindUserId} />
         <Stack.Screen name="FindUserPW" component={FindUserPW} />
         <Stack.Screen name="Camera" component={Camera} />
@@ -98,13 +95,12 @@ export default function App() {
         <Stack.Screen name="국민 취업 제도" component={Sub1}/>
         <Stack.Screen name="내집마련 디딤돌 대출" component={Sub2}/>
         <Stack.Screen name="다함께 돌봄" component={Sub3}/>
-        <Stack.Screen name="카카오맵" component={KakaoMap}/>
         <Stack.Screen name="출석 이벤트" component={Attendance}/>
-        <Stack.Screen name="Profile" component={Profile}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />
-        <Stack.Screen name="MyPage" component={MypageScreen} /> 
+        <Stack.Screen name="mypagescreen" component={MypageScreen} />
+        <Stack.Screen name="mypage" component={MyPage} /> 
         <Stack.Screen name="Map" component={MapScreen} />
         <Stack.Screen name="Coins" component={CoinsScreen} /> 
         <Stack.Screen name="Record" component={RecordScreen} />

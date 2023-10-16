@@ -130,7 +130,7 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     this.startTimer();
-    this.getLocation();    
+    //this.getLocation();    
   }
   
   async getLocation() {

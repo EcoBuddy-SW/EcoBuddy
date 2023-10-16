@@ -204,7 +204,9 @@ app.post('/findPw', (req, res) => {
 });
 
 app.post('/updateprofile', (req, res) => {
-    const { id, img } = req.body; 
+    
+    const { name, email } = req.body; // name과 email 필드
+    const profile_picture = req.file; // profile_picture 파일
 
     console.log(id);
     console.log(img);

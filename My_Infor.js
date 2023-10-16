@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity, Image, ScrollView, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -6,8 +6,8 @@ import Svg, { Circle } from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import ProfileDialog from './ProfileDialog';
+import LocationContext from './LocationContext';
 
-const UPLOAD_ENDPOINT = 'https://example.com/upload'; // 실제 서버 엔드포인트로 대체해야 합니다.
 
 const { width, height } = Dimensions.get('window');
 const circleRadius = 80;
@@ -15,6 +15,8 @@ const circleCenterX = width / 2;
 const circleCenterY = height / 2;
 
 export default function MyInfoScreen() {
+  
+  const context = useContext(LocationContext);
   const [photo, setPhoto] = useState(undefined);
   const [isProfileDialogVisible, setProfileDialogVisible] = useState(false);
   const [profileInfo, setProfileInfo] = useState({
@@ -56,9 +58,9 @@ export default function MyInfoScreen() {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setPhoto(result.uri);
-      savePhoto(result.uri);
+    if (!result.canceled) {
+      setPhoto(result.assets[0].uri);
+      savePhoto(result.assets[0].uri);
     }
   };
 
@@ -72,7 +74,7 @@ export default function MyInfoScreen() {
           name: 'photo.jpg',
         });
 
-        const response = await axios.post(UPLOAD_ENDPOINT, formData, {
+        const response = await axios.post(`http://${context.ip}:3003/updateprofile`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

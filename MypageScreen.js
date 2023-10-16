@@ -44,7 +44,7 @@ function MyPageScreen() {
 
   };
   const goToMy_Infor =() =>{
-    navigation.navigate('Profile')// 프로필
+    navigation.navigate('My_Infor')// 프로필
   };
  
   return (
@@ -63,11 +63,11 @@ function MyPageScreen() {
     right: 60,
     borderRadius: 8,
     position: 'absolute', // 프로필을 겹쳐지게 만듭니다.
-    top: 35, // 원하는 위치로 조정하세요.
+    top: 10, // 원하는 위치로 조정하세요.
     left: 30, // 원하는 위치로 조정하세요.
   }}>
     {context.profileImage 
-    ? < Image source={ {uri : context.profileImage}} style= {{width :80,height :80 }}/>
+    ? < Image source={ {uri : context.profileImage}} style= {{width :80, height :80 }}/>
     :< Image source={ require('./assets/mother-earth-day.png')} style= {{width :80, height :80 }}/>
 }
 
@@ -77,7 +77,7 @@ function MyPageScreen() {
 
   <View style={{
   position: 'absolute',
-  top: 60,
+  top: 50,
   left: 120,
   width: 250,
   height: 40, // 높이를 조정하세요.
@@ -100,7 +100,7 @@ function MyPageScreen() {
   {/* "내 정보" 테두리 */}
   <TouchableOpacity onPress={goToMy_Infor}>
 
-    <View style={{ width: 65, height: 25, borderColor: '#e9e9e9', borderWidth: 1, borderRadius: 10, top: -1, marginLeft: 15,
+    <View style={{ width: 65, height: 30, borderColor: '#e9e9e9', borderWidth: 1, borderRadius: 10, top: -20, marginLeft: 15,
      right: 60, shadowOffset: { width: 0, height: 3 },
      shadowOpacity: 0.1,  shadowRadius: 2, shadowColor: 'black',}}>
       <Text style={{ fontSize: 15, color: 'black', textAlign: 'center', textAlignVertical: 'center',top:5, }}>프로필</Text>
