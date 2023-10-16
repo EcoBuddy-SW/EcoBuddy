@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useContext } from 'react';
+import { Appearance, useColorScheme } from 'react-native';
 
 import { useFonts } from 'expo-font';
 import { useCallback } from 'react';
@@ -30,9 +31,15 @@ import Sub3 from './Sub3Screen';
 import Attendance from './Attendance';
 
 //채연 페이지
-import Mypage from './MypageScreen';
+import MypageScreen from './MypageScreen';
+import MapScreen from './Map'; // 분리수거 기능
 import OptionScreen from './Option'; //설정 기능
 import Profile from './ProfileEdit';
+import CoinsScreen from './Coins'; // 포인트 기능
+import RecordScreen from './Record'; // 
+import ProfileDialog from './ProfileDialog';
+import StatistcsScreen from './Statistcs';
+import My_InforScreen from './My_Infor';
 
 import KakaoMap from './KakaoMap';
 
@@ -97,6 +104,12 @@ export default function App() {
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />
+        <Stack.Screen name="MyPage" component={MypageScreen} /> 
+        <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen name="Coins" component={CoinsScreen} /> 
+        <Stack.Screen name="Record" component={RecordScreen} />
+        <Stack.Screen name="Statistcs" component={StatistcsScreen}/>
+        <Stack.Screen name="My_Infor" component={My_InforScreen}/>
         {/* 추가 화면을 여기에 추가할 수 있습니다 */}
         </Stack.Navigator>
       </NavigationContainer>

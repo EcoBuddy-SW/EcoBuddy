@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, Pressable, StatusBar, useColorScheme } from 'react-native';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import axios from 'axios';
 import LocationContext from './LocationContext';
@@ -10,7 +10,8 @@ export default function OptionScreen() {
     const context = useContext(LocationContext);
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedMode, setSelectedMode] = useState('light');
+    const [selectedMode, setSelectedMode] = useState(colorScheme || 'light');
+    const colorScheme = useColorScheme();
 
     const handleLogoutPress = () => {
         Alert.alert(
@@ -102,12 +103,18 @@ export default function OptionScreen() {
         setModalVisible(true);
     };
 
-  const handleModeSelection = (mode) => {
-    setSelectedMode(mode);
-    setModalVisible(false);
-    // 선택한 모드에 따른 로직을 추가할 수 있습니다.
-    // 예를 들어, 다크 모드와 라이트 모드로 화면을 변경하는 등의 작업을 수행할 수 있습니다.
-  };
+    const handleModeSelection = (mode) => {
+        setSelectedMode(mode);
+        setModalVisible(false);
+        // 선택한 모드에 따른 테마를 변경하는 로직을 추가할 수 있습니다.
+        // 예를 들어, 선택한 모드가 'light'일 때 라이트 모드 테마로 변경하는 등의 작업을 수행할 수 있습니다.
+      };
+    
+      const themeContainerStyle =
+        selectedMode === 'light' ? styles.lightContainer : styles.darkContainer;
+      const themeTextStyle =
+        selectedMode === 'light' ? styles.lightThemeText : styles.darkThemeText;
+    
 
   return (
     <View style={styles.container}>
