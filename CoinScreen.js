@@ -101,20 +101,20 @@ export default function CoinScreen() {
                 {/* 모바일 쿠폰 1개 */}
                 <View style={styles.subContainer}>
                     <Image
-                        source={require('./assets/images/starbucks.jpg')}
+                        source={require('./assets/images/starbucks2.jpg')}
                         style={styles.image}
                     />
                     <View style={styles.subTextContainer}>
-                        <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피 쿠폰</Text>
+                        <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피X2 쿠폰</Text>
                         <View style={styles.rowContainer}>
                             <TouchableOpacity onPress={() => {
-                                handleExchange(4500, require('./assets/images/starbucksCupon.jpg'));
+                                handleExchange(8800, require('./assets/images/starbucks2.jpg'));
                             }}>
                                 <View style={styles.btn}>
                                     <Text style={styles.btnText}>교환하기</Text>
                                 </View>
                             </TouchableOpacity>
-                            <Text style={styles.title}>4500 P</Text>
+                            <Text style={styles.title}>8800 P</Text>
                         </View>
                     </View>
                 </View>
