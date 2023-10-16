@@ -16,6 +16,14 @@
         }
       ],
       [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(EcoBuddy) to access your photos.",
+          "savePhotosPermission": "Allow $(EcoBuddy) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(ECOBUDDY) to use your location."

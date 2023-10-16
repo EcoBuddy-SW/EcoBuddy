@@ -1,56 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, PermissionsAndroid } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-
-// const admin = require('firebase-admin');
-
-// // Firebase 서비스 계정 키 (Firebase 콘솔에서 다운로드한 파일)
-// const serviceAccount = require('./path/to/serviceAccountKey.json');
-
-// // Firebase Admin SDK 초기화
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-// });
-
-// // 대상 디바이스의 FCM 토큰
-// const registrationToken = '대상_기기의_FCM_토큰_여기에_입력';
-
-// // 푸시 알림 메시지 생성
-// const message = {
-//   notification: {
-//     title: '제목',
-//     body: '푸시 알림 내용',
-//   },
-//   token: registrationToken, // 메시지 수신 대상의 FCM 토큰
-// };
-
-// // Firebase Cloud Messaging을 통해 메시지 보내기
-// admin.messaging().send(message)
-//   .then((response) => {
-//     console.log('푸시 알림 보내기 성공:', response);
-//   })
-//   .catch((error) => {
-//     console.error('푸시 알림 보내기 실패:', error);
-//   });
-
+import * as MediaLibrary from 'expo-media-library';
+import { Asset } from 'expo-asset';
 
 export default function CoinScreen() {
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalImage, setModalImage] = useState(null); // 모달 이미지 상태 추가
+    const [userPoints, setUserPoints] = useState(30000); // 30000으로 변경 ,  유저가 가지고 있는 포인트 임의로 넣음!
 
-    const handleExchange = () => {
-        setModalVisible(true);
+    const handleExchange = async (pointsNeeded, couponImage) => {
+        if (userPoints < pointsNeeded) {
+            Alert.alert('포인트 부족', '교환하기 위한 포인트가 부족합니다.');
+        } else {
+            const imageAsset = Asset.fromModule(couponImage); // 이미지를 Asset으로 불러오기
+            await imageAsset.downloadAsync(); // 이미지를 다운로드합니다.
+            setModalImage(imageAsset); // 모달 이미지 상태 업데이트
+            setModalVisible(true)
+        }
     };
 
     const handleModalClose = () => {
         setModalVisible(false);
     };
 
+    const handleSaveImage = async () => {
+        try {
+            if (modalImage) {
+                await modalImage.downloadAsync(); // 이미지를 다운로드합니다.
+                const imageUri = modalImage.localUri; // 이미지의 로컬 URI 가져오기
+
+                // 권한 확인
+                const { status } = await MediaLibrary.requestPermissionsAsync();
+
+                if (status === 'granted') {
+                    // 앨범 이름
+                    const albumName = 'ECOBUDDY';
+
+                    // 이미 존재하는 앨범인지 확인
+                    const albums = await MediaLibrary.getAlbumsAsync();
+                    const album = albums.find((a) => a.title === albumName);
+
+                    if (!album) {
+                        // 앨범 생성
+                        const createdAlbum = await MediaLibrary.createAlbumAsync(albumName);
+                    }
+
+                    // 이미지 저장
+                    const asset = await MediaLibrary.createAssetAsync(imageUri);
+                    await MediaLibrary.addAssetsToAlbumAsync([asset], album.id); // 앨범에 이미지 추가
+
+                    console.log('Image saved to', asset.uri);
+                    setModalVisible(false); // 모달 닫기
+                } else {
+                    console.log('Media Library permission not granted');
+                }
+            }
+        } catch (error) {
+            console.error('Error saving image : ', error);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={{ marginBottom: 50 }}></View>
-            <Text style={styles.title}>현재 포인트 : 1587 P</Text>
+            <Text style={styles.title}>현재 포인트 : {userPoints} P</Text>
             <View style={styles.centeredTextContainer}>
-                <Text style={styles.text}>모바일 쿠폰은 가입하실 때{"\n"}사용하신 전화번호로 보내드립니다</Text>
+                <Text style={styles.text}>모바일 쿠폰은 교환하기 버튼을 누르면 보여지고{'\n'}팝업창의 확인 버튼을 누르면 자동으로{'\n'}갤러리에 저장됩니다</Text>
             </View>
             <ScrollView style={{ width: '100%', }}>
                 {/* 모바일 쿠폰 1개 */}
@@ -63,7 +79,7 @@ export default function CoinScreen() {
                         <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피 쿠폰</Text>
                         <View style={styles.rowContainer}>
                             <TouchableOpacity onPress={() => {
-                                handleExchange(); // 첫 번째 동작 수행
+                                handleExchange(4500, require('./assets/images/starbucksCupon.jpg'));
                             }}>
                                 <View style={styles.btn}>
                                     <Text style={styles.btnText}>교환하기</Text>
@@ -86,7 +102,57 @@ export default function CoinScreen() {
                     <View style={styles.subTextContainer}>
                         <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피 쿠폰</Text>
                         <View style={styles.rowContainer}>
-                            <TouchableOpacity onPress={handleExchange}>
+                            <TouchableOpacity onPress={() => {
+                                handleExchange(4500, require('./assets/images/starbucksCupon.jpg'));
+                            }}>
+                                <View style={styles.btn}>
+                                    <Text style={styles.btnText}>교환하기</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <Text style={styles.title}>4500 P</Text>
+                        </View>
+                    </View>
+                </View>
+
+
+                <View style={{ marginBottom: 30 }}></View>
+
+                {/* 모바일 쿠폰 1개 */}
+                <View style={styles.subContainer}>
+                    <Image
+                        source={require('./assets/images/chicken.jpg')}
+                        style={styles.image}
+                    />
+                    <View style={styles.subTextContainer}>
+                        <Text style={[styles.text, styles.leftAlignText]}>치킨 쿠폰</Text>
+                        <View style={styles.rowContainer}>
+                            <TouchableOpacity onPress={() => {
+                                handleExchange(20000, require('./assets/images/chicken.jpg'));
+                            }}>
+                                <View style={styles.btn}>
+                                    <Text style={styles.btnText}>교환하기</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <Text style={styles.title}>20000 P</Text>
+                        </View>
+                    </View>
+                </View>
+
+
+                <View style={{ marginBottom: 30 }}></View>
+
+                {/* 모바일 쿠폰 1개 */}
+                <View style={styles.subContainer}>
+                    <Image
+                        source={require('./assets/images/starbucks.jpg')}
+                        style={styles.image}
+                    />
+                    <View style={styles.subTextContainer}>
+                        <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피 쿠폰</Text>
+                        <View style={styles.rowContainer}>
+                            <TouchableOpacity onPress={() => {
+                                handleExchange(4500, require('./assets/images/starbucksCupon.jpg'));
+                            }}>
                                 <View style={styles.btn}>
                                     <Text style={styles.btnText}>교환하기</Text>
                                 </View>
@@ -108,51 +174,9 @@ export default function CoinScreen() {
                     <View style={styles.subTextContainer}>
                         <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피 쿠폰</Text>
                         <View style={styles.rowContainer}>
-                            <TouchableOpacity onPress={handleExchange}>
-                                <View style={styles.btn}>
-                                    <Text style={styles.btnText}>교환하기</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <Text style={styles.title}>4500 P</Text>
-                        </View>
-                    </View>
-                </View>
-
-
-                <View style={{ marginBottom: 30 }}></View>
-
-                {/* 모바일 쿠폰 1개 */}
-                <View style={styles.subContainer}>
-                    <Image
-                        source={require('./assets/images/starbucks.jpg')}
-                        style={styles.image}
-                    />
-                    <View style={styles.subTextContainer}>
-                        <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피 쿠폰</Text>
-                        <View style={styles.rowContainer}>
-                            <TouchableOpacity onPress={handleExchange}>
-                                <View style={styles.btn}>
-                                    <Text style={styles.btnText}>교환하기</Text>
-                                </View>
-                            </TouchableOpacity>
-                            <Text style={styles.title}>4500 P</Text>
-                        </View>
-                    </View>
-                </View>
-
-
-                <View style={{ marginBottom: 30 }}></View>
-
-                {/* 모바일 쿠폰 1개 */}
-                <View style={styles.subContainer}>
-                    <Image
-                        source={require('./assets/images/starbucks.jpg')}
-                        style={styles.image}
-                    />
-                    <View style={styles.subTextContainer}>
-                        <Text style={[styles.text, styles.leftAlignText]}>스타벅스 커피 쿠폰</Text>
-                        <View style={styles.rowContainer}>
-                            <TouchableOpacity onPress={handleExchange}>
+                            <TouchableOpacity onPress={() => {
+                                handleExchange(20000, require('./assets/images/starbucksCupon.jpg'));
+                            }}>
                                 <View style={styles.btn}>
                                     <Text style={styles.btnText}>교환하기</Text>
                                 </View>
@@ -174,9 +198,12 @@ export default function CoinScreen() {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text style={[styles.title, { fontSize: 15 }]}>쿠폰을 전화번호로 보내드렸습니다.{"\n"}{"\n"}메시지를 확인해보세요!</Text>
+                        <Image
+                            source={modalImage} // 모달 이미지는 상태에서 가져옵니다.
+                            style={styles.image2}
+                        />
                         <View style={{ marginBottom: 40 }}></View>
-                        <TouchableOpacity onPress={handleModalClose} style={[styles.closeButton, { marginRight: 5 }]}>
+                        <TouchableOpacity onPress={handleSaveImage} style={[styles.closeButton, { marginRight: 5 }]}>
                             <Text style={styles.text}>확인</Text>
                         </TouchableOpacity>
                     </View>
@@ -252,6 +279,11 @@ const styles = StyleSheet.create({
         height: 100, // 조절하실 수 있습니다.
         borderRadius: 10,
     },
+    image2: {
+        width: '80%', // 조절하실 수 있습니다.
+        height: '80%', // 조절하실 수 있습니다.
+        borderRadius: 10,
+    },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -262,8 +294,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
         borderRadius: 10,
-        width: 300, // 모달 너비 조절
-        height: 150, // 모달 높이 조절
+        width: '70%', // 모달 너비 조절
+        height: '50%', // 모달 높이 조절
         alignItems: 'center',
     },
     modalText: {
