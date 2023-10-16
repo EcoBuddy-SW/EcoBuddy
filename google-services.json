@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "416881669874",
+    "project_id": "ecobuddy-swu-e269d",
+    "storage_bucket": "ecobuddy-swu-e269d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416881669874:android:60c243f0058ad11a76c26b",
+        "android_client_info": {
+          "package_name": "com.ecobuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxzCi76mYUgM3SPM47pI53_qTeMZBK2o0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

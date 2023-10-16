@@ -1,6 +1,6 @@
 module.exports = {
     host: 'localhost',
     user: 'root',
-    password: 'root',
+    password: '0000',
     database: 'ecobuddy'
 };
