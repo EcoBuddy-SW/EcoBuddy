@@ -108,6 +108,7 @@ function CheckPhoto({ route, navigation }) {
             <Button mode="contained" onPress={() => setTrashTypeConfirmed(true)} style={styles.button}>
               네
             </Button>
+            <View style={{marginLeft:10}}></View>
             <Button mode="contained" onPress={handleRetakePhoto} style={styles.button}>
               아니요
             </Button>

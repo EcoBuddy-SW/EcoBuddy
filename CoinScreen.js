@@ -68,11 +68,15 @@ export default function CoinScreen() {
 
     return (
         <View style={styles.container}>
-            <View style={{ marginBottom: 50 }}></View>
+            <View style={{ marginBottom: 20 }}></View>
             <Text style={styles.title}>현재 포인트 : {userPoints} P</Text>
             <View style={styles.centeredTextContainer}>
                 <Text style={styles.text}>모바일 쿠폰은 교환하기 버튼을 누르면 보여지고{'\n'}팝업창의 확인 버튼을 누르면 자동으로{'\n'}갤러리 → ECOBUDDY 에 저장됩니다</Text>
             </View>
+            <Image
+                source={require('./assets/images/11111.png')}
+                style={{ width: 250, height: 150 }}
+            />
             <ScrollView style={{ width: '100%', }}>
                 {/* 모바일 쿠폰 1개 */}
                 <View style={styles.subContainer}>
@@ -226,7 +230,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center', // 화면 가운데 정렬
     },
     centeredTextContainer: {
-        marginBottom: 40,
         marginTop: 40,
         justifyContent: 'center',
         alignItems: 'center', // 텍스트 중앙 정렬
