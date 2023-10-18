@@ -9,6 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CameraScreen from './CameraScreen';
 import MypageScreen from './MypageScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import CommunityScreen from './CommunityScreen';
 
 const { width } = Dimensions.get('window');
 
@@ -51,16 +52,16 @@ function BottomTabNavigationApp() {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Notification"
-        component={NotificationScreen}
+      <Tab.Screen
+        name="Chat"
+        component={CommunityScreen}
         options={{
-          title: '검색',
+          title: '커뮤니티',
           tabBarIcon: ({ color, size }) => (
-            <Icon name="notifications" color={color} size={size} />
+            <Icon name="chat" color={color} size={size} />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Setting"
         component={MypageScreen}

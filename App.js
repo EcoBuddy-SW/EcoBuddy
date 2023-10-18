@@ -36,6 +36,8 @@ import Sub2 from './Sub2Screen';
 import Sub3 from './Sub3Screen';
 import Attendance from './Attendance';
 import Coins from './CoinScreen';
+import Community from './CommunityScreen';
+import Write from './WriteScreen';
 
 //채연 페이지
 import Mypage from './MypageScreen';
@@ -102,6 +104,8 @@ export default function App() {
         <Stack.Screen name="카카오맵" component={KakaoMap}/>
         <Stack.Screen name="출석 이벤트" component={Attendance}/>
         <Stack.Screen name="포인트" component={Coins}/>
+        <Stack.Screen name="커뮤니티" component={Community}/>
+        <Stack.Screen name="글 등록" component={Write}/>
 
         {/* 채연 페이지 */}
         <Stack.Screen name="Option" component={OptionScreen} />
