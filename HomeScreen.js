@@ -217,6 +217,11 @@ class HomeScreen extends Component {
     navigation.navigate('식용유');
   }
 
+  handleSub1(){
+    const { navigation } = this.props;
+    navigation.navigate('국민 취업 제도');
+  }
+
   handleSub2() {
     const { navigation } = this.props;
     navigation.navigate('내집마련 디딤돌 대출');
