@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
+import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function CommunityScreen() {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImages, setSelectedImages] = useState([]);
+    const [inputText, setInputText] = useState("");
+    const maxImages = 5; // 최대 이미지 수
 
     useEffect(() => {
         (async () => {
@@ -22,42 +24,60 @@ export default function CommunityScreen() {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
 
-        console.log("selectedImage:", selectedImage);
-
-
         if (!result.cancelled) {
-            setSelectedImage(result.uri);
+            if (selectedImages.length < maxImages) {
+                setSelectedImages([...selectedImages, result.assets[0].uri]);
+            } else {
+                alert('최대 5장까지 선택할 수 있습니다.');
+            }
         }
     };
-
-    function gotoCommunity() {
-        setModalVisible(true);
-    }
 
     function closeModal() {
         setModalVisible(false);
         navigation.navigate('커뮤니티');
     }
 
+    function openModal() {
+        setModalVisible(true);
+    }
+
     return (
         <View style={styles.background}>
-            <ScrollView horizontal={true} contentContainerStyle={[styles.rowContainer]}>
-                <TouchableOpacity style={styles.container} onPress={pickImage}>
-                    {selectedImage && (
-                        <Image source={{ uri: selectedImage }} style={styles.image} />
-                    )}
-                </TouchableOpacity>
+            <View style={{ marginBottom: 30 }}></View>
+            <Text style={styles.title}>최대 5장까지 선택할 수 있습니다</Text>
+            <ScrollView horizontal={true} contentContainerStyle={styles.rowContainer} style={{ flexGrow: 0 }}>
+                {selectedImages.map((image, index) => (
+                    <View key={index} style={styles.imageContainer}>
+                        <Image source={{ uri: image }} style={styles.image} />
+                    </View>
+                ))}
+                {selectedImages.length < maxImages && (
+                    <TouchableOpacity style={styles.container} onPress={pickImage}>
+                        <Icon name="photo" style={styles.icon} />
+                    </TouchableOpacity>
+                )}
             </ScrollView>
 
             <View style={styles.line}></View>
 
-            <View style={[styles.text, { padding: 20, color: 'lightgray' }]}>
-                <Text style={styles.text}>내용을 입력하세요{'\n'}최대 3000자까지 입력 가능합니다</Text>
-            </View>
+            <ScrollView contentContainerStyle={styles.background} style={{ padding: 20, }}>
+                <TextInput
+                    style={styles.text}
+                    placeholder="내용을 입력하세요"
+                    onChangeText={(text) => setInputText(text)} // 입력한 텍스트 업데이트
+                    value={inputText} // 입력 필드의 값
+                />
+            </ScrollView>
+
+            <View style={styles.line}></View>
+            <TouchableOpacity onPress={openModal} style={[styles.closeButton, { marginBottom: 50 }]}>
+                <Text style={styles.title}>글 등록</Text>
+            </TouchableOpacity>
 
             <Modal
                 animationType="slide"
@@ -67,9 +87,9 @@ export default function CommunityScreen() {
             >
                 <View style={styles.modalBackground}>
                     <View style={styles.modalContent}>
-                        <Text>글을 등록하였습니다.</Text>
-                        <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-                            <Text style={styles.text}>확인</Text>
+                        <Text style={styles.text}>글을 등록하였습니다.</Text>
+                        <TouchableOpacity onPress={closeModal} style={[styles.closeButton, { width: 150, marginTop: 30 }]}>
+                            <Text style={[styles.text, { textAlign: 'center' }]}>확인</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -78,55 +98,45 @@ export default function CommunityScreen() {
     );
 }
 
-
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        backgroundColor: '#F2FFED',
+        backgroundColor: 'white',
     },
     rowContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        marginBottom: 20,
+        marginTop: 20,
     },
     container: {
+        width: 200,
+        height: 200,
+        backgroundColor: '#F2FFED',
+        padding: 10,
+        borderRadius: 10,
+        marginRight: 10, // 오른쪽 여백 추가
+        marginLeft: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    imageContainer: {
         width: 200,
         height: 200,
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 10,
-        marginTop: 10,
-        marginBottom: 10,
-    },
-    line: {
-        flexDirection: 'row',
+        marginRight: 10, // 오른쪽 여백 추가
         justifyContent: 'center',
         alignItems: 'center',
-        alignSelf: 'center',
-        paddingHorizontal: 0,
-        borderBottomWidth: 1,
-        borderBottomColor: 'lightgray',
-        height: 1,
     },
-    shadowContainer: {
-        width: 200,
-        height: 30,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 2.0,
-        elevation: 3,
+    line: {
+        height: 1, // 구분선의 높이
+        backgroundColor: '#E6E6E6', // 구분선의 색상
+        marginVertical: 10, // 상하 여백
     },
     text: {
         fontFamily: 'Pretendard-Regular',
         fontSize: 15,
-        color: 'lightgray',
     },
     title: {
         fontFamily: 'Pretendard-Bold',
@@ -155,20 +165,12 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         width: '80%',
-        height: 30,
-        backgroundColor: '#F2FFED',
+        height: 70,
+        backgroundColor: 'white',
         borderWidth: 1,
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 2.0,
-        elevation: 3,
     },
 });
