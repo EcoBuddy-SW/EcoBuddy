@@ -1,0 +1,83 @@
+{
+  "expo": {
+    
+    "name": "EcoBuddy",
+    "slug": "EcoBuddy",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(EcoBuddy) needs access to your Camera.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(EcoBuddy) needs access to your Microphone."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(ECOBUDDY) to use your location."
+        }
+      ]
+    ],
+    
+    "splash": {
+      "image": "./assets/ecoBuddy_Logo-removebg-preview.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#5A8C6B"
+    },
+    "packagerOpts": {
+      "hostType": "tunnel",
+      "tunnel": "10.20.100.40"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(EcoBuddy) needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "$(EcoBuddy) needs access to your Microphone."
+      },
+      "config": {
+        "googleMapsApiKey": "d1d59c3959f65eca05bdfc46b8679b77"
+      }
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/mother-earth-day.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.parkseoyun.EcoBuddy",
+      "config": {
+        "googleMaps": {
+          "apiKey": "d1d59c3959f65eca05bdfc46b8679b77"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyAeOIme7xkU2X7yQKOJ0-lgGjSJokO1VmI",
+          "authDomain": "ecobuddy-swu-e269d.firebaseapp.com",
+          "projectId": "ecobuddy-swu-e269d",
+          "storageBucket": "ecobuddy-swu-e269d.appspot.com"
+        }
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "402bee7c-6f53-42ec-9f24-9885cd78a082"
+      }
+    }
+  }
+}
