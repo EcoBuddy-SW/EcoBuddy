@@ -1,6 +1,17 @@
-import React, { useState } from 'react';
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Image, PanResponder } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import {
+    View,
+    ScrollView,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    PanResponder,
+    TextInput,
+    Modal,
+    TouchableWithoutFeedback,
+} from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -8,12 +19,52 @@ export default function CommunityScreen() {
     const navigation = useNavigation();
     const [iconsVisible, setIconsVisible] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isHeartSelected, setIsHeartSelected] = useState(false);
+    const [showCommentBox, setShowCommentBox] = useState(false);
+    const [comments, setComments] = useState([]); // 댓글 목록
+    const [newComment, setNewComment] = useState('');
 
-    const images = [
-        require('./assets/images/쿼카.jpg'),
-        require('./assets/images/cat3.jpg'),
-        require('./assets/images/cat5.jpg'),
-    ];
+    const route = useRoute();
+    const postData = route.params ? route.params.postData : null;
+
+    if (!postData) {
+        // postData가 정의되지 않았을 때의 예외 처리
+        // 예: 화면에 어떤 오류 메시지를 표시하거나 다른 조치를 취할 수 있음
+        return (
+            <View style={styles.background}>
+                <View style={[styles.rowContainer, { marginBottom: 30, }]}>
+                    <TouchableOpacity
+                        onPress={toggleIconsVisibility}
+                        style={[styles.shadowContainer, { marginRight: 20 }]}
+                    >
+                        <Icon2 name="dots-horizontal" style={styles.icon} />
+                    </TouchableOpacity>
+                    {iconsVisible && (
+                        <View style={styles.iconContainer}>
+                            <TouchableOpacity
+                                onPress={gotoWrite}
+                                style={[styles.shadowContainer, { marginRight: 20 }]}
+                            >
+                                <Icon2 name="plus" style={styles.icon} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.shadowContainer, {}]}>
+                                <Icon2 name="account-check" style={styles.icon} />
+                            </TouchableOpacity>
+                        </View>)
+                    }
+                </View>
+                <Text style={[styles.text, { justifyContent: 'center' }]}>등록된 글이 없습니다!</Text>
+            </View>
+        );
+    }
+
+    const images = postData.images;
+
+    // const images = [
+    //     require('./assets/images/쿼카.jpg'),
+    //     require('./assets/images/cat3.jpg'),
+    //     require('./assets/images/cat5.jpg'),
+    // ];
 
     function toggleIconsVisibility() {
         setIconsVisible(!iconsVisible);
@@ -35,12 +86,29 @@ export default function CommunityScreen() {
         }
     }
 
+    const text = `... `;
+
+    const toggleHeartIcon = () => {
+        setIsHeartSelected(!isHeartSelected);
+    };
+
+    const toggleCommentBox = () => {
+        setShowCommentBox(!showCommentBox);
+    };
+
+    const submitComment = () => {
+        if (newComment.trim() !== '') {
+            setComments([...comments, newComment]);
+            setNewComment('');
+        }
+    };
+
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (e, gestureState) => {
-            if (gestureState.dx > 50) { // 오른쪽 스와이프
+            if (gestureState.dx > 50) {
                 showPreviousImage();
-            } else if (gestureState.dx < -50) { // 왼쪽 스와이프
+            } else if (gestureState.dx < -50) {
                 showNextImage();
             }
         },
@@ -48,57 +116,51 @@ export default function CommunityScreen() {
 
     return (
         <View style={styles.background}>
-            <View style={[styles.rowContainer]}>
-                <TouchableOpacity onPress={toggleIconsVisibility} style={[styles.shadowContainer, { marginRight: 20 }]}>
+            <View style={[styles.rowContainer, { marginBottom: 30, }]}>
+                <TouchableOpacity
+                    onPress={toggleIconsVisibility}
+                    style={[styles.shadowContainer, { marginRight: 20 }]}
+                >
                     <Icon2 name="dots-horizontal" style={styles.icon} />
                 </TouchableOpacity>
-                {/* ... 아이콘 누르면 아이콘 두 개 펼쳐지고 다시 누르면 안 보임 */}
                 {iconsVisible && (
                     <View style={styles.iconContainer}>
-                        <TouchableOpacity onPress={gotoWrite} style={[styles.shadowContainer, {marginRight: 20 }]}>
+                        <TouchableOpacity
+                            onPress={gotoWrite}
+                            style={[styles.shadowContainer, { marginRight: 20 }]}
+                        >
                             <Icon2 name="plus" style={styles.icon} />
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.shadowContainer, {}]}>
                             <Icon2 name="account-check" style={styles.icon} />
                         </TouchableOpacity>
-                    </View>
-                )}
+                    </View>)
+                }
             </View>
 
             <ScrollView contentContainerStyle={styles.container2}>
-                {/* 글 목록 */}
-                <View style={styles.container}>
-                    <View style={[styles.rowContainer, { alignSelf: 'center' }]}>
-                        {/* 글을 작성한 유저의 프로필이 들어갈 곳 */}
+                <View style={styles.container2}>
+                    <View style={[styles.rowContainer, { alignContent: 'center', justifyContent: 'center' }]}>
                         <View style={styles.profile}></View>
-                        {/* 글을 작성한 유저의 이름이 들어갈 곳 */}
                         <Text style={[styles.title, { width: 100 }]}>작성자</Text>
-                        <Text style={[styles.text, { alignSelf: 'flex-end' }]}>작성 날짜</Text>
+                        <Text style={[styles.text, { textAlign: 'right' }]}>작성 날짜</Text>
                     </View>
 
-                    <View style={{ marginBottom: 30 }}></View>
-
-                    <ScrollView contentContainerStyle={{ padding: 20 }}>
+                    <View style={{ padding: 20, height: 100 }}>
                         <Text style={styles.text}>
-                            내용은 다음과 같습니다...{'\n'}{'\n'}
-                            자취생 분들을 위한 꿀팁, 많이 퍼트려 주세요!{'\n'}
-                            1. ~~~~{'\n'}
-                            2. ~~~~{'\n'}
-                            3. ~~~~{'\n'}
-                            4. ~~~~{'\n'}
+                            {postData.text}
                         </Text>
-                    </ScrollView>
+                    </View>
 
-                    {/* 유저가 올린 사진 */}
                     <View style={styles.imageContainer}>
                         <View {...panResponder.panHandlers}>
                             <Image
-                                source={images[currentImageIndex]}
+                                source={{ uri: images[currentImageIndex] }}
                                 style={styles.image}
                             />
                         </View>
                     </View>
-                    {/* 몇 번째 사진인지 표시 */}
+
                     <View style={styles.imagePagination}>
                         {images.map((_, index) => (
                             <View
@@ -110,9 +172,61 @@ export default function CommunityScreen() {
                             />
                         ))}
                     </View>
+
+                    <View style={{ marginBottom: 30 }}></View>
+
+                    <View style={[styles.rowContainer, { marginBottom: 5 }]}>
+                        <TouchableOpacity
+                            onPress={toggleHeartIcon}
+                            style={[styles.icon, { color: isHeartSelected ? '#FAEDFF' : 'black', marginRight: 10, marginLeft: 10 }]}
+                        >
+                            {isHeartSelected ? (
+                                <Icon2 name="cards-heart" style={[styles.icon, { color: '#FFEDF2' }]} />
+                            ) : (
+                                <Icon2 name="cards-heart-outline" style={[styles.icon, { color: '#FFEDF2' }]} />
+                            )}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => toggleCommentBox()}
+                            style={[styles.icon, { color: '#EDF3FF' }]}
+                        >
+                            <Icon name="chat-bubble" style={[styles.icon, { color: '#EDF3FF' }]} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
-                
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showCommentBox}
+                >
+                    <TouchableWithoutFeedback onPress={() => toggleCommentBox()}>
+                        <View style={styles.modal}>
+                            <ScrollView style={styles.modalContent}>
+                                {comments.map((comment, index) => (
+                                    <View key={index} style={styles.comment}>
+                                        <Text style={styles.commentText}>{comment}</Text>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                            <View style={styles.commentBox}>
+                                <TextInput
+                                    style={styles.commentInput}
+                                    placeholder="댓글을 입력하세요..."
+                                    value={newComment}
+                                    onChangeText={(text) => setNewComment(text)}
+                                />
+                                <TouchableOpacity style={styles.submitButton} onPress={submitComment}>
+                                    <Text style={styles.submitButtonText}>댓글 달기</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+
+                {/* 글 간격 */}
+                <View style={{ height: 30, backgroundColor: '#F2FFED' }}></View>
+
             </ScrollView>
         </View>
     );
@@ -126,18 +240,12 @@ const styles = StyleSheet.create({
     },
     rowContainer: {
         flexDirection: 'row',
-        marginBottom: 30,
         marginTop: 10,
     },
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        padding: 10,
-        borderRadius: 10,
-    },
     container2: {
-        flex: 1,
-        marginBottom: 70
+        width: '100%',
+        marginBottom: 70,
+        backgroundColor: 'white',
     },
     imageContainer: {
         flex: 1,
@@ -164,13 +272,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    btn: {
-        backgroundColor: '#FFEDF2',
-        width: '30%',
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     text: {
         fontFamily: 'Pretendard-Regular',
         fontSize: 15,
@@ -180,7 +281,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
     },
     icon: {
-        fontSize: 20,
+        fontSize: 30,
         color: '#353535',
         justifyContent: 'center',
         alignSelf: 'center',
@@ -192,16 +293,7 @@ const styles = StyleSheet.create({
         height: 50,
         marginLeft: 20,
         alignItems: 'center',
-    },
-    navigationButton: {
-        backgroundColor: 'white',
-        padding: 10,
-        borderRadius: 5,
-        margin: 10,
-    },
-    navigationButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        marginRight: 30,
     },
     image: {
         width: 300,
@@ -222,7 +314,60 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     activeImagePage: {
-        backgroundColor: '#EDF3FF',
+        backgroundColor: 'lightgray',
     },
-
+    commentBox: {
+        backgroundColor: 'white',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
+    commentInput: {
+        height: 40,
+        borderWidth: 1,
+        borderColor: '#CCC',
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 10,
+    },
+    submitButton: {
+        backgroundColor: '#FFEDF2',
+        borderRadius: 5,
+        padding: 10,
+        alignItems: 'center',
+        marginBottom: 30,
+    },
+    submitButtonText: {
+        color: 'black',
+    },
+    modal: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'flex-end',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        maxHeight: '70%',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        padding: 20,
+    },
+    comment: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderColor: '#CCC',
+    },
+    commentText: {
+        fontFamily: 'Pretendard-Regular',
+        fontSize: 16,
+    },
+    retryButton: {
+        width: '80%',
+        height: 50,
+        backgroundColor: 'white',
+        borderWidth: 1,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
 });

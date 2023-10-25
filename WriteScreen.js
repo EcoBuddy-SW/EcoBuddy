@@ -10,6 +10,7 @@ export default function CommunityScreen() {
     const [selectedImages, setSelectedImages] = useState([]);
     const [inputText, setInputText] = useState("");
     const maxImages = 5; // 최대 이미지 수
+    let postData = null; // postData 변수를 선언
 
     useEffect(() => {
         (async () => {
@@ -39,11 +40,22 @@ export default function CommunityScreen() {
 
     function closeModal() {
         setModalVisible(false);
-        navigation.navigate('커뮤니티');
-    }
+        postData = addPost();
+        navigation.navigate('커뮤니티', { postData });
+    };
 
     function openModal() {
         setModalVisible(true);
+    }
+
+    const addPost = () => {
+        // 여기에서 글 작성과 이미지 선택을 저장하고 CommunityScreen으로 데이터 전송
+        const post = {
+            text: inputText,
+            images: selectedImages,
+        };
+
+        return post; // 작성한 글을 반환
     }
 
     return (
@@ -87,9 +99,9 @@ export default function CommunityScreen() {
             >
                 <View style={styles.modalBackground}>
                     <View style={styles.modalContent}>
-                        <Text style={styles.text}>글을 등록하였습니다.</Text>
-                        <TouchableOpacity onPress={closeModal} style={[styles.closeButton, { width: 150, marginTop: 30 }]}>
-                            <Text style={[styles.text, { textAlign: 'center' }]}>확인</Text>
+                        <Text style={[styles.text, { textAlign: 'center' }]}>글을 등록하였습니다.</Text>
+                        <TouchableOpacity onPress={closeModal} style={[styles.closeButton, { width: 100, marginTop: 30 }]}>
+                            <Text style={[styles.text, { textAlign: 'center', }]}>확인</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
