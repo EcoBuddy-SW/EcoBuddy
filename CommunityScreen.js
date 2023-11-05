@@ -26,6 +26,7 @@ export default function CommunityScreen() {
 
     const route = useRoute();
     const postData = route.params ? route.params.postData : null;
+    
 
     if (!postData) {
         // postData가 정의되지 않았을 때의 예외 처리

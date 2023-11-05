@@ -41,7 +41,7 @@ export default function CommunityScreen() {
     function closeModal() {
         setModalVisible(false);
         postData = addPost();
-        navigation.navigate('커뮤니티', { postData });
+        navigation.navigate('Home', { postData });
     };
 
     function openModal() {
