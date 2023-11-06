@@ -4,11 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+// import axios from 'axios';
+
 export default function CommunityScreen() {
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [inputText, setInputText] = useState("");
+    const currentDateTime = new Date(); // 현재 날짜
     const maxImages = 5; // 최대 이미지 수
     let postData = null; // postData 변수를 선언
 
@@ -38,6 +41,7 @@ export default function CommunityScreen() {
         }
     };
 
+    // 프론트에서 글 뜨는지 확인하는 함수 
     function closeModal() {
         setModalVisible(false);
         postData = addPost();
@@ -46,6 +50,35 @@ export default function CommunityScreen() {
 
     function openModal() {
         setModalVisible(true);
+
+        // console.log('Image: ', selectedImages);
+        // console.log('inputText:', inputText);
+        // console.log('writer:', writer); // 세션에 저장된 로그인한 유저의 아이디나 닉네임 ?
+
+        // const data = {
+        //     "Image": selectedImages,
+        //     "Context": inputText,
+        //     "Writer": writer,
+        //     "Date": currentDateTime, // 글 작성 날짜
+        // }
+
+        // axios.post(`http://${context.ip}:3003/write`, data)
+        //     .then(response => {
+        //         // 서버 응답 처리
+
+        //         if (response.data.success) {
+        //             console.log(response.data);
+
+        //         }
+        //         else {
+        //             Alert.alert("글 등록 실패", response.data.message);
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //         return;
+        //     });
+
     }
 
     const addPost = () => {
