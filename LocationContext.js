@@ -8,6 +8,16 @@ const LocationContext = createContext({
     setLocation: () => {},
     userId: null,
     setUserId: () => {},
+    userEmail: null,
+    setUserEmail: () => {},
+    locstate: null,
+    setLocstate: () => {},
+    profileImage: null,
+    setProfileImage: () => {},
+    expoPushToken: null,
+    setExpoPushToken: () => {},
+    write: null,
+    setWrite: () => {},
 });
 
 export default LocationContext;

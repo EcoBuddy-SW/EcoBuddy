@@ -1,19 +1,156 @@
-
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Modal, Pressable } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Icon from 'react-native-vector-icons/Foundation';
-import Icon1 from 'react-native-vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
+import axios from 'axios';
 
+// import LocationContext from './LocationContext';
 
-function MyPageScreen() {
-
-  
-
+export default function MyPageScreen() {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  // const context = useContext(LocationContext);
+  // const userId = context.userId;
+
+  // const loadPhoto = async () => {
+  //   axios.post(`http://${context.ip}:3003/downloadProfile`, { userId })
+  //   .then(response => response.data)
+  //   .then(data => {
+  //     if (data.success) {
+  //       const profileURL = data.result[0].profileUrl;
+  //       setPhoto(profileURL);
+  //       console.log('프로필 사진 로드 성공(클라이언트)',profileURL)
+  //     } else {
+  //       console.log('프로필 사진 로드 실패:', data.message);
+  //     }
+  //   });
+  // };
+
+  const handleLogoutPress = () => {
+    Alert.alert(
+      '로그아웃',
+      '로그아웃하시겠습니까?',
+      [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '확인',
+          onPress: () => {
+            axios.post(`http://${context.ip}:3003/logout`)
+              .then(response => {
+                if (response.data.success) {
+                  alert(response.data.message);
+                  context.setUserId(null);
+                  context.setUserEmail(null);
+
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [
+                        { name: 'Login' },
+                      ],
+                    })
+                  );
+                  //navigation.navigate('BottomTab');
+                } else {
+                  alert(response.data.message); // 실패 메시지 표시
+                }
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const handleDelAccountPress = () => {
+    Alert.alert(
+      '탈퇴',
+      '탈퇴하시겠습니까?',
+      [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '확인',
+          onPress: () => {
+            const data = {
+              id: context.userId
+            };
+            axios.post(`http://${context.ip}:3003/delAccount`, data)
+              .then(response => {
+                if (response.data.success) {
+                  alert(response.data.message);
+                  context.setUserId(null);
+                  context.setUserEmail(null);
+
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [
+                        { name: 'Login' },
+                      ],
+                    })
+                  );
+                  //navigation.navigate('BottomTab');
+                } else {
+                  alert(response.data.message); // 실패 메시지 표시
+                }
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const handleOne = () => {
+    Alert.alert(
+      '이용 약관',
+      '다음 내용은 이와 같습니다.',
+      [
+        {
+          text: '확인',
+          style: 'cancel',
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const handleTwo = () => {
+    Alert.alert(
+      '개인 정보 방침',
+      '다음 내용은 이와 같습니다.',
+      [
+        {
+          text: '확인',
+          style: 'cancel',
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const handleScreenModePress = () => {
+    setModalVisible(true);
+  };
+
+  const handleModeSelection = (mode) => {
+    setSelectedMode(mode);
+    setModalVisible(false);
+    // 선택한 모드에 따른 테마를 변경하는 로직을 추가할 수 있습니다.
+    // 예를 들어, 선택한 모드가 'light'일 때 라이트 모드 테마로 변경하는 등의 작업을 수행할 수 있습니다.
+  };
 
   const goToMap = () => {
     navigation.navigate('카카오맵'); // 'Map' 스크린으로 이동
@@ -21,158 +158,283 @@ function MyPageScreen() {
   const goToCoins = () => {
     navigation.navigate('포인트'); // '포인트' 스크린으로 이동
   };
-  const goToRecord = () =>{
-    navigation.navigate('Record'); // record 스크린으로 이동
-
-  };
-  
-  const goToOption =() =>{
-    navigation.navigate('Option')// 설정으로 이동
-  };
-  const goToBell =() =>{
+  const goToBell = () => {
     navigation.navigate('bell')// 알림이로 이동
 
   };
-  const goToStatistcs =() =>{
-    navigation.navigate('Statistcs')// 알림이로 이동
+  const goToStatistcs = () => {
+    navigation.navigate('통계')// 통계로 이동
 
   };
-  const goToMy_Infor =() =>{
+  const goToMy_Infor = () => {
     navigation.navigate('My_Infor')// 프로필
   };
- 
+
+  // const renderPhoto = () => {
+  //   if (photo) {
+  //     const imageSize = circleRadius * 2;
+  //     return (
+  //       <Image
+  //         source={{ uri: photo }}
+  //         style={{
+  //           width: imageSize,
+  //           height: imageSize,
+  //           borderRadius: circleRadius,
+  //           position: 'absolute',
+  //           top: circleCenterY - circleRadius,
+  //           left: circleCenterX - circleRadius,
+  //         }}
+  //       />
+  //     );
+  //   }
+  //   return null;
+  // };
+
   return (
 
-    <ScrollView contentContainerStyle={styles.container}>
-      <Ionicons name="ios-earth" size={50} color="green" style={{ marginBottom: 10, top: 3 }} />
-      <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', width: 405, height: 30, marginBottom: 100, flexDirection: 'row', alignItems: 'center', margin: 5, borderRadius: 10, elevation: 5 }]}>
+    <View style={styles.container}>
+      <View style={styles.inforContainer}>
+        {/* <Ionicons name="ios-earth" size={50} color="green" style={{ marginBottom: 10, top: 3 }} /> */}
+        <View style={{ flexDirection: 'row', }}>
+          {/* 프로필 */}
+          <View style={{
+            borderColor: '#333',
+            padding: 2,
+            borderRadius: 8,
+            marginRight: 20,
 
+          }}>
+            <FontAwesome name="user" size={80} color="#333" />
+            {/* 프로필 이미지 불러오기 */}
+            {/* <image source={{uri:photo}} size={50} color="green" style={{ marginBottom: 10, top: 3 }} />  */}
+          </View>
 
-
-  {/* 프로필 */}
-  <View style={{
-    borderColor: '#333',
-    padding: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
-    right: 60,
-    borderRadius: 8,
-    position: 'absolute', // 프로필을 겹쳐지게 만듭니다.
-    top: 35, // 원하는 위치로 조정하세요.
-    left: 30, // 원하는 위치로 조정하세요.
-  }}>
-    <FontAwesome name="user" size={80} color="#333" />
-  </View>
-
-  <View style={{
-  position: 'absolute',
-  top: 60,
-  left: 120,
-  width: 250,
-  height: 40, // 높이를 조정하세요.
-  backgroundColor: 'white',
-  borderRadius: 10,
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderColor: "#e9e9e9",
-  borderWidth: 1,
-  shadowColor: 'black', // 그림자 색상
-  shadowOffset: { width: 0, height: 3 }, // 그림자 위치 (가로, 세로)
-  shadowOpacity: 0.1, // 그림자 투명도 (0에서 1 사이의 값)
-  shadowRadius: 2, // 그림자의 퍼지는 정도
-}}>
-  <Text style={{ color: 'black' }}> 님</Text>
-</View>
-
-
-
-  {/* "내 정보" 테두리 */}
-  <TouchableOpacity onPress={goToMy_Infor}>
-
-    <View style={{ width: 65, height: 25, borderColor: '#e9e9e9', borderWidth: 1, borderRadius: 10, top: -1, marginLeft: 15,
-     right: 60, shadowOffset: { width: 0, height: 3 },
-     shadowOpacity: 0.1,  shadowRadius: 2, shadowColor: 'black',}}>
-      <Text style={{ fontSize: 15, color: 'black', textAlign: 'center', textAlignVertical: 'center',top:5, }}>프로필</Text>
-    </View>
-  </TouchableOpacity>
-</View>
+          <View style={[styles.shadowContainer, {
+            width: 150,
+            height: 40, // 높이를 조정하세요.
+            backgroundColor: 'white',
+            borderRadius: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }]}>
+            {/* <Text style={{ color: 'black' }}> {context.userId} 님</Text> */}
+          </View>
+        </View>
+      </View>
 
       {/* 그리드 뷰 */}
-      <View style={styles.gridRow}>
-
-      
-     <TouchableOpacity onPress={goToCoins}>
-     <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', borderRadius: 10, width: 405, flexDirection: 'row', alignItems: 'center' }]}>
-  <FontAwesome5 name="coins" size={30} color="#333" style={{ Left: 40 }} />
-  <Text style={styles.gridText}>포인트</Text>
-</View>
-
-  </TouchableOpacity>
-    </View>
-
-      
-      <View style={styles.gridRow}>
-        <TouchableOpacity onPress={goToRecord}>
-          <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', borderRadius: 10 ,width: 200}]}>
-           <FontAwesome name="folder-open" size={30} color="#333" />
-             <Text style={styles.gridText}>활동 기록</Text>
-          </View>
-        </TouchableOpacity >
-        <TouchableOpacity onPress={goToMap}>
-      <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', borderRadius: 10,width: 200 }]}>
-    <FontAwesome name="map-marker" size={30} color="#333" />
-    <Text style={styles.gridText}>분리수거장 위치</Text>
-     </View>
-     </TouchableOpacity>
-
-       
-      </View>
-      
-      <View style={styles.gridRow}>
-       <TouchableOpacity onPress={goToOption}>  
-         <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', borderRadius: 10, width: 200 }]}>
-           <FontAwesome name="cog" size={30} color="#333" />
-           <Text style={styles.gridText}>설정</Text>
-         </View>
-       </TouchableOpacity>
-
-      <TouchableOpacity onPress={goToStatistcs}>
-        <View style={[styles.gridColumn, { backgroundColor: '#FFFFFF', borderRadius: 10 ,width: 200}]}>
-        <Icon name="graph-pie" size={30} color="#333" />
-          <Text style={styles.gridText}>통계</Text>
+      {/* <View style={styles.gridRow}></View> */}
+      <ScrollView style={{ marginBottom: 5, padding: 5, flex: 1, width: '100%' }}>
+        <View style={styles.left}>
+          <Text style={[styles.title, {}]}>사용자</Text>
         </View>
+        <TouchableOpacity onPress={goToMy_Infor} style={[styles.button, {}]}>
+          <Text style={[styles.textStyle, {}]}>프로필 수정 </Text>
         </TouchableOpacity>
-      </View>
+        <TouchableOpacity onPress={goToCoins} style={[styles.button, {}]}>
+          <Text style={[styles.textStyle, {}]}>포인트 </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={goToMap} style={[styles.button, {}]}>
+          <Text style={[styles.textStyle, {}]}>카카오맵 ➡ 분리수거 위치 검색하기 </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={goToStatistcs} style={[styles.button, {}]}>
+          <Text style={[styles.textStyle, {}]}>통계 </Text>
+        </TouchableOpacity>
 
-     
 
-    </ScrollView>
+        <View style={styles.left}>
+          <Text style={[styles.title, {}]}>이용 약관</Text>
+        </View>
+
+        <TouchableOpacity onPress={handleOne}>
+          <View style={[styles.button, {}]}>
+            <Text style={[styles.textStyle, {}]}>이용 약관</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleTwo}>
+          <View style={[styles.button, {}]}>
+            <Text style={[styles.textStyle, {}]}>개인 정보 방침</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.left}>
+          <Text style={[styles.title, {}]}>언어</Text>
+        </View>
+        <View style={[styles.button, {}]}>
+          <Text style={[styles.textStyle, {}]}>번역</Text>
+        </View>
+
+        <View style={styles.left}>
+          <Text style={[styles.title, {}]}>계정</Text>
+        </View>
+        <TouchableOpacity onPress={handleLogoutPress} style={[styles.button, {}]}>
+          <Text style={[styles.textStyle, {}]}>로그아웃 </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleDelAccountPress} style={[styles.button, { marginBottom: 20 }]}>
+          <Text style={[styles.textStyle, {}]}>탈퇴</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      {/* <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>화면 모드를 선택하세요:</Text>
+            <Pressable style={[styles.modeButton, selectedMode === 'light' ? styles.selectedMode : null]} onPress={() => handleModeSelection('light')}>
+              <Text style={styles.modeButtonText}>라이트 모드</Text>
+            </Pressable>
+            <Pressable style={[styles.modeButton, selectedMode === 'dark' ? styles.selectedMode : null]} onPress={() => handleModeSelection('dark')}>
+              <Text style={styles.modeButtonText}>다크 모드</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal> */}
+
+
+    </View>
   );
 }
 
-export default MyPageScreen;
+
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1, // ScrollView가 화면 전체를 채우도록 합니다.
+    flex: 1,
     backgroundColor: '#EDF3FF',
+    alignItems: 'center', // 가운데 정렬
+    // justifyContent: 'center', // 가운데 정렬
+    padding: 10,
+  },
+  inforContainer: {
     alignItems: 'center',
+    marginTop: 30,
+    backgroundColor: '#FFFFFF',
+    width: 380,
+    height: 100,
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 0.5,
     justifyContent: 'center',
   },
   gridRow: {
     flexDirection: 'row',
   },
   gridColumn: {
-    flex: 1,
     height: 120,
     borderWidth: 0.5,
     margin: 3,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    width: 180,
   },
   gridText: {
     fontSize: 18,
     color: '#333',
     fontWeight: 'bold',
   },
+  icon: {
+    fontSize: 30,       // 아이콘 크기
+    color: '#333',      // 아이콘 색상
+  },
+  shadowContainer: {
+    width: '40%',
+    height: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    shadowColor: '#000', // 그림자 색상 (ios에서 그림자 효과 제공)
+    shadowOffset: {
+      width: 0,          // 그림자의 수평 위치
+      height: 2,         // 그림자의 수직 위치
+    },
+    shadowOpacity: 0.2, // 그림자의 투명도
+    shadowRadius: 2.0,  // 그림자의 반경
+    elevation: 3,        // Android에서 그림자 효과를 제공합니다
+  },
+  lightContainer: {
+    backgroundColor: '#EDF3FF',
+  },
+  darkContainer: {
+    backgroundColor: '#242c40',
+  },
+  lightThemeText: {
+    color: '#242c40',
+  },
+  darkThemeText: {
+    color: '#d0d0c0',
+  },
+  button: {
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: "#e9e9e9",
+    width: '100%',
+    height: 55,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 35,
+    alignItems: "center",
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 20,
+    textAlign: "center",
+    fontSize: 18,
+  },
+  modeButton: {
+    padding: 10,
+    marginVertical: 10,
+    width: 200,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  selectedMode: {
+    backgroundColor: "#DDDDDD",
+  },
+  modeButtonText: {
+    fontSize: 16,
+  },
+  gridColumn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    width: 415,
+    height: 55,
+    borderWidth: 1,
+    borderColor: "#e9e9e9"
+  },
+  textStyle: {
+    fontSize: 16,
+    marginLeft: 20,
+    alignItems: 'flex-start',
+  },
+  title: {
+    fontSize: 17,
+    color: 'gray',
+    marginLeft: 5,
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  left: {
+    alignItems: 'flex-start',
+    alignSelf: 'flex-start',
+  }
+
 });

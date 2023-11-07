@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Modal, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as FileSystem from 'expo-file-system';
+import firebase from '@firebase/app';
+import 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from '@firebase/storage';
 
-// import axios from 'axios';
+import LocationContext, { getLocation } from './LocationContext';
+import axios from 'axios';
 
-export default function CommunityScreen() {
+export default function WriteScreen() {
+    const context = useContext(LocationContext);
     const navigation = useNavigation();
+    const storage = getStorage();
+
+    const writer = 'seoyun'; //임의로 넣음
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [inputText, setInputText] = useState("");
-    const currentDateTime = new Date(); // 현재 날짜
+    const currentDateTime = new Date().toISOString().slice(0, 19).replace('T', ' '); // 현재 날짜와 시간
     const maxImages = 5; // 최대 이미지 수
     let postData = null; // postData 변수를 선언
 
@@ -21,8 +31,12 @@ export default function CommunityScreen() {
             if (status !== 'granted') {
                 alert('사진 라이브러리 액세스 권한이 거부되었습니다.');
             }
-        })();
+        })(); currentDateTime
     }, []);
+
+    useEffect(() => {
+        console.log('selectedImages:', selectedImages);
+    }, [selectedImages]);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -33,7 +47,7 @@ export default function CommunityScreen() {
         });
 
         if (!result.cancelled) {
-            if (selectedImages.length < maxImages) {
+            if (selectedImages.length < maxImages  && !selectedImages.includes(result.assets[0].uri)) {
                 setSelectedImages([...selectedImages, result.assets[0].uri]);
             } else {
                 alert('최대 5장까지 선택할 수 있습니다.');
@@ -44,51 +58,75 @@ export default function CommunityScreen() {
     // 프론트에서 글 뜨는지 확인하는 함수 
     function closeModal() {
         setModalVisible(false);
-        postData = addPost();
         navigation.navigate('Home', { postData });
     };
 
-    function openModal() {
-        setModalVisible(true);
+    const openModal = async () => {
+        try {
+            // write 함수 호출
+            const success = await write();
 
-        // console.log('Image: ', selectedImages);
-        // console.log('inputText:', inputText);
-        // console.log('writer:', writer); // 세션에 저장된 로그인한 유저의 아이디나 닉네임 ?
+            if (success) {
+                setModalVisible(true);
+            } else {
+                console.error('글 등록 실패');
+            }
+        } catch (error) {
+            console.error('예외 발생:', error);
+        }
+    };
 
-        // const data = {
-        //     "Image": selectedImages,
-        //     "Context": inputText,
-        //     "Writer": writer,
-        //     "Date": currentDateTime, // 글 작성 날짜
-        // }
+    // Firebase Storage에 이미지 업로드
+    const uploadImagesToFirebase = async () => {
+        const storage = getStorage();
+        const imageUrls = [];
+    
+        for (const imageUri of selectedImages) {
+            try {
+                const response = await fetch(imageUri);
+                const blob = await response.blob();
+    
+                const meta = { contentType: 'image/jpeg' };
+                const uniqueImageName = `writing/${Date.now()}_${Math.random()}.jpg`; // 고유한 이름을 생성
+                const storageRef = ref(storage, uniqueImageName);
+                const uploadTask = uploadBytes(storageRef, blob, meta);
+    
+                await uploadTask;
+    
+                const url = await getDownloadURL(storageRef);
+                imageUrls.push(url);
+            } catch (error) {
+                console.error('이미지 업로드 실패:', error);
+            }
+        }
+    
+        // imageUrls 배열을 문자열로 변환하여 리턴
+        return imageUrls.join(', ');
+    };
+    
+    const write = async () => {
 
-        // axios.post(`http://${context.ip}:3003/write`, data)
-        //     .then(response => {
-        //         // 서버 응답 처리
+        const imageUrls = await uploadImagesToFirebase();
 
-        //         if (response.data.success) {
-        //             console.log(response.data);
+        try {
+            const response = await axios.post(`http://${context.ip}:3003/write`, {
+                writer: writer,
+                context: inputText,
+                imageUrl: imageUrls,
+                date: currentDateTime,
+            });
 
-        //         }
-        //         else {
-        //             Alert.alert("글 등록 실패", response.data.message);
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //         return;
-        //     });
-
-    }
-
-    const addPost = () => {
-        // 여기에서 글 작성과 이미지 선택을 저장하고 CommunityScreen으로 데이터 전송
-        const post = {
-            text: inputText,
-            images: selectedImages,
-        };
-
-        return post; // 작성한 글을 반환
+            if (response.data.success) {
+                console.log(response.data);
+                return true; // 글 등록 성공
+            } else {
+                console.error(response.data.message);
+                return false; // 글 등록 실패
+            }
+        } catch (error) {
+            console.error(error);
+            return false; // 글 등록 실패
+        }
     }
 
     return (
