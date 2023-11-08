@@ -420,12 +420,12 @@ app.post('/sendNotification', (req, res) => {
 });
 
 app.post('/write', (req, res) => {
-    const { num, writer, context, imageUrl, date } = req.body;
+    const { writer, context, imageUrl, date } = req.body;
 
     const insertSql = `INSERT INTO writing(writer, context, imageUrl, date)
     VALUES(?,?,?,?)`;
 
-    connection.query(insertSql, [num, writer, context, imageUrl, date], (errInsert, resultInsert) => {
+    connection.query(insertSql, [writer, context, imageUrl, date], (errInsert, resultInsert) => {
         if (errInsert) {
             console.error('데이터 저장 실패', errInsert);
             res.json({
@@ -441,7 +441,7 @@ app.post('/write', (req, res) => {
 });
 
 app.get('/community', (req, res) => {
-    const sql = 'SELECT writer, context, imageUrl, date FROM writing';
+    const sql = 'SELECT num, writer, context, imageUrl, date FROM writing';
     connection.query(sql, (err, results) => {
         if (err) {
             console.error('쿼리 실행 실패:', err);
@@ -452,3 +452,44 @@ app.get('/community', (req, res) => {
     });
 });
 
+app.post('/comment', (req, res) => {
+    const { postId, comment, date } = req.body;
+
+    const insertSql = `INSERT INTO comment(num , comment, date)
+    VALUES(?,?,?)`;
+
+    connection.query(insertSql, [postId, comment, date], (errInsert, resultInsert) => {
+        if (errInsert) {
+            console.error('데이터 저장 실패', errInsert);
+            res.json({
+                success: false,
+                message: 'Internal Server Error',
+            });
+            return;
+        }
+
+        console.log('데이터 저장 성공');
+        res.json({ success: true, message: '댓글 저장 성공' });
+    });
+});
+
+app.get('/commentList', (req, res) => {
+    const { num } = req.query; // postId 대신 num 사용
+    console.log('num: ' , num);
+
+    const sql = `SELECT comment FROM comment WHERE num='${num}'`;
+    connection.query(sql, [num], (err, results) => {
+        if (err) {
+            console.error('쿼리 실행 실패:', err);
+            res.json({ error: 'Internal Server Error' });
+        } else {
+            res.json(results);
+            console.log('commentList result: ', results);
+        }
+
+        if (results.length === 0) {
+            // 댓글이 없을 경우 예외 처리임,,
+            
+        }
+    });
+});

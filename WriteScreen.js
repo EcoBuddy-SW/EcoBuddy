@@ -16,7 +16,7 @@ export default function WriteScreen() {
     const navigation = useNavigation();
     const storage = getStorage();
 
-    const writer = 'seoyun'; //임의로 넣음
+    const writer = 'kkk'; //임의로 넣음
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);

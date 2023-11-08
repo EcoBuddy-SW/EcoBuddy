@@ -28,22 +28,39 @@ export default function CommunityScreen() {
     const [comments, setComments] = useState([]); // 댓글 목록
     const [newComment, setNewComment] = useState('');
     const [postData, setPostData] = useState([]); // 게시물 데이터 저장
-
-    const imageArray = postData.imageUrl ? postData.imageUrl.split(',') : [];
+    const [originalData, setOriginalData] = useState([]);  // 원본 게시물 데이터
+    const [isFiltered, setIsFiltered] = useState(false);
+    const imageArray = postData.imageUrl ? postData.imageUrl.split(', ') : [];
+    const currentDateTime = new Date().toISOString().slice(0, 19).replace('T', ' '); // 현재 날짜와 시간
+    const [activePostNum, setActivePostNum] = useState(null); // 댓글창 열 때 몇 번째 게시글인지 저장
     const totalImages = imageArray.length;
+    // const postId = postData && postData[currentImageIndex] ? postData[currentImageIndex].postId : null;
 
-    const [panResponder, setPanResponder] = useState(
-        PanResponder.create({
-            onStartShouldSetPanResponder: () => true,
-            onPanResponderMove: (e, gestureState) => {
-                if (gestureState.dx > 50) {
-                    showPreviousImage();
-                } else if (gestureState.dx < -50) {
-                    showNextImage();
-                }
-            },
-        })
-    );
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderMove: (e, gestureState) => {
+            if (gestureState.dx > 50) {
+                showPreviousImage();
+            } else if (gestureState.dx < -50) {
+                showNextImage();
+            }
+        },
+    });
+
+
+    function showNextImage() {
+        if (currentImageIndex < totalImages - 1) {
+            console.log('ShowNext, currentImageIndex:', currentImageIndex);
+            setCurrentImageIndex(currentImageIndex + 1);
+        }
+    }
+
+    function showPreviousImage() {
+        if (currentImageIndex > 0) {
+            console.log('ShowPrevious, currentImageIndex:', currentImageIndex);
+            setCurrentImageIndex(currentImageIndex - 1);
+        }
+    }
 
     useEffect(() => {
         // API를 호출하여 게시물 데이터를 가져옴
@@ -55,13 +72,36 @@ export default function CommunityScreen() {
                     // 빈 배열을 받으면 "등록된 글이 없습니다" 메시지 표시
                     setPostData(null);
                 } else {
+                    setOriginalData(response.data); // 원본 데이터 저장
                     setPostData(response.data);
+                    fetchComments(response.data);
                 }
             })
             .catch((error) => {
                 console.error('API 호출 실패:', error);
             });
     }, []);
+
+
+    useEffect(() => {
+        if (isFiltered) {
+            // 임의로 username 넣기
+            context.userId = "seoyun";
+            // isFiltered가 true일 때, 필터링된 게시물만 보여줌
+            const filteredPosts = postData.filter((post) => post.writer === context.userId);
+            setPostData(filteredPosts);
+            console.log('필터링 됨 !');
+        } else {
+            // isFiltered가 false일 때, 모든 게시물을 보여줌
+            setPostData(originalData);
+            console.log('모든 게시물 보이게 됨 !');
+        }
+    }, [isFiltered]);
+
+
+    // useEffect(() => {
+    //     fetchComments(postData); // 게시물 데이터를 인자로 전달
+    // }, [postData]);
 
     const screenWidth = Dimensions.get('window').width;
 
@@ -85,7 +125,9 @@ export default function CommunityScreen() {
                             >
                                 <Icon2 name="plus" style={styles.icon} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.shadowContainer, {}]}>
+                            <TouchableOpacity
+                                onPress={toggleFilter}
+                                style={[styles.shadowContainer, {}]}>
                                 <Icon2 name="account-check" style={styles.icon} />
                             </TouchableOpacity>
                         </View>)
@@ -108,15 +150,37 @@ export default function CommunityScreen() {
                 <Text style={styles.text}>{post.context}</Text>
             </View>
 
-            {post.imageUrl && (
+            {/* {post.imageUrl && (
                 <View {...panResponder.panHandlers}>
-                    <Image
-                                source={{ uri: imageArray[currentImageIndex] }}
+                    {renderImages(post.imageUrl.split(','))}
+                </View>
+            )} */}
+
+
+            {post.imageUrl.split(', ').map((imageUrl, index) => {
+                const trimmedUrl = imageUrl.trim();
+                if (trimmedUrl === '') {
+                    return null; // 이미지 URL이 비어있을 때는 렌더링하지 않음
+                }
+                // console.log('trimmedUrl :', trimmedUrl)
+                return (
+                    <View
+                        key={index}
+                        style={[
+                            styles.imageContainer,
+                            { display: index === currentImageIndex ? 'flex' : 'none' }
+                        ]}
+                    >
+                        <View {...panResponder.panHandlers}>
+                            <Image
+                                source={{ uri: trimmedUrl }}
                                 style={styles.image}
                             />
-                    {/* {renderImages(post.imageUrl.split(','))} */}
-                </View>
-            )}
+                        </View>
+                    </View>
+                );
+            })}
+
 
             {post.imageUrl && post.imageUrl.split(',').length > 1 && (
                 <View style={styles.imagePagination}>
@@ -147,54 +211,141 @@ export default function CommunityScreen() {
                         <Icon2 name="cards-heart-outline" style={[styles.icon, { color: '#FFEDF2' }]} />
                     )}
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => toggleCommentBox()} style={[styles.icon, { color: '#EDF3FF' }]}>
+                <TouchableOpacity onPress={() => {
+                    if (!showCommentBox) {
+                        toggleCommentBox(post.num);
+                    } else if (showCommentBox && activePostNum === post.num) {
+                        toggleCommentBox(null);
+                    }
+                }} style={[styles.icon, { color: '#EDF3FF' }]}>
                     <Icon name="chat-bubble" style={[styles.icon, { color: '#EDF3FF' }]} />
                 </TouchableOpacity>
             </View>
+
+            <Modal animationType="slide" transparent={true} visible={showCommentBox}>
+                <TouchableWithoutFeedback onPress={() => toggleCommentBox()}>
+                    <View style={styles.modal}>
+                        <ScrollView style={styles.modalContent}>
+                            {comments.map((comment, index) => (
+                                <View key={index} style={styles.comment}>
+                                    <Text style={styles.commentText}>{comment.comment}</Text>
+                                </View>
+                            ))}
+                        </ScrollView>
+                        <View style={styles.commentBox}>
+                            <TextInput
+                                style={styles.commentInput}
+                                placeholder="댓글을 입력하세요..."
+                                value={newComment}
+                                onChangeText={(text) => setNewComment(text)}
+                            />
+                            <TouchableOpacity style={styles.submitButton} onPress={() => submitComment()}>
+                                <Text style={styles.submitButtonText}>댓글 달기</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+
         </View>
     ));
 
-    // const images = [
-    //     require('./assets/images/쿼카.jpg'),
-    //     require('./assets/images/cat3.jpg'),
-    //     require('./assets/images/cat5.jpg'),
-    // ];
+    function toggleIconsVisibility() {
+        setIconsVisible(!iconsVisible);
+    }
 
     function toggleIconsVisibility() {
         setIconsVisible(!iconsVisible);
+    }
+
+    // isFiltered 상태 토글 함수
+    function toggleFilter() {
+        setIsFiltered(!isFiltered);
+        console.log('isFiltered 는', isFiltered);
     }
 
     function gotoWrite() {
         navigation.navigate('글 등록');
     }
 
-
-    function showNextImage() {
-        if (currentImageIndex < totalImages - 1) {
-            setCurrentImageIndex(currentImageIndex + 1);
-        }
-    }
-
-    function showPreviousImage() {
-        if (currentImageIndex > 0) {
-            setCurrentImageIndex(currentImageIndex - 1);
-        }
-    }
-
     const toggleHeartIcon = () => {
         setIsHeartSelected(!isHeartSelected);
     };
 
-    const toggleCommentBox = () => {
+    const toggleCommentBox = (postNum) => {
         setShowCommentBox(!showCommentBox);
-    };
-
-    const submitComment = () => {
-        if (newComment.trim() !== '') {
-            setComments([...comments, newComment]);
-            setNewComment('');
+        setActivePostNum(postNum);
+        if (!showCommentBox) { // 댓글 창을 열 때만 댓글을 불러옴
+            fetchComments(postNum);
+            console.log('postNum: ', postNum)
         }
     };
+
+    const fetchComments = async (postNum) => {
+        console.log('fetchComments postNum: ', postNum)
+        if (postNum) {
+            axios.get(`http://${context.ip}:3003/commentList?num=${postNum}`)
+                .then((response) => {
+                    if (Array.isArray(response.data)) {
+                        setComments(response.data);
+                        console.log('댓글 데이터:', response.data);
+                    }
+                })
+                .catch((error) => {
+                    console.error('댓글 데이터를 불러오는 데 실패했습니다:', error);
+                });
+        }
+    }
+
+    const submitComment = async () => {
+        console.log('postNum 2: ', activePostNum)
+        if (newComment.trim() !== '') {
+            setNewComment('');
+            try {
+                if (activePostNum) {
+                    console.log('postNum 3: ', activePostNum);
+                    const success = await comment(activePostNum);
+                    if (success) {
+                        fetchComments(activePostNum);
+                    } else {
+                        console.error('댓글 등록 실패');
+                    }
+                } else {
+                    console.error('postId가 null 또는 유효하지 않습니다.');
+                }
+            } catch (error) {
+                console.error('예외 발생:', error);
+            }
+        }
+    };
+
+    const comment = async (postId) => {
+
+        if (!postId) {
+            console.error('댓글 등록 실패: postId가 null 또는 유효하지 않습니다.');
+            return false; // 댓글 등록 실패
+        }
+
+        try {
+            const response = await axios.post(`http://${context.ip}:3003/comment`, {
+                postId: postId,
+                comment: newComment,
+                date: currentDateTime,
+            });
+
+            if (response.data.success) {
+                console.log(response.data);
+                return true; // 댓글 등록 성공
+            } else {
+                console.error(response.data.message);
+                return false; // 댓글 등록 실패
+            }
+        } catch (error) {
+            console.error(error);
+            return false; // 댓글 등록 실패
+        }
+    }
+
 
     function renderImages(images) {
         return images.map((imageUrl, index) => (
@@ -224,7 +375,9 @@ export default function CommunityScreen() {
                         <TouchableOpacity onPress={gotoWrite} style={[styles.shadowContainer, { marginRight: 20 }]}>
                             <Icon2 name="plus" style={styles.icon} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.shadowContainer, {}]}>
+                        <TouchableOpacity
+                            onPress={toggleFilter}
+                            style={[styles.shadowContainer, {}]}>
                             <Icon2 name="account-check" style={styles.icon} />
                         </TouchableOpacity>
                     </View>
@@ -241,31 +394,6 @@ export default function CommunityScreen() {
             >
                 {renderPostData}
             </ScrollView>
-
-            <Modal animationType="slide" transparent={true} visible={showCommentBox}>
-                <TouchableWithoutFeedback onPress={() => toggleCommentBox()}>
-                    <View style={styles.modal}>
-                        <ScrollView style={styles.modalContent}>
-                            {comments.map((comment, index) => (
-                                <View key={index} style={styles.comment}>
-                                    <Text style={styles.commentText}>{comment}</Text>
-                                </View>
-                            ))}
-                        </ScrollView>
-                        <View style={styles.commentBox}>
-                            <TextInput
-                                style={styles.commentInput}
-                                placeholder="댓글을 입력하세요..."
-                                value={newComment}
-                                onChangeText={(text) => setNewComment(text)}
-                            />
-                            <TouchableOpacity style={styles.submitButton} onPress={submitComment}>
-                                <Text style={styles.submitButtonText}>댓글 달기</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
 
             {/* 글 간격 */}
             <View style={{ height: 30, backgroundColor: '#F2FFED' }}></View>
