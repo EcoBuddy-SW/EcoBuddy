@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Modal, Image, Alert } from 'react-native';
+import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Modal, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import firebase from '@firebase/app';
 import 'firebase/storage';
 import { getStorage, ref, uploadBytes, getDownloadURL } from '@firebase/storage';
+import { LoadingModal } from "react-native-loading-modal";
 
 import LocationContext, { getLocation } from './LocationContext';
 import axios from 'axios';
@@ -18,7 +19,7 @@ export default function WriteScreen() {
 
     const writer = context.userId;
     // const writer = 'kkk'; //임의로 넣음
-
+    const [lodingModal, setLodingModal] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [inputText, setInputText] = useState("");
@@ -32,7 +33,7 @@ export default function WriteScreen() {
             if (status !== 'granted') {
                 alert('사진 라이브러리 액세스 권한이 거부되었습니다.');
             }
-        })(); currentDateTime
+        })(); 
     }, []);
 
     useEffect(() => {
@@ -46,10 +47,13 @@ export default function WriteScreen() {
             aspect: [1, 1],
             quality: 1,
         });
-
+    
         if (!result.cancelled) {
-            if (selectedImages.length < maxImages && !selectedImages.includes(result.assets[0].uri)) {
-                setSelectedImages([...selectedImages, result.assets[0].uri]);
+            const selectedImageUri = result.assets[0].uri;
+    
+            // 이미지가 배열에 없을 때만 추가
+            if (selectedImages.length < maxImages && !selectedImages.includes(selectedImageUri)) {
+                setSelectedImages([...selectedImages, selectedImageUri]);
             } else {
                 alert('최대 5장까지 선택할 수 있습니다.');
             }
@@ -77,32 +81,62 @@ export default function WriteScreen() {
         }
     };
 
+    // 로딩 모달
+    const LoadingModal = ({ modalVisible }) => {
+        return (
+            <Modal
+                transparent={true}
+                animationType="slide"
+                visible={modalVisible}
+            >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ backgroundColor: '#F2FFED', padding: 20, borderRadius: 10 }}>
+                        <ActivityIndicator size="large" color="black" />
+                        <Text>Loading...</Text>
+                    </View>
+                </View>
+            </Modal>
+        );
+    };
+
     // Firebase Storage에 이미지 업로드
     const uploadImagesToFirebase = async () => {
         const storage = getStorage();
         const imageUrls = [];
-        console.log('1');
 
         try {
             await Promise.all(selectedImages.map(async (imageUri) => {
                 console.log('Uploading image:', imageUri);
                 console.log('2');
-                const response = await fetch(imageUri);
-                const blob = await response.blob();
-                console.log('3');
-                const meta = { contentType: 'image/jpeg' };
-                const uniqueImageName = `writing/${Date.now()}_${Math.random()}.jpg`;
-                const storageRef = ref(storage, uniqueImageName);
-                const uploadTask = uploadBytes(storageRef, blob, meta);
 
-                console.log('Uploading bytes...');
-                await uploadTask;
+                try {
+                    console.log('3');
+                    const response = await fetch(imageUri);
+                    console.log('Fetch 성공 함, 그리고 상태: ' , response.status);
+                    if (!response.ok) {
+                        console.error('Fetch failed with status:', response.status);
+                        throw new Error('Fetch failed');
+                    }
+                    console.log('Fetch 성공 함, 그리고 상태: ' , response.status);
+                    const blob = await response.blob();
+                    console.log('4');
+                    const meta = { contentType: 'image/jpeg' };
+                    const uniqueImageName = `writing/${Date.now()}_${Math.random()}.jpg`;
+                    const storageRef = ref(storage, uniqueImageName);
+                    const uploadTask = uploadBytes(storageRef, blob, meta);
 
-                console.log('Getting download URL...');
-                const url = await getDownloadURL(storageRef);
-                imageUrls.push(url);
+                    console.log('Uploading bytes...');
+                    await uploadTask;
 
-                console.log('Firebase image upload success:', url);
+                    console.log('Getting download URL...');
+                    const url = await getDownloadURL(storageRef);
+                    imageUrls.push(url);
+
+                    console.log('Firebase image upload success:', url);
+                } catch (uploadError) {
+                    console.error('Error during image upload:', uploadError);
+                    // throw uploadError;
+                }
             }));
 
             // imageUrls 배열을 문자열로 변환하여 리턴
@@ -113,21 +147,23 @@ export default function WriteScreen() {
         }
     };
 
-    // uploadImagesToFirebase 함수 사용 예시
-    (async () => {
-        try {
-            const urls = await uploadImagesToFirebase();
-            console.log('All images uploaded. URLs:', urls);
-        } catch (error) {
-            console.error('Error during image upload process:', error);
-        }
-    })();
+    // // uploadImagesToFirebase 함수 사용 예시
+    // (async () => {
+    //     try {
+    //         const urls = await uploadImagesToFirebase();
+    //         console.log('All images uploaded. URLs:', urls);
+    //     } catch (error) {
+    //         console.error('Error during image upload process:', error);
+    //         console.error(error.stack);
+    //     }
+    // })();
 
     const write = async () => {
 
-        const imageUrls = await uploadImagesToFirebase();
+        setLodingModal(true); // 업로딩 시작 시 modalVisible을 true로 설정
 
         try {
+            const imageUrls = await uploadImagesToFirebase();
             const response = await axios.post(`http://${context.ip}:3003/write`, {
                 writer: writer,
                 context: inputText,
@@ -137,14 +173,19 @@ export default function WriteScreen() {
 
             if (response.data.success) {
                 console.log(response.data);
+                setModalVisible(false);
                 return true; // 글 등록 성공
             } else {
                 console.error(response.data.message);
+                setModalVisible(false);
                 return false; // 글 등록 실패
             }
         } catch (error) {
             console.error(error);
+            setModalVisible(false);
             return false; // 글 등록 실패
+        }  finally {
+            setLodingModal(false); // 업로딩이 끝나면 modalVisible을 false로 설정
         }
     }
 
@@ -196,6 +237,9 @@ export default function WriteScreen() {
                     </View>
                 </View>
             </Modal>
+
+            {/* LoadingModal을 modalVisible 상태에 따라 표시 */}
+            <LoadingModal modalVisible={lodingModal} />
         </View>
     );
 }
