@@ -12,11 +12,13 @@ import {
     Modal,
     TouchableWithoutFeedback,
     Dimensions,
+    KeyboardAvoidingView,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import Swiper from 'react-native-swiper';
 
 export default function CommunityScreen() {
     const navigation = useNavigation();
@@ -36,16 +38,29 @@ export default function CommunityScreen() {
     const totalImages = imageArray.length;
     // const postId = postData && postData[currentImageIndex] ? postData[currentImageIndex].postId : null;
 
+    // const panResponder = PanResponder.create({
+    //     onStartShouldSetPanResponder: () => true,
+    //     onPanResponderMove: (event, gestureState) => {
+    //         if (gestureState.dx > 50) {
+    //             showPreviousImage();
+    //         } else if (gestureState.dx < -50) {
+    //             showNextImage();
+    //         }
+    //     },
+    // });
+
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
-        onPanResponderMove: (e, gestureState) => {
-            if (gestureState.dx > 50) {
-                showPreviousImage();
-            } else if (gestureState.dx < -50) {
-                showNextImage();
+        onPanResponderMove: (event, gestureState) => {
+          if (Math.abs(gestureState.dx) > 50) {
+            if (gestureState.dx > 0) {
+              showPreviousImage();
+            } else {
+              showNextImage();
             }
+          }
         },
-    });
+      }); 
 
 
     function showNextImage() {
@@ -156,7 +171,6 @@ export default function CommunityScreen() {
                 </View>
             )} */}
 
-
             {post.imageUrl.split(', ').map((imageUrl, index) => {
                 const trimmedUrl = imageUrl.trim();
                 if (trimmedUrl === '') {
@@ -170,14 +184,14 @@ export default function CommunityScreen() {
                             styles.imageContainer,
                             { display: index === currentImageIndex ? 'flex' : 'none' }
                         ]}
+                        {...panResponder.panHandlers}
                     >
-                        <View {...panResponder.panHandlers}>
-                            <Image
-                                source={{ uri: trimmedUrl }}
-                                style={styles.image}
-                            />
-                        </View>
+                        <Image
+                            source={{ uri: trimmedUrl }}
+                            style={styles.image}
+                        />
                     </View>
+
                 );
             })}
 
@@ -232,17 +246,23 @@ export default function CommunityScreen() {
                                 </View>
                             ))}
                         </ScrollView>
-                        <View style={styles.commentBox}>
-                            <TextInput
-                                style={styles.commentInput}
-                                placeholder="댓글을 입력하세요..."
-                                value={newComment}
-                                onChangeText={(text) => setNewComment(text)}
-                            />
-                            <TouchableOpacity style={styles.submitButton} onPress={() => submitComment()}>
-                                <Text style={styles.submitButtonText}>댓글 달기</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <KeyboardAvoidingView style={styles.container} behavior="padding">
+                            <View style={styles.commentBox}>
+                                {showCommentBox && (
+                                    <>
+                                        <TextInput
+                                            style={styles.commentInput}
+                                            placeholder="댓글을 입력하세요..."
+                                            value={newComment}
+                                            onChangeText={(text) => setNewComment(text)}
+                                        />
+                                        <TouchableOpacity style={styles.submitButton} onPress={() => submitComment()}>
+                                            <Text style={styles.submitButtonText}>댓글 달기</Text>
+                                        </TouchableOpacity>
+                                    </>
+                                )}
+                            </View>
+                        </KeyboardAvoidingView>
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -384,7 +404,8 @@ export default function CommunityScreen() {
                 )}
             </View>
             <ScrollView
-                pagingEnabled
+                pagingEnabled={false}
+                scrollEnabled={true}
                 showsHorizontalScrollIndicator={false}
                 onMomentumScrollEnd={(event) => {
                     const offsetX = event.nativeEvent.contentOffset.x;
