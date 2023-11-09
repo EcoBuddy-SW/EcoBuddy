@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect , useCallback  } from 'react';
 import LocationContext from './LocationContext';
 import {
     View,
@@ -23,13 +23,15 @@ import Swiper from 'react-native-swiper';
 export default function CommunityScreen() {
     const navigation = useNavigation();
     const context = useContext(LocationContext);
-    const [iconsVisible, setIconsVisible] = useState(false);
+    const [iconsVisible, setIconsVisible] = useState(false); 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [isHeartSelected, setIsHeartSelected] = useState(false);
-    const [showCommentBox, setShowCommentBox] = useState(false);
+    const [isHeartSelected, setIsHeartSelected] = useState(false); // 하트 누르기
+    const [showCommentBox, setShowCommentBox] = useState(false); // 게시물에 해당하는 댓글창
     const [comments, setComments] = useState([]); // 댓글 목록
     const [newComment, setNewComment] = useState('');
     const [postData, setPostData] = useState([]); // 게시물 데이터 저장
+    const [, updateState] = useState();
+    // const forceUpdate = useCallback(() => updateState({}), []);
     const [originalData, setOriginalData] = useState([]);  // 원본 게시물 데이터
     const [isFiltered, setIsFiltered] = useState(false);
     const imageArray = postData.imageUrl ? postData.imageUrl.split(', ') : [];
@@ -52,15 +54,15 @@ export default function CommunityScreen() {
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
-          if (Math.abs(gestureState.dx) > 50) {
-            if (gestureState.dx > 0) {
-              showPreviousImage();
-            } else {
-              showNextImage();
+            if (Math.abs(gestureState.dx) > 50) {
+                if (gestureState.dx > 0) {
+                    showPreviousImage();
+                } else {
+                    showNextImage();
+                }
             }
-          }
         },
-      }); 
+    });
 
 
     function showNextImage() {
@@ -77,31 +79,62 @@ export default function CommunityScreen() {
         }
     }
 
+    // useEffect(() => {
+    //     // API를 호출하여 게시물 데이터를 가져옴
+    //     axios.get(`http://${context.ip}:3003/community`, {
+    //         headers: {
+    //             'Cache-Control': 'no-cache',
+    //         },
+    //     })
+    //         .then((response) => {
+    //             console.log('API 응답:', response.data);
+    //             if (Array.isArray(response.data) && response.data.length === 0) {
+    //                 console.log('서버에서 데이터가 없습니다.');
+    //                 // 빈 배열을 받으면 "등록된 글이 없습니다" 메시지 표시
+    //                 setPostData(null);
+    //             } else {
+    //                 setOriginalData(response.data); // 원본 데이터 저장
+    //                 setPostData([...response.data]);
+    //                 fetchComments(response.data);
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.error('API 호출 실패:', error);
+    //         });
+    // }, []);
+
     useEffect(() => {
-        // API를 호출하여 게시물 데이터를 가져옴
-        axios.get(`http://${context.ip}:3003/community`)
-            .then((response) => {
-                console.log('API 응답:', response.data);
-                if (Array.isArray(response.data) && response.data.length === 0) {
-                    console.log('서버에서 데이터가 없습니다.');
-                    // 빈 배열을 받으면 "등록된 글이 없습니다" 메시지 표시
-                    setPostData(null);
-                } else {
-                    setOriginalData(response.data); // 원본 데이터 저장
-                    setPostData(response.data);
-                    fetchComments(response.data);
-                }
-            })
-            .catch((error) => {
-                console.error('API 호출 실패:', error);
-            });
+        // 초기 렌더링 시 API 호출
+        fetchData();
     }, []);
 
+    const fetchData = () => {
+        // API를 호출하여 게시물 데이터를 가져옴
+        axios.get(`http://${context.ip}:3003/community`, {
+            headers: {
+                'Cache-Control': 'no-cache',
+            },
+        })
+        .then((response) => {
+            console.log('API 응답:', response.data);
+            if (Array.isArray(response.data) && response.data.length === 0) {
+                console.log('서버에서 데이터가 없습니다.');
+                // 빈 배열을 받으면 "등록된 글이 없습니다" 메시지 표시
+                setPostData(null);
+            } else {
+                setOriginalData(response.data); // 원본 데이터 저장
+                setPostData([...response.data]);
+                fetchComments(response.data);
+            }
+        })
+        .catch((error) => {
+            console.error('API 호출 실패:', error);
+        });
+    };
 
     useEffect(() => {
         if (isFiltered) {
-            // 임의로 username 넣기
-            context.userId = "seoyun";
+
             // isFiltered가 true일 때, 필터링된 게시물만 보여줌
             const filteredPosts = postData.filter((post) => post.writer === context.userId);
             setPostData(filteredPosts);
@@ -142,8 +175,13 @@ export default function CommunityScreen() {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={toggleFilter}
-                                style={[styles.shadowContainer, {}]}>
+                                style={[styles.shadowContainer, { marginRight: 20 }]}>
                                 <Icon2 name="account-check" style={styles.icon} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={fetchData}
+                                style={[styles.shadowContainer, { marginRight: 20 }]}>
+                                <Icon2 name="refresh" style={styles.icon} />
                             </TouchableOpacity>
                         </View>)
                     }
@@ -397,9 +435,14 @@ export default function CommunityScreen() {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={toggleFilter}
-                            style={[styles.shadowContainer, {}]}>
+                            style={[styles.shadowContainer, { marginRight: 20 }]}>
                             <Icon2 name="account-check" style={styles.icon} />
                         </TouchableOpacity>
+                        <TouchableOpacity
+                                onPress={fetchData}
+                                style={[styles.shadowContainer, { marginRight: 20 }]}>
+                                <Icon2 name="refresh" style={styles.icon} />
+                            </TouchableOpacity>
                     </View>
                 )}
             </View>
