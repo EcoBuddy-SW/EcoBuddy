@@ -1,32 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Text, KeyboardAvoidingView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
+import axios from 'axios';
+import LocationContext from './LocationContext';
+
+import * as Notifications from 'expo-notifications';
+
 
 export default function LoginScreen() {
-    const [userId, setUserId] = useState('');
+    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     // const [fontLoaded, onChangeLoading] = useState(false); // 폰트 로딩 상태
+
+    ///////////////////// 알림
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+    ///////////////
+    
     const navigation = useNavigation();
 
-    // const loadAssetsAsync = async () => {
-    //     await Font.loadAsync({
-    //         'Giants-Bold': require('./assets/fonts/Giants-Bold.ttf'),
-    //     });
-    //     onChangeLoading(true);
-    // }
-    // 폰트 로드 이후에 실행되는 useEffect 추가
-    // useEffect(() => {
-    //     loadAssetsAsync();
-    // }, []); // 빈 배열을 전달하여 컴포넌트가 처음 마운트될 때 한 번만 실행
+    const context = useContext(LocationContext);
 
-    const handleLogin = () => {
-        // 로그인 처리 로직 작성
+    const sendNotification = async (tokens) => {
+        try {
+          const response = await axios.post(`http://${context.ip}:3003/sendNotification`, {
+            tokens: tokens,
+          });
+      
+          if (response.data.success) {
+            console.log('Notifications sent successfully');
+          } else {
+            console.log('Failed to send notifications');
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-        // 예시: 간단한 확인 메시지 출력
-        alert(`UserId: ${userId}, Password: ${password}`);
+    const handleLogin = async () => {
+        console.log('IP value from context:', context.ip);
 
-        navigation.navigate('Home');
+        const data = {
+            id: id,
+            password: password
+        };
+
+        axios.post(`http://${context.ip}:3003/login`, data)
+        .then(async response => {
+            if (response.data.success) {
+
+                const token = context.expoPushToken // 여기서 호출
+                sendNotification([token]); 
+
+                alert(response.data.message);
+                context.setUserId(id);
+
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            {name: 'Home'},
+                        ],
+                    })
+                );
+                //navigation.navigate('BottomTab');
+            } else {
+                alert(response.data.message); // 실패 메시지 표시
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
     };
 
     const handleJoin = () => {
@@ -64,8 +110,8 @@ export default function LoginScreen() {
             <TextInput
                 style={styles.input}
                 placeholder="Id"
-                value={userId}
-                onChangeText={(text) => setUserId(text)}
+                value={id}
+                onChangeText={(text) => setId(text)}
             />
             <TextInput
                 style={styles.input}

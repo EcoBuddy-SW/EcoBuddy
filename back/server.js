@@ -13,7 +13,7 @@ const connection = mysql.createConnection(dbconfig);
 connection.connect();
 
 const app = express();
-let expo = new Expo();
+let expo = new Expo({});
 
 const sessionStore = new MySQLStore(dbconfig);
 
@@ -379,6 +379,53 @@ app.post('/delAccount', (req, res) => {
 
 });
 
+// Expo를 초기화하고 반환하는 함수를 정의합니다.
+// function initializeExpo() {
+//   const expo = new Expo();
+//   return expo;
+// }
+
+// app.post('/sendNotification', async (req, res) => {
+//   const somePushTokens = req.body.tokens;
+//   const data = req.body.data;
+
+// 서버 코드 내에서 EXPO_ACCESS_TOKEN 환경 변수를 설정
+// process.env.EXPO_ACCESS_TOKEN = 'bSMbj2OTZyu9y_sLNXuIdyKqlTF4-0k1ysFr75MW';
+
+//   console.log(`ExpoPushMessages > ${somePushTokens}, ${data}`);
+//   console.log(`환경 변수에서 토큰 > ${process.env.EXPO_ACCESS_TOKEN}`);
+
+//   if (!somePushTokens || somePushTokens.length === 0) {
+//     return res.status(400).send({ success: false, message: '유효한 푸시 토큰이 제공되지 않았습니다' });
+//   }
+
+//   const messages = somePushTokens.map((pushToken) => ({
+//     to: pushToken,
+//     sound: 'default',
+//     body: '로그인 성공이요~~',
+//     data: { withSome: 'data' },
+//   }));
+
+//   // Expo를 초기화합니다
+//   const expo = initializeExpo();
+
+//   const chunks = expo.chunkPushNotifications(messages);
+
+//   for (let chunk of chunks) {
+//     try {
+//       const receipts = await expo.sendPushNotificationsAsync(chunk);
+
+//       console.log(receipts);
+//     } catch (error) {
+//       console.error(error);
+//       return res.status(500).send({ success: false, message: '알림을 보내는 데 실패했습니다' });
+//     }
+//   }
+
+//   res.status(200).send({ success: true });
+// });
+
+
 app.post('/sendNotification', (req, res) => {
     let messages = [];
     for (let pushToken of req.body.tokens) {
@@ -389,10 +436,13 @@ app.post('/sendNotification', (req, res) => {
             continue;
         }
 
+        console.log('pushToken: ', pushToken);
+
         // 메세지 생성
         messages.push({
             to: pushToken,
             sound: 'default',
+            title: '서윤아 로그인 좀 하자',
             body: '로그인 성공이요~~',
             data: { withSome: 'data' },
         })

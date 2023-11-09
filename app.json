@@ -1,12 +1,27 @@
 {
   "expo": {
-    "name": "EcoBuddy",
-    "slug": "EcoBuddy",
+    "name": "ecobuddy",
+    "slug": "ecobuddy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "notification": {
+      "color": "#F3933F",
+      "icon": "./assets/images/96x96.png"
+    },
     "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+      ],
       [
         "expo-image-picker",
         {
@@ -79,7 +94,13 @@
     },
     "extra": {
       "eas": {
-        "projectId": "402bee7c-6f53-42ec-9f24-9885cd78a082"
+        "projectId": "e6b26bee-aece-4cfd-8ce0-3bc9c9940d1a",
+        "tokens": [
+          "ExponentPushToken[cHhlRrD_5nZQxvC_qfF3Ip]"
+        ],
+        "notification": {
+          "icon": "./assets/images/96x96.png"
+        }
       }
     }
   }

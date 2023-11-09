@@ -1,8 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Alert, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import LocationContext, {getLocation} from './LocationContext';
+
+import axios from 'axios';
 
 export default function JoinScreen() {
+
+    const context = useContext(LocationContext);
+
     <View style={styles.container}>
         <Text style={styles.text}>회원가입 페이지</Text>
     </View>
@@ -20,7 +26,6 @@ export default function JoinScreen() {
     const passwordInputRef = useRef(null);
     const nicknameInputRef = useRef(null);
     const phoneNumberInputRef = useRef(null);
-
     const handleSignUp = () => {
         // 간단한 유효성 검사 수행
         if (!email || !password || !nickname || !phoneNumber) {
@@ -65,9 +70,34 @@ export default function JoinScreen() {
         console.log('Nickname:', nickname);
         console.log('PhoneNumber:', phoneNumber);
 
-        // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
-        Alert.alert("회원가입 성공!", "환영합니다")
-        navigation.navigate('Login');
+        const data={
+            "email": email,
+            "id": id,
+            "password": password,
+            "nickname": nickname,
+            "phoneNumber": phoneNumber
+        }
+
+        axios.post(`http://${context.ip}:3003/join`, data)
+        .then(response => {
+            // 서버 응답 처리
+
+            if (response.data.success) {
+                console.log(response.data);
+                // 회원가입 성공하면 알림창 뜨면서 로그인 페이지로 이동
+                Alert.alert("회원가입 성공!", "환영합니다");
+                navigation.navigate('Login');
+
+            }
+            else {
+                Alert.alert("회원가입 실패", response.data.message);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            return;
+        });
+
     };
 
     return (
@@ -134,7 +164,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor:'white',
     },
     input: {
         width: '100%',
