@@ -3,6 +3,20 @@
     "version": ">= 5.2.0"
   },
   "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
     "development": {
       "distribution": "internal",
       "android": {
@@ -11,9 +25,6 @@
       "ios": {
         "buildConfiguration": "Debug"
       }
-    },
-    "preview": {
-      "distribution": "internal"
     },
     "production": {}
   },

@@ -48,7 +48,7 @@ export default function WriteScreen() {
         });
 
         if (!result.cancelled) {
-            if (selectedImages.length < maxImages  && !selectedImages.includes(result.assets[0].uri)) {
+            if (selectedImages.length < maxImages && !selectedImages.includes(result.assets[0].uri)) {
                 setSelectedImages([...selectedImages, result.assets[0].uri]);
             } else {
                 alert('최대 5장까지 선택할 수 있습니다.');
@@ -81,30 +81,48 @@ export default function WriteScreen() {
     const uploadImagesToFirebase = async () => {
         const storage = getStorage();
         const imageUrls = [];
-    
-        for (const imageUri of selectedImages) {
-            try {
+        console.log('1');
+
+        try {
+            await Promise.all(selectedImages.map(async (imageUri) => {
+                console.log('Uploading image:', imageUri);
+                console.log('2');
                 const response = await fetch(imageUri);
                 const blob = await response.blob();
-    
+                console.log('3');
                 const meta = { contentType: 'image/jpeg' };
-                const uniqueImageName = `writing/${Date.now()}_${Math.random()}.jpg`; // 고유한 이름을 생성
+                const uniqueImageName = `writing/${Date.now()}_${Math.random()}.jpg`;
                 const storageRef = ref(storage, uniqueImageName);
                 const uploadTask = uploadBytes(storageRef, blob, meta);
-    
+
+                console.log('Uploading bytes...');
                 await uploadTask;
-    
+
+                console.log('Getting download URL...');
                 const url = await getDownloadURL(storageRef);
                 imageUrls.push(url);
-            } catch (error) {
-                console.error('이미지 업로드 실패:', error);
-            }
+
+                console.log('Firebase image upload success:', url);
+            }));
+
+            // imageUrls 배열을 문자열로 변환하여 리턴
+            return imageUrls.join(', ');
+        } catch (error) {
+            console.error('Error during image upload:', error);
+            throw error; // 에러를 상위로 다시 던져서 처리하도록 함
         }
-    
-        // imageUrls 배열을 문자열로 변환하여 리턴
-        return imageUrls.join(', ');
     };
-    
+
+    // uploadImagesToFirebase 함수 사용 예시
+    (async () => {
+        try {
+            const urls = await uploadImagesToFirebase();
+            console.log('All images uploaded. URLs:', urls);
+        } catch (error) {
+            console.error('Error during image upload process:', error);
+        }
+    })();
+
     const write = async () => {
 
         const imageUrls = await uploadImagesToFirebase();

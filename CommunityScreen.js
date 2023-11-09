@@ -40,30 +40,16 @@ export default function CommunityScreen() {
     const totalImages = imageArray.length;
     // const postId = postData && postData[currentImageIndex] ? postData[currentImageIndex].postId : null;
 
-    // const panResponder = PanResponder.create({
-    //     onStartShouldSetPanResponder: () => true,
-    //     onPanResponderMove: (event, gestureState) => {
-    //         if (gestureState.dx > 50) {
-    //             showPreviousImage();
-    //         } else if (gestureState.dx < -50) {
-    //             showNextImage();
-    //         }
-    //     },
-    // });
-
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
-            if (Math.abs(gestureState.dx) > 50) {
-                if (gestureState.dx > 0) {
-                    showPreviousImage();
-                } else {
-                    showNextImage();
-                }
+            if (gestureState.dx > 50) {
+                showPreviousImage();
+            } else if (gestureState.dx < -50) {
+                showNextImage();
             }
         },
     });
-
 
     function showNextImage() {
         if (currentImageIndex < totalImages - 1) {
@@ -194,9 +180,8 @@ export default function CommunityScreen() {
     const renderPostData = postData.map((post, index) => (
         <View style={styles.container2} key={index}>
             <View style={[styles.rowContainer, { alignContent: 'center', justifyContent: 'center' }]}>
-                <View style={styles.profile}></View>
                 <Text style={[styles.title, { width: 100 }]}>{post.writer}</Text>
-                <Text style={[styles.text, { textAlign: 'right' }]}>{post.date}</Text>
+                <Text style={[styles.text, { justifyContent: 'flex-end' }]}>{post.date}</Text>
             </View>
 
             <View style={{ padding: 20 }}>
