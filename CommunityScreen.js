@@ -244,11 +244,11 @@ return(
                         { color: isHeartSelected ? '#FAEDFF' : 'black', marginRight: 10, marginLeft: 10 },
                     ]}
                 >
-                    {isHeartSelected ? (
+                    {/* {isHeartSelected ? (
                         <Icon2 name="cards-heart" style={[styles.icon, { color: '#FFEDF2' }]} />
                     ) : (
                         <Icon2 name="cards-heart-outline" style={[styles.icon, { color: '#FFEDF2' }]} />
-                    )}
+                    )} */}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     if (!showCommentBox) {
