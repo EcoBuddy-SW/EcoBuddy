@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect , useCallback  } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import LocationContext from './LocationContext';
 import {
     View,
@@ -23,7 +23,7 @@ import Swiper from 'react-native-swiper';
 export default function CommunityScreen() {
     const navigation = useNavigation();
     const context = useContext(LocationContext);
-    const [iconsVisible, setIconsVisible] = useState(false); 
+    const [iconsVisible, setIconsVisible] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isHeartSelected, setIsHeartSelected] = useState(false); // 하트 누르기
     const [showCommentBox, setShowCommentBox] = useState(false); // 게시물에 해당하는 댓글창
@@ -77,21 +77,21 @@ export default function CommunityScreen() {
                 'Cache-Control': 'no-cache',
             },
         })
-        .then((response) => {
-            console.log('API 응답:', response.data);
-            if (Array.isArray(response.data) && response.data.length === 0) {
-                console.log('서버에서 데이터가 없습니다.');
-                // 빈 배열을 받으면 "등록된 글이 없습니다" 메시지 표시
-                setPostData(null);
-            } else {
-                setOriginalData(response.data); // 원본 데이터 저장
-                setPostData([...response.data]);
-                fetchComments(response.data);
-            }
-        })
-        .catch((error) => {
-            console.error('API 호출 실패:', error);
-        });
+            .then((response) => {
+                console.log('API 응답:', response.data);
+                if (Array.isArray(response.data) && response.data.length === 0) {
+                    console.log('서버에서 데이터가 없습니다.');
+                    // 빈 배열을 받으면 "등록된 글이 없습니다" 메시지 표시
+                    setPostData(null);
+                } else {
+                    setOriginalData(response.data); // 원본 데이터 저장
+                    setPostData([...response.data]);
+                    fetchComments(response.data);
+                }
+            })
+            .catch((error) => {
+                console.error('API 호출 실패:', error);
+            });
     };
 
     useEffect(() => {
@@ -165,135 +165,140 @@ export default function CommunityScreen() {
                 }
             },
         });
-    
+
         function showNextImage() {
-            if (currentImageIndex <  post.imageUrl.split(', ').length - 1) {
+            if (currentImageIndex < post.imageUrl.split(', ').length - 1) {
                 console.log('ShowNext, currentImageIndex:', currentImageIndex);
                 setCurrentImageIndex(currentImageIndex + 1);
             }
         }
-    
+
         function showPreviousImage() {
             if (currentImageIndex > 0) {
                 console.log('ShowPrevious, currentImageIndex:', currentImageIndex);
                 setCurrentImageIndex(currentImageIndex - 1);
             }
         }
-return(
-        <View style={styles.container2} key={index}>
-            <View style={[styles.rowContainer, { alignContent: 'center', justifyContent: 'center' }]}>
-                <Text style={[styles.title, { width: 100 }]}>{post.writer}</Text>
-                <Text style={[styles.text, { justifyContent: 'flex-end' }]}>{post.date}</Text>
-            </View>
+        return (
+            <View style={styles.container2} key={index}>
+                <View style={[styles.rowContainer, { alignContent: 'center', justifyContent: 'center' }]}>
+                    <Text style={[styles.title, { width: 100 }]}>{post.writer}</Text>
+                    <Text style={[styles.text, { justifyContent: 'flex-end' }]}>{post.date}</Text>
+                </View>
 
-            <View style={{ padding: 20 }}>
-                <Text style={styles.text}>{post.context}</Text>
-            </View>
+                <View style={{ padding: 20 }}>
+                    <Text style={styles.text}>{post.context}</Text>
+                </View>
 
-            {/* {post.imageUrl && (
+                {/* {post.imageUrl && (
                 <View {...panResponder.panHandlers}>
                     {renderImages(post.imageUrl.split(','))}
                 </View>
             )} */}
 
-            {post.imageUrl.split(', ').map((imageUrl, index) => {
-                const trimmedUrl = imageUrl.trim();
-                if (trimmedUrl === '') {
-                    return null; // 이미지 URL이 비어있을 때는 렌더링하지 않음
-                }
-                // console.log('trimmedUrl :', trimmedUrl)
-                return (
-                    <View
-                        key={index}
-                        style={[
-                            styles.imageContainer,
-                            { display: index === currentImageIndex ? 'flex' : 'none' }
-                        ]}
-                        {...panResponder.panHandlers}
-                    >
-                        <Image
-                            source={{ uri: trimmedUrl }}
-                            style={styles.image}
-                        />
-                    </View>
-
-                );
-            })}
-
-
-            {post.imageUrl && post.imageUrl.split(',').length > 1 && (
-                <View style={styles.imagePagination}>
-                    {post.imageUrl.split(',').map((_, imageIndex) => (
+                {post.imageUrl.split(', ').map((imageUrl, index) => {
+                    const trimmedUrl = imageUrl.trim();
+                    if (trimmedUrl === '') {
+                        return null; // 이미지 URL이 비어있을 때는 렌더링하지 않음
+                    }
+                    // console.log('trimmedUrl :', trimmedUrl)
+                    return (
                         <View
-                            key={imageIndex}
+                            key={index}
                             style={[
-                                styles.imagePage,
-                                currentImageIndex === imageIndex && styles.activeImagePage,
+                                styles.imageContainer,
+                                { display: index === currentImageIndex ? 'flex' : 'none' }
                             ]}
-                        />
-                    ))}
-                </View>
-            )}
+                            {...panResponder.panHandlers}
+                        >
+                            <Image
+                                source={{ uri: trimmedUrl }}
+                                style={styles.image}
+                            />
+                        </View>
 
-            <View style={{ marginBottom: 30 }}></View>
-            <View style={[styles.rowContainer, { marginBottom: 5 }]}>
-                <TouchableOpacity
-                    onPress={toggleHeartIcon}
-                    style={[
-                        styles.icon,
-                        { color: isHeartSelected ? '#FAEDFF' : 'black', marginRight: 10, marginLeft: 10 },
-                    ]}
-                >
-                    {/* {isHeartSelected ? (
+                    );
+                })}
+
+
+                {post.imageUrl && post.imageUrl.split(',').length > 1 && (
+                    <View style={styles.imagePagination}>
+                        {post.imageUrl.split(',').map((_, imageIndex) => (
+                            <View
+                                key={imageIndex}
+                                style={[
+                                    styles.imagePage,
+                                    currentImageIndex === imageIndex && styles.activeImagePage,
+                                ]}
+                            />
+                        ))}
+                    </View>
+                )}
+
+                <View style={{ marginBottom: 30 }}></View>
+                <View style={[styles.rowContainer, { marginBottom: 5 }]}>
+                    <TouchableOpacity
+                        onPress={toggleHeartIcon}
+                        style={[
+                            styles.icon,
+                            { color: isHeartSelected ? '#FAEDFF' : 'black', marginRight: 10, marginLeft: 10 },
+                        ]}
+                    >
+                        {/* {isHeartSelected ? (
                         <Icon2 name="cards-heart" style={[styles.icon, { color: '#FFEDF2' }]} />
                     ) : (
                         <Icon2 name="cards-heart-outline" style={[styles.icon, { color: '#FFEDF2' }]} />
                     )} */}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    if (!showCommentBox) {
-                        toggleCommentBox(post.num);
-                    } else if (showCommentBox && activePostNum === post.num) {
-                        toggleCommentBox(null);
-                    }
-                }} style={[styles.icon, { color: '#EDF3FF' }]}>
-                    <Icon name="chat-bubble" style={[styles.icon, { color: '#EDF3FF' }]} />
-                </TouchableOpacity>
-            </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        if (!showCommentBox) {
+                            toggleCommentBox(post.num);
+                        } else if (showCommentBox && activePostNum === post.num) {
+                            toggleCommentBox(null);
+                        }
+                    }} style={[styles.icon, { color: '#EDF3FF' }]}>
+                        <Icon name="chat-bubble" style={[styles.icon, { color: '#EDF3FF' }]} />
+                    </TouchableOpacity>
+                </View>
 
-            <Modal animationType="slide" transparent={true} visible={showCommentBox}>
-                <TouchableWithoutFeedback onPress={() => toggleCommentBox()}>
-                    <View style={styles.modal}>
-                        <ScrollView style={styles.modalContent}>
-                            {comments.map((comment, index) => (
-                                <View key={index} style={styles.comment}>
-                                    <Text style={styles.commentText}>{comment.comment}</Text>
+                <Modal animationType="slide" transparent={true} visible={showCommentBox}>
+                    <TouchableWithoutFeedback onPress={() => toggleCommentBox()}>
+                        <View style={styles.modal}>
+                            <ScrollView style={styles.modalContent}>
+                                {comments.map((comment, index) => {
+                                    console.log('comment:', comment);
+                                    return (
+                                        <View key={index} style={styles.comment}>
+                                            <Text style={styles.commentWriter}>{comment.commentWriter}</Text>
+                                            <Text style={styles.commentText}>{comment.comment}</Text>
+                                        </View>
+                                    );
+                                })}
+                            </ScrollView>
+                            <KeyboardAvoidingView style={styles.container} behavior="padding">
+                                <View style={styles.commentBox}>
+                                    {showCommentBox && (
+                                        <>
+                                            <TextInput
+                                                style={styles.commentInput}
+                                                placeholder="댓글을 입력하세요..."
+                                                value={newComment}
+                                                onChangeText={(text) => setNewComment(text)}
+                                            />
+                                            <TouchableOpacity style={styles.submitButton} onPress={() => submitComment()}>
+                                                <Text style={styles.submitButtonText}>댓글 달기</Text>
+                                            </TouchableOpacity>
+                                        </>
+                                    )}
                                 </View>
-                            ))}
-                        </ScrollView>
-                        <KeyboardAvoidingView style={styles.container} behavior="padding">
-                            <View style={styles.commentBox}>
-                                {showCommentBox && (
-                                    <>
-                                        <TextInput
-                                            style={styles.commentInput}
-                                            placeholder="댓글을 입력하세요..."
-                                            value={newComment}
-                                            onChangeText={(text) => setNewComment(text)}
-                                        />
-                                        <TouchableOpacity style={styles.submitButton} onPress={() => submitComment()}>
-                                            <Text style={styles.submitButtonText}>댓글 달기</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                )}
-                            </View>
-                        </KeyboardAvoidingView>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
+                            </KeyboardAvoidingView>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
 
-        </View>
-    )});
+            </View>
+        )
+    });
 
     function toggleIconsVisibility() {
         setIconsVisible(!iconsVisible);
@@ -365,15 +370,28 @@ return(
     };
 
     const comment = async (postId) => {
-
         if (!postId) {
             console.error('댓글 등록 실패: postId가 null 또는 유효하지 않습니다.');
             return false; // 댓글 등록 실패
         }
 
         try {
+            // 사용자의 ID에 대한 NICKNAME을 가져오는 요청
+            const userResponse = await axios.post(`http://${context.ip}:3003/getUserNickname`, {
+                userId: context.userId,
+            });
+
+            if (!userResponse.data.success) {
+                console.error(userResponse.data.message);
+                return false; // 댓글 등록 실패
+            }
+
+            const commentWriter = userResponse.data.nickname;
+
+            // 댓글 등록 요청
             const response = await axios.post(`http://${context.ip}:3003/comment`, {
                 postId: postId,
+                commentWriter: commentWriter,
                 comment: newComment,
                 date: currentDateTime,
             });
@@ -390,7 +408,6 @@ return(
             return false; // 댓글 등록 실패
         }
     }
-
 
     function renderImages(images) {
         return images.map((imageUrl, index) => (
@@ -426,10 +443,10 @@ return(
                             <Icon2 name="account-check" style={styles.icon} />
                         </TouchableOpacity>
                         <TouchableOpacity
-                                onPress={fetchData}
-                                style={[styles.shadowContainer, { marginRight: 20 }]}>
-                                <Icon2 name="refresh" style={styles.icon} />
-                            </TouchableOpacity>
+                            onPress={fetchData}
+                            style={[styles.shadowContainer, { marginRight: 20 }]}>
+                            <Icon2 name="refresh" style={styles.icon} />
+                        </TouchableOpacity>
                     </View>
                 )}
             </View>
@@ -579,6 +596,12 @@ const styles = StyleSheet.create({
     commentText: {
         fontFamily: 'Pretendard-Regular',
         fontSize: 16,
+    },
+    commentWriter:{
+        fontFamily: 'Pretendard-Regular',
+        color: 'lightgray',
+        fontSize: 13,
+        marginBottom: 5,
     },
     retryButton: {
         width: '80%',
