@@ -633,7 +633,7 @@ app.get('/commentList', (req, res) => {
     const { num } = req.query; // postId 대신 num 사용
     console.log('num: ', num);
 
-    const sql = `SELECT comment FROM comment WHERE num='${num}'`;
+    const sql = `SELECT commentWriter, comment FROM comment WHERE num='${num}'`;
     connection.query(sql, [num], (err, results) => {
         if (err) {
             console.error('쿼리 실행 실패:', err);
