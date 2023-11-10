@@ -53,6 +53,7 @@ import Coins from './CoinScreen';
 import Community from './CommunityScreen';
 import Write from './WriteScreen';
 import Statistcs from './StatistcsScreen'
+import Map2 from './Map2Screen';
 
 
 //채연 페이지
@@ -188,6 +189,7 @@ export default function App() {
           <Stack.Screen name="커뮤니티" component={Community} />
           <Stack.Screen name="글 등록" component={Write} />
           <Stack.Screen name="통계" component={Statistcs} />
+          <Stack.Screen name="지도 TEST" component={Map2} />
 
           {/* 채연 페이지 */}
           <Stack.Screen name="Option" component={OptionScreen} />

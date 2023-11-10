@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-import { StyleSheet, View, Text , ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
-import MapViewDirections from 'react-native-maps-directions'; // Import MapViewDirections
+import MapViewDirections from 'react-native-maps-directions';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function MapScreen() {
@@ -30,14 +30,12 @@ export default function MapScreen() {
             let steps = responseDirectionsAPI.data.routes[0].legs[0].steps;
 
             // Get the details of each step
-            let stepDetails = [];
-            steps.forEach((step) => {
-              stepDetails.push({
-                distance: step.distance.text,
-                duration: step.duration.text,
-                instructions: step.html_instructions.replace(/<[^>]*>?/gm, ''), // Remove HTML tags
-              });
-            });
+            let stepDetails = steps.map((step) => ({
+              distance: step.distance.text,
+              duration: step.duration.text,
+              instructions: step.html_instructions ? step.html_instructions.replace(/<[^>]*>?/gm, '') : '',
+              travel_mode: step.travel_mode,
+            }));
 
             // Set the state variable for steps
             setSteps(stepDetails);
@@ -89,14 +87,14 @@ export default function MapScreen() {
     })();
   }, []);
 
-  if (!origin || !destination || isLoading) { 
+  if (!origin || !destination || isLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#628F5D" />
         <Text style={styles.loadingText}>현재 위치를 로딩 중입니다...</Text>
       </View>
     );
- }
+  }
 
   return (
     <View style={styles.container}>
@@ -107,7 +105,6 @@ export default function MapScreen() {
           const stepCoordinates = []; // Replace with actual coordinates
           return <Polyline key={index} coordinates={stepCoordinates} strokeColor="#F00" strokeWidth={2} />;
         })}
-        {/* Use MapViewDirections component to draw directions */}
         <MapViewDirections
           origin={origin}
           destination={destination}
@@ -117,21 +114,22 @@ export default function MapScreen() {
           mode="TRANSIT"
         />
       </MapView>
-      {/* Scrollable view for steps */}
-      <ScrollView contentContainerStyle={{ ...styles.directionsContainer, paddingBottom: 60 }}>
+      <ScrollView horizontal style={styles.directionsContainer} showsHorizontalScrollIndicator={false}>
         {steps.map((step, index) => (
-          <View key={index} style={[styles.stepContainer, index === steps.length - 1 && styles.lastStepContainer]}>
-            <Text>{`Step ${index + 1}`}</Text>
-            <Text>{`Distance : ${step.distance}`}</Text>
-            <Text>{`Duration : ${step.duration}`}</Text>
-            <Text>{`${step.instructions}`}</Text>
+          <View key={index} style={styles.stepContainer}>
+            <Text style={styles.stepNumber}>{`Step ${index + 1}`}</Text>
+            <Text style={styles.distanceDuration}>
+              {`Distance: ${step.distance} | Duration: ${step.duration}`}
+            </Text>
+            <Text style={styles.instructions}>{`${step.instructions}`}</Text>
+            {/* <Text style={styles.instructions}>{`교통수단: ${step.travel_mode}`}</Text> */}
           </View>
         ))}
       </ScrollView>
     </View>
   );
 }
-// 아래의 함수를 추가하여 지도 영역을 계산합니다.
+
 function getMapRegion(origin, destination) {
   if (!origin || !destination) {
     return null;
@@ -146,8 +144,8 @@ function getMapRegion(origin, destination) {
   return {
     latitude: (minX + maxX) / 2,
     longitude: (minY + maxY) / 2,
-    latitudeDelta: (maxX - minX) * 1.2, // 작은 값으로 조절
-    longitudeDelta: (maxY - minY) * 1.2, // 작은 값으로 조절
+    latitudeDelta: (maxX - minX) * 1.2,
+    longitudeDelta: (maxY - minY) * 1.2,
   };
 }
 
@@ -157,32 +155,45 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   map: {
-    flex: 2,
+    flex: 1,
     width: '100%',
   },
   directionsContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
     padding: 20,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
   },
   stepContainer: {
-    marginVertical: 10,
-    marginBottom: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 10,
+    padding: 10,
+    marginRight: 10,
+    width: 250,
+    height: 130,
+    justifyContent:'center'
   },
-  lastStepContainer: {
-    marginBottom: 80,
-  }, 
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'white',
+    backgroundColor: 'white',
   },
-
   loadingText: {
     fontFamily: 'Pretendard-Bold',
     marginTop: 10,
+  },
+  stepNumber: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  distanceDuration: {
+    color: '#555',
+    marginBottom: 5,
+  },
+  instructions: {
+    fontStyle: 'italic',
+    marginBottom: 5,
   },
 });
