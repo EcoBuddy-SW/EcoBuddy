@@ -1,31 +1,74 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Modal, Pressable } from 'react-native';
+import React, { useState, useContext, useEffect} from 'react';
+import { View, Text, StyleSheet, Image ,ScrollView, TouchableOpacity, Alert, Modal, Pressable} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import axios from 'axios';
+import LocationContext from './LocationContext';
 
 // import LocationContext from './LocationContext';
 
 export default function MyPageScreen() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  // const context = useContext(LocationContext);
-  // const userId = context.userId;
+  const context = useContext(LocationContext);
+  const userId = context.userId;
+  const [photo, setPhoto] = useState(undefined);
+  const [point, setPoint] = useState(undefined);
+  const [name, setName] = useState(undefined);
 
-  // const loadPhoto = async () => {
-  //   axios.post(`http://${context.ip}:3003/downloadProfile`, { userId })
-  //   .then(response => response.data)
-  //   .then(data => {
-  //     if (data.success) {
-  //       const profileURL = data.result[0].profileUrl;
-  //       setPhoto(profileURL);
-  //       console.log('프로필 사진 로드 성공(클라이언트)',profileURL)
-  //     } else {
-  //       console.log('프로필 사진 로드 실패:', data.message);
-  //     }
-  //   });
-  // };
+  //사용자 현재 위치 데이터베이스 저장 코드
+  const userLocation = async() => {
+    try{
+      await axios.post(`http://${context.ip}:3003/userLocation`, {
+                  userId: context.userId,
+                  region: context.location.region,
+                  city:context.location.city,
+                  district: context.location.district,
+                  street: context.location.name
+              });
+              console.log('성공했습니당');
+        } catch (error) {
+            console.log('Failed to save attendance:', error);
+        }
+      }
+  
+  //유저정보 데이터베이스에서 불러와서 업데이트 코드
+  const fetchUserInfo = () => {
+    axios.post(`http://${context.ip}:3003/downloadUserInfo`, { userId })
+      .then(response => {
+        if (response) {
+          const userInfo = response.data;
+          setPoint(userInfo.Point);
+          setName(userInfo.nickname);
+        } else {
+          console.error('사용자 정보를 가져오는데 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('네트워크 오류:', error);
+      });
+  };
 
+  //데이터베이스에 저장된 사진 띄우기
+  const loadPhoto = async () => {
+    axios.post(`http://${context.ip}:3003/downloadProfile`, { userId })
+    .then(response => response.data)
+    .then(data => {
+      if (data.success) {
+        const profileURL = data.data.profileUrl;
+        setPhoto(profileURL);
+      } else {
+        console.log('프로필 사진 로드 실패:', data.message);
+      }
+    });
+  };
+
+  useEffect(() => {
+    loadPhoto();
+    fetchUserInfo();
+    userLocation();
+  });
+  
   const handleLogoutPress = () => {
     Alert.alert(
       '로그아웃',
@@ -170,25 +213,25 @@ export default function MyPageScreen() {
     navigation.navigate('My_Infor')// 프로필
   };
 
-  // const renderPhoto = () => {
-  //   if (photo) {
-  //     const imageSize = circleRadius * 2;
-  //     return (
-  //       <Image
-  //         source={{ uri: photo }}
-  //         style={{
-  //           width: imageSize,
-  //           height: imageSize,
-  //           borderRadius: circleRadius,
-  //           position: 'absolute',
-  //           top: circleCenterY - circleRadius,
-  //           left: circleCenterX - circleRadius,
-  //         }}
-  //       />
-  //     );
-  //   }
-  //   return null;
-  // };
+  const renderPhoto = () => {
+    if (photo) {
+      const imageSize = circleRadius * 2;
+      return (
+        <Image
+          source={{ uri: photo }}
+          style={{
+            width: imageSize,
+            height: imageSize,
+            borderRadius: circleRadius,
+            position: 'absolute',
+            top: circleCenterY - circleRadius,
+            left: circleCenterX - circleRadius,
+          }}
+        />
+      );
+    }
+    return null;
+  };
 
   return (
 
@@ -201,12 +244,23 @@ export default function MyPageScreen() {
             borderColor: '#333',
             padding: 2,
             borderRadius: 8,
-            marginRight: 20,
-
+            right: 30,
+            alignItems: 'center',
+            flexDirection: 'row',
+            
           }}>
-            <FontAwesome name="user" size={80} color="#333" />
+            {/* <FontAwesome name="user" size={80} color="#333" /> */}
             {/* 프로필 이미지 불러오기 */}
-            {/* <image source={{uri:photo}} size={50} color="green" style={{ marginBottom: 10, top: 3 }} />  */}
+            {/* {context.profileImage 
+    ? < Image source={ {uri : context.profileImage}} style= {{width :80, height :80 }}/>
+    :< Image source={ {uri:photo}} style= {{width :80, height :80 }}/>
+} */}
+          {photo ? (
+              <Image source={{ uri: photo }} style={{ width: 80, height: 80 }} />
+            ) : (
+              <FontAwesome name="user" size={80} color="#333" />
+            )}
+            {/* <Image source={{uri:photo}} size={50} color="green" style={{ marginBottom: 10, top: 3 }} />  */}
           </View>
 
           <View style={[styles.shadowContainer, {
@@ -217,7 +271,7 @@ export default function MyPageScreen() {
             alignItems: 'center',
             justifyContent: 'center',
           }]}>
-            {/* <Text style={{ color: 'black' }}> {context.userId} 님</Text> */}
+            <Text style={{ color: 'black' }}> {name} 님</Text>
           </View>
         </View>
       </View>
@@ -226,13 +280,13 @@ export default function MyPageScreen() {
       {/* <View style={styles.gridRow}></View> */}
       <ScrollView style={{ marginBottom: 5, padding: 5, flex: 1, width: '100%' }}>
         <View style={styles.left}>
-          <Text style={[styles.title, {}]}>사용자</Text>
+          <Text style={[styles.title, {}]}>편의 기능</Text>
         </View>
         <TouchableOpacity onPress={goToMy_Infor} style={[styles.button, {}]}>
           <Text style={[styles.textStyle, {}]}>프로필 수정 </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={goToCoins} style={[styles.button, {}]}>
-          <Text style={[styles.textStyle, {}]}>포인트 </Text>
+          <Text style={[styles.textStyle, {}]}>보유 포인트: {point} Point </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={goToMap} style={[styles.button, {}]}>
           <Text style={[styles.textStyle, {}]}>카카오맵 ➡ 분리수거 위치 검색하기 </Text>
