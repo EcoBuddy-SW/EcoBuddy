@@ -584,13 +584,37 @@ app.get('/community', (req, res) => {
     });
 });
 
+app.post('/getUserNickname', (req, res) => {
+    const { userId } = req.body;
+  
+    const sql = 'SELECT NICKNAME FROM USERS WHERE ID = ?';
+  
+    connection.query(sql, [userId], (err, result) => {
+      if (err) {
+        console.error('사용자 정보 조회 실패:', err);
+        res.json({ success: false, message: 'Internal Server Error' });
+        return;
+      }
+  
+      if (result.length === 0) {
+        res.json({ success: false, message: '사용자를 찾을 수 없음' });
+        return;
+      }
+  
+      const nickname = result[0].NICKNAME;
+  
+      res.json({ success: true, nickname });
+    });
+  });
+  
+
 app.post('/comment', (req, res) => {
-    const { postId, comment, date } = req.body;
+    const { postId, commentWriter, comment, date } = req.body;
 
-    const insertSql = `INSERT INTO comment(num , comment, date)
-    VALUES(?,?,?)`;
+    const insertSql = `INSERT INTO comment(num ,commentWriter , comment, date)
+    VALUES(?,?,?,?)`;
 
-    connection.query(insertSql, [postId, comment, date], (errInsert, resultInsert) => {
+    connection.query(insertSql, [postId, commentWriter, comment, date], (errInsert, resultInsert) => {
         if (errInsert) {
             console.error('데이터 저장 실패', errInsert);
             res.json({
