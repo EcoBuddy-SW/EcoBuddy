@@ -40,30 +40,6 @@ export default function CommunityScreen() {
     const totalImages = imageArray.length;
     // const postId = postData && postData[currentImageIndex] ? postData[currentImageIndex].postId : null;
 
-    const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onPanResponderMove: (event, gestureState) => {
-            if (gestureState.dx > 50) {
-                showPreviousImage();
-            } else if (gestureState.dx < -50) {
-                showNextImage();
-            }
-        },
-    });
-
-    function showNextImage() {
-        if (currentImageIndex < totalImages - 1) {
-            console.log('ShowNext, currentImageIndex:', currentImageIndex);
-            setCurrentImageIndex(currentImageIndex + 1);
-        }
-    }
-
-    function showPreviousImage() {
-        if (currentImageIndex > 0) {
-            console.log('ShowPrevious, currentImageIndex:', currentImageIndex);
-            setCurrentImageIndex(currentImageIndex - 1);
-        }
-    }
 
     // useEffect(() => {
     //     // API를 호출하여 게시물 데이터를 가져옴
@@ -177,7 +153,33 @@ export default function CommunityScreen() {
         );
     }
 
-    const renderPostData = postData.map((post, index) => (
+    const renderPostData = postData.map((post, index) => {
+
+        const panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onPanResponderMove: (event, gestureState) => {
+                if (gestureState.dx > 50) {
+                    showPreviousImage();
+                } else if (gestureState.dx < -50) {
+                    showNextImage();
+                }
+            },
+        });
+    
+        function showNextImage() {
+            if (currentImageIndex <  post.imageUrl.split(', ').length - 1) {
+                console.log('ShowNext, currentImageIndex:', currentImageIndex);
+                setCurrentImageIndex(currentImageIndex + 1);
+            }
+        }
+    
+        function showPreviousImage() {
+            if (currentImageIndex > 0) {
+                console.log('ShowPrevious, currentImageIndex:', currentImageIndex);
+                setCurrentImageIndex(currentImageIndex - 1);
+            }
+        }
+return(
         <View style={styles.container2} key={index}>
             <View style={[styles.rowContainer, { alignContent: 'center', justifyContent: 'center' }]}>
                 <Text style={[styles.title, { width: 100 }]}>{post.writer}</Text>
@@ -291,7 +293,7 @@ export default function CommunityScreen() {
             </Modal>
 
         </View>
-    ));
+    )});
 
     function toggleIconsVisibility() {
         setIconsVisible(!iconsVisible);
