@@ -88,8 +88,9 @@ export default function SearchScreen() {
           });
           console.log('검색어:', searchText);
           console.log('검색결과:', searchResults);
+          // handleSearch2(results);
         } else {
-          alert(response.data.message);
+          alert(data.message);
         }
       })
   };
@@ -103,7 +104,9 @@ export default function SearchScreen() {
         } else {
           console.log('전체삭제 오류(클라이언트)', response.data.message);
         }
-      })
+      }).finally(() => {
+        fetchSearches(); // 삭제가 완료된 후에 fetchSearches를 호출합니다.
+      });
   }
 
   // const deleteSearch = (result) => {
@@ -131,7 +134,9 @@ export default function SearchScreen() {
         else {
           alert(data.message);
         }
-      })
+      }).finally(() => {
+        fetchSearches(); // 삭제가 완료된 후에 fetchSearches를 호출합니다.
+      });
   }
 
   const handleCategory = () => {

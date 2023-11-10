@@ -233,6 +233,87 @@ app.post('/findPw', (req, res) => {
     });
 });
 
+app.post('/userLocation',(req,res) => {
+    const userId = req.body.userId;
+    const region = req.body.region;
+    const city = req.body.city;
+    const district = req.body.district;
+    const street = req.body.street;
+    
+    const sql = 'UPDATE USERS SET REGION =?,CITY=?,district=?,street=? WHERE ID =?';
+    connection.query(sql, [region,city,district,street,userId],(err,result) => {
+        if (err) throw err;
+        console.log('사용자 위치 받아와서 수정함');
+    })
+})
+app.post('/attendance/update', (req, res) => {
+    const userId = req.body.userId;
+    const { date, points } = req.body;
+
+    const sqlCheck = 'SELECT * FROM attendance WHERE userId = ? AND date = ?';
+    const sqlInsert = 'INSERT INTO attendance (userId, date) VALUES (?, ?)';
+    const sqlUpdate = 'UPDATE users SET point = point + ? WHERE ID = ?';
+
+    connection.query(sqlCheck, [userId, date], (err, result) => {
+        if (err) throw err;
+
+        if (result.length > 0) {
+            // 이미 출석체크한 경우
+            console.log("이미 출석체크를 했습니다.");
+            res.json({ message: "이미 출석체크를 했습니다." });
+        } else {
+            // 출석체크를 아직 하지 않은 경우
+            connection.beginTransaction((err) => {
+                if (err) throw err;
+                connection.query(sqlInsert, [userId, date], (err, result) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            throw err;
+                        });
+                    }
+
+                    connection.query(sqlUpdate, [points, userId], (err, result) => {
+                        if (err) {
+                            return connection.rollback(() => {
+                                throw err;
+                            });
+                        }
+                        connection.commit((err) => {
+                            if (err) {
+                                return connection.rollback(() => {
+                                    throw err;
+                                });
+                            }
+                            console.log("출석체크가 완료되었습니다.");
+                            res.json(result);
+                        });
+                    });
+                });
+            });
+        }
+    });
+});
+
+app.post('/attendance', (req, res) => {
+    const userId = req.body.userId;
+    const sql = 'SELECT * FROM attendance WHERE userId = ?';
+    connection.query(sql, [userId], (err, result) => {
+        if (err) throw err;
+        res.json(result);
+    });
+});
+
+app.post('/updateCoin',(req,res) => {
+    const userId = req.body.userId;
+    const coin = req.body.point;
+
+    const sql = 'UPDATE USERS SET POINT = ? WHERE ID=?';
+    connection.query(sql,[coin,userId],(err,result) => {
+        if(err) throw err;
+        console.log('포인트 업데이트(기프티콘 교환)');
+    })
+})
+
 app.post('/updateprofile', (req, res) => {
 
     const { name, email } = req.body; // name과 email 필드
@@ -279,6 +360,7 @@ app.post('/deleteSearch', (req, res) => {
             return;
         } else {
             console.log('서버에서 삭제요청 응답 성공');
+            res.json({ success: true, message: '삭제 성공' });
         }
     })
 });
@@ -293,6 +375,7 @@ app.post('/deleteAll', (req, res) => {
             return;
         } else {
             console.log('서버에서 전체삭제 성공');
+            res.json({ success: true, message: '삭제 성공' });
         }
     })
 });
@@ -334,8 +417,7 @@ app.post('/search', (req, res) => {
                 });
                 return;
             }
-
-            console.log('데이터 저장 성공');
+            console.log('데이터 저장 성공: ', searchText);
         })
     });
 
