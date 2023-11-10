@@ -299,7 +299,7 @@ app.post('/deleteAll', (req, res) => {
 
 app.post('/search', (req, res) => {
     const { searchText, userId } = req.body;
-    const sql = `SELECT region, city, name, info ,type FROM business WHERE city='${searchText}' OR region='${searchText}'`;
+    const sql = `SELECT product, sortation, way FROM searchtrash WHERE product LIKE '%${searchText}%'`;
     connection.query(sql, (err, results) => {
         if (err) {
             console.error('쿼리 실행 실패:', err);
@@ -309,19 +309,19 @@ app.post('/search', (req, res) => {
 
         if (results.length === 0) {
             // 일치하는 검색어가 없을 떄 
+            console.log('데이터 찾지 못함');
             res.json({ success: false, message: '일치하는 검색어가 없습니다.' });
         } else {
+            console.log('찾은 데이터: ' , results);
             const data = results.map(result => ({
-                region: result.region,
-                city: result.city,
-                name: result.name,
-                info: result.info,
-                type: result.type
+                product: result.product,
+                sortation: result.sortation,
+                way: result.way
+
             }));
             res.json({ success: true, results: data });
         }
-        const searchsql = `
-    INSERT INTO ${userId} (id, search,count)
+        const searchsql = `INSERT INTO ${userId} (id, search,count)
     VALUES ('${userId}', '${searchText}', 1)
     ON DUPLICATE KEY UPDATE count=count+1`;
 
@@ -525,7 +525,7 @@ app.post('/comment', (req, res) => {
 
 app.get('/commentList', (req, res) => {
     const { num } = req.query; // postId 대신 num 사용
-    console.log('num: ' , num);
+    console.log('num: ', num);
 
     const sql = `SELECT comment FROM comment WHERE num='${num}'`;
     connection.query(sql, [num], (err, results) => {
@@ -539,7 +539,7 @@ app.get('/commentList', (req, res) => {
 
         if (results.length === 0) {
             // 댓글이 없을 경우 예외 처리임,,
-            
+
         }
     });
 });

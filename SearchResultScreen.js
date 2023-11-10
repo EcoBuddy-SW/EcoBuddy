@@ -5,29 +5,36 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
 
 export default function SearchResultScreen() {
     const route = useRoute();
-    const { searchKeyword } = route.params;
+    const { searchKeyword, searchResults } = route.params;
     const navigation = useNavigation();
     const [result, setResult] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const handleKeyword = () => {
-        setResult("바나나 (음식물)");
-        setModalVisible(true);
+    console.log('Search Results:', searchResults);
+
+    const handleKeyword = (index) => {
+        if (searchResults && searchResults.length > index) {
+            setResult(searchResults[index]);
+            setModalVisible(true);
+        } else {
+            // 데이터가 없을 때 처리
+            console.log('데이터가 없습니다.');
+        }
     };
 
     const closeModal = () => {
         setModalVisible(false);
     };
 
+
     return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={{ padding: 0 }}
-        >
-            <View style={styles.container}>
+        <View style={styles.container}>
+            <ScrollView  style={styles.container}
+            contentContainerStyle={{ padding: 0 }}>
                 <View style={{ padding: 30 }}>
                     <Text style={[styles.text, { fontSize: 15 }]}>
                         검색하신 '{searchKeyword}' 결과
@@ -39,42 +46,52 @@ export default function SearchResultScreen() {
                     </Text>
                     <View style={[styles.line, { marginTop: 10 }]}></View>
 
+                    {searchResults.map((result, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.subContainer}
+                            onPress={() => handleKeyword(index)}
+                        >
+                            <Text style={styles.text2}>{result.product}</Text>
+                            <Icon2
+                                name="arrow-right-bold-circle"
+                                style={styles.icon}
+                            />
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            </ScrollView>
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={closeModal}
+        >
+            <View style={styles.modalBackground}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={[styles.title, { marginBottom: 5 }]}>
+                            {result ? result.product : ''}
+                        </Text>
+                        <Text style={styles.title}>배출 안내</Text>
+                    </View>
+                    {/* 다른 정보들도 표시할 수 있도록 수정 */}
+                    {result && (
+                        <>
+                            <Text style={styles.modalText}>{result.sortation}</Text>
+                            <Text style={styles.modalText}>{result.way}</Text>
+                        </>
+                    )}
                     <TouchableOpacity
-                        style={styles.subContainer}
-                        onPress={handleKeyword}
+                        onPress={closeModal}
+                        style={[styles.closeButton, { marginRight: 5 }]}
                     >
-                        <Text style={styles.text2}>빙그레 바나나 우유 (플라스틱)</Text>
-                        <Icon2
-                            name="arrow-right-bold-circle"
-                            style={styles.icon}
-                        />
+                        <Text style={styles.text}>확인</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={closeModal}
-            >
-                <View style={styles.modalBackground}>
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalContent}>
-                            <Text style={[styles.title,{marginBottom: 5}]}>빙그레 바나나 우유 (플라스틱)</Text>
-                            <Text style={styles.title}>배출 안내</Text>
-                        </View>
-                        <Text style={styles.modalText}>뚜껑 껍질만 일반 쓰레기로 분리</Text>
-                        <Text style={styles.modalText}>용기는 플라스틱으로 배출</Text>
-                        <TouchableOpacity
-                            onPress={closeModal}
-                            style={[styles.closeButton, { marginRight: 5 }]}
-                        >
-                            <Text style={styles.text}>확인</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-        </ScrollView>
+        </Modal>
+        </View >
     );
 }
 
@@ -137,7 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 35,
         color: '#628F5D',
         margin: 30,
-    },  
+    },
     modalContainer: {
         width: '80%',
         backgroundColor: 'white',
@@ -168,7 +185,7 @@ const styles = StyleSheet.create({
         width: '60%',
         height: 30,
         marginTop: 20,
-        backgroundColor: '#F2FFED',
+        backgroundColor: 'white',
         borderWidth: 1,
         alignSelf: 'center',
         justifyContent: 'center',
