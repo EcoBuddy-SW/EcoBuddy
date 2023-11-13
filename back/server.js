@@ -152,7 +152,7 @@ app.post('/join', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    const { id, password } = req.body;
+    const { id, password, token } = req.body;
     //db에서 email, password 컬럼에 있는값 가져오기
     const sql = `SELECT id, password FROM users WHERE id=?`;
 
@@ -184,11 +184,29 @@ app.post('/login', (req, res) => {
                         return;
                     }
                 })
+                updateToken(id, token);
+                console.log('Login token: ', token);
                 res.json({ success: true, message: '로그인 성공', id: user.id, email: user.email });
             }
         }
     });
 });
+
+// 해당 유저의 토큰 업데이트 함수
+const updateToken = (userId, newToken) => {
+    const updateTokenSql = 'UPDATE users SET token = ? WHERE id = ?';
+
+    console.log(updateTokenSql, [newToken, userId]); // 이 줄을 추가
+
+    connection.query(updateTokenSql, [newToken, userId], (err, results) => {
+        if (err) {
+            console.error('토큰 업데이트 실패:', err);
+            // 실패에 대한 처리를 추가할 수 있음
+        } else {
+            console.log('토큰 업데이트 성공');
+        }
+    });
+};
 
 app.post('/findId', (req, res) => {
     const { email, phoneNumber } = req.body;

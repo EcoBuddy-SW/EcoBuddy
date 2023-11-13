@@ -17,7 +17,7 @@ export default function JoinScreen() {
     const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-
+    
     const navigation = useNavigation();
 
     // TextInput에 ref 설정
@@ -69,6 +69,7 @@ export default function JoinScreen() {
         console.log('Password:', password);
         console.log('Nickname:', nickname);
         console.log('PhoneNumber:', phoneNumber);
+        console.log('token:', token);
 
         const data={
             "email": email,

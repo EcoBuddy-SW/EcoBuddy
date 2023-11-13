@@ -23,6 +23,8 @@ export default function LoginScreen() {
 
     const context = useContext(LocationContext);
 
+    const token = context.expoPushToken // 여기서 호출
+
     const sendNotification = async (tokens) => {
         try {
           const response = await axios.post(`http://${context.ip}:3003/sendNotification`, {
@@ -41,10 +43,12 @@ export default function LoginScreen() {
 
     const handleLogin = async () => {
         console.log('IP value from context:', context.ip);
+        console.log('js Login: ', token);
 
         const data = {
             id: id,
-            password: password
+            password: password,
+            token: token
         };
 
         axios.post(`http://${context.ip}:3003/login`, data)
