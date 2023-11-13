@@ -328,6 +328,8 @@ export default function CommunityScreen() {
         try {
             const response = await axios.post(`http://${context.ip}:3003/sendCommentNotification`, {
                 tokens: tokens,
+                comments:newComment,
+                activePostNum:activePostNum,
             });
 
             if (response.data.success) {
@@ -350,8 +352,7 @@ export default function CommunityScreen() {
                 console.error('오류 메시지:', error.message);
             }
         }
-    };
-
+    }
 
     const submitComment = async () => {
         console.log('postNum 2: ', activePostNum)

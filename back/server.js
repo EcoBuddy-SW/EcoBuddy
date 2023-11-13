@@ -49,6 +49,54 @@ app.listen(port, '0.0.0.0', () => {
 //     res.send('Welcome to my website!');
 // });
 
+let lastProcessedId = 0;
+
+// 일정한 간격으로 notifications 테이블 조회 및 알림 발신
+setInterval(() => {
+    // notifications 테이블에서 id 값이 증가된 로우를 조회하는 쿼리 실행
+    const query = `SELECT * FROM notifications WHERE id > ${lastProcessedId}`;
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('조회 오류:', err);
+            return;
+        }
+
+        // 조회 결과가 있는 경우
+        if (results.length > 0) {
+            // 마지막으로 처리한 로우의 id 값을 업데이트
+            lastProcessedId = results[results.length - 1].id;
+
+            // 푸시 알림 발신
+            sendPushNotifications(results);
+        }
+    });
+}, 5000); // 5초마다 조회 작업 실행
+
+// Expo 푸시 알림 발신 함수
+function sendPushNotifications(results) {
+    const messages = results.map((result) => ({
+        to: result.token, // 로우의 token 컬럼 값
+        sound: 'default',
+        title: result.title,
+        body: result.message,
+        data: { /* 추가 데이터 */ },
+    }));
+
+    // 푸시 알림 발신
+    const chunks = expo.chunkPushNotifications(messages);
+
+    for (const chunk of chunks) {
+        try {
+            const receipts = expo.sendPushNotificationsAsync(chunk);
+            // 알림 발신 결과 처리
+            // receipts 변수에는 알림 발신에 대한 응답이 포함됩니다.
+            // 알림이 성공적으로 발신되었는지 여부를 확인할 수 있습니다.
+        } catch (error) {
+            console.error('알림 발신 오류:', error);
+        }
+    }
+}
+
 
 app.post('/join', (req, res) => {
     const { email, id, password, nickname, phoneNumber } = req.body;
@@ -669,44 +717,72 @@ app.post('/sendNotification', (req, res) => {
 });
 
 app.post('/sendCommentNotification', (req, res) => {
-    let messages = [];
-    for (let pushToken of req.body.tokens) {
-        console.log('token for문');
-        // 각 토큰이 올바른 형식인지 확인합니다.
-        if (!Expo.isExpoPushToken(pushToken)) {
-            console.error(`Push token ${pushToken} is not a valid Expo push token`);
-            continue;
-        }
+    // let messages = [];
+    // for (let pushToken of req.body.tokens) {
+    //     console.log('token for문');
+    //     // 각 토큰이 올바른 형식인지 확인합니다.
+    //     if (!Expo.isExpoPushToken(pushToken)) {
+    //         console.error(`Push token ${pushToken} is not a valid Expo push token`);
+    //         continue;
+    //     }
 
-        console.log('pushToken: ', pushToken);
+    //     console.log('pushToken: ', pushToken);
 
-        // 메세지 생성
-        messages.push({
-            to: 'pushToken',
-            sound: 'default',
-            title: '댓글 달렸음',
-            body: '확인 부탁~~',
-            data: { withSome: 'data' },
-        })
-    }
+    //     // 메세지 생성
+    //     messages.push({
+    //         to: pushToken,
+    //         sound: 'default',
+    //         title: '댓글 달렸음',
+    //         body: '확인 부탁~~',
+    //         data: { withSome: 'data' },
+    //     })
+    // }
 
-    // 메세지를 한번에 많이 보낼 경우 분할해서 보냅니다.
-    let chunks = expo.chunkPushNotifications(messages);
+    // // 메세지를 한번에 많이 보낼 경우 분할해서 보냅니다.
+    // let chunks = expo.chunkPushNotifications(messages);
 
-    for (let chunk of chunks) {
-        try {
-            let receipts = expo.sendPushNotificationsAsync(chunk);
+    // for (let chunk of chunks) {
+    //     try {
+    //         let receipts = expo.sendPushNotificationsAsync(chunk);
 
-            console.log(receipts);
+    //         console.log(receipts);
 
-            res.status(200).send({ success: true });
+    //         res.status(200).send({ success: true });
 
-        } catch (error) {
-            console.error(error);
+    //     } catch (error) {
+    //         console.error(error);
 
-            res.status(500).send({ success: false });
+    //         res.status(500).send({ success: false });
 
+    //         return;
+    //     }
+    // }
+    const title = '';
+    const message = req.body.comments;
+    const activePostNum = req.body.activePostNum;
+    const getToken = 'SELECT u.token, u.nickname FROM writing w JOIN users u ON u.id = w.writer WHERE w.num = ?';
+    connection.query(getToken, [activePostNum], (err, results) => {
+        if (err) {
+            console.error('쿼리 실행 오류:', err);
             return;
         }
-    }
+
+        if (results.length > 0) {
+            const userToken = results[0].token;
+            const title = results[0].nickname + '님의 댓글';
+            console.log('userToken:', userToken);
+            const query = 'INSERT INTO notifications (title, message, token) VALUES (?, ?, ?)';
+
+            connection.query(query, [title, message, userToken], (err, result) => {
+                if (err) {
+                    console.error('데이터 삽입 오류:', err);
+                    return;
+                }
+                console.log('데이터가 성공적으로 삽입되었습니다.');
+            });
+        } else {
+            console.log('해당하는 데이터가 없습니다.');
+        }
+        //   const token = 'ExponentPushToken[cHhlRrD_5nZQxvC_qfF3Ip]';
+    });
 });
