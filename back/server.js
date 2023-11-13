@@ -68,6 +68,16 @@ setInterval(() => {
 
             // 푸시 알림 발신
             sendPushNotifications(results);
+
+            // DELETE 쿼리 실행
+            const deleteQuery = 'DELETE FROM notifications;';
+            connection.query(deleteQuery, (deleteErr, deleteResults) => {
+                if (deleteErr) {
+                    console.error('DELETE 쿼리 오류:', deleteErr);
+                    return;
+                }
+                console.log('DELETE 쿼리 실행 성공');
+            });
         }
     });
 }, 5000); // 5초마다 조회 작업 실행
@@ -771,14 +781,25 @@ app.post('/sendCommentNotification', (req, res) => {
             const userToken = results[0].token;
             const title = results[0].nickname + '님의 댓글';
             console.log('userToken:', userToken);
-            const query = 'INSERT INTO notifications (title, message, token) VALUES (?, ?, ?)';
+            const query1 = 'INSERT INTO notifications (title, message, token) VALUES (?, ?, ?)';
 
-            connection.query(query, [title, message, userToken], (err, result) => {
-                if (err) {
-                    console.error('데이터 삽입 오류:', err);
+            // 첫 번째 쿼리
+            connection.query(query1, [title, message, userToken], (err1, result) => {
+                if (err1) {
+                    console.error('첫 번째 데이터 삽입 오류:', err1);
                     return;
                 }
-                console.log('데이터가 성공적으로 삽입되었습니다.');
+                console.log('첫 번째 데이터가 성공적으로 삽입되었습니다.');
+
+                // 두 번째 쿼리
+                const query2 = 'INSERT INTO notifications2 (title, message, token) VALUES (?, ?, ?)';
+                connection.query(query2, [title, message, userToken], (err2, result2) => {
+                    if (err2) {
+                        console.error('두 번째 데이터 삽입 오류:', err2);
+                        return;
+                    }
+                    console.log('두 번째 데이터가 성공적으로 삽입되었습니다.');
+                });
             });
         } else {
             console.log('해당하는 데이터가 없습니다.');
