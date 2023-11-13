@@ -16,11 +16,6 @@ connection.connect();
 const app = express();
 let expo = new Expo({});
 
-const http = require('http');
-const socketIo = require('socket.io');
-const server = http.createServer(app);
-const io = socketIo(server);
-
 const sessionStore = new MySQLStore(dbconfig);
 
 app.use(bodyParser.json());
@@ -239,15 +234,15 @@ app.post('/findPw', (req, res) => {
     });
 });
 
-app.post('/userLocation',(req,res) => {
+app.post('/userLocation', (req, res) => {
     const userId = req.body.userId;
     const region = req.body.region;
     const city = req.body.city;
     const district = req.body.district;
     const street = req.body.street;
-    
+
     const sql = 'UPDATE USERS SET REGION =?,CITY=?,district=?,street=? WHERE ID =?';
-    connection.query(sql, [region,city,district,street,userId],(err,result) => {
+    connection.query(sql, [region, city, district, street, userId], (err, result) => {
         if (err) throw err;
         console.log('사용자 위치 받아와서 수정함');
     })
@@ -309,13 +304,13 @@ app.post('/attendance', (req, res) => {
     });
 });
 
-app.post('/updateCoin',(req,res) => {
+app.post('/updateCoin', (req, res) => {
     const userId = req.body.userId;
     const coin = req.body.point;
 
     const sql = 'UPDATE USERS SET POINT = ? WHERE ID=?';
-    connection.query(sql,[coin,userId],(err,result) => {
-        if(err) throw err;
+    connection.query(sql, [coin, userId], (err, result) => {
+        if (err) throw err;
         console.log('포인트 업데이트(기프티콘 교환)');
     })
 })
@@ -401,7 +396,7 @@ app.post('/search', (req, res) => {
             console.log('데이터 찾지 못함');
             res.json({ success: false, message: '일치하는 검색어가 없습니다.' });
         } else {
-            console.log('찾은 데이터: ' , results);
+            console.log('찾은 데이터: ', results);
             const data = results.map(result => ({
                 product: result.product,
                 sortation: result.sortation,
@@ -548,27 +543,27 @@ app.get('/community', (req, res) => {
 
 app.post('/getUserNickname', (req, res) => {
     const { userId } = req.body;
-  
+
     const sql = 'SELECT NICKNAME FROM USERS WHERE ID = ?';
-  
+
     connection.query(sql, [userId], (err, result) => {
-      if (err) {
-        console.error('사용자 정보 조회 실패:', err);
-        res.json({ success: false, message: 'Internal Server Error' });
-        return;
-      }
-  
-      if (result.length === 0) {
-        res.json({ success: false, message: '사용자를 찾을 수 없음' });
-        return;
-      }
-  
-      const nickname = result[0].NICKNAME;
-  
-      res.json({ success: true, nickname });
+        if (err) {
+            console.error('사용자 정보 조회 실패:', err);
+            res.json({ success: false, message: 'Internal Server Error' });
+            return;
+        }
+
+        if (result.length === 0) {
+            res.json({ success: false, message: '사용자를 찾을 수 없음' });
+            return;
+        }
+
+        const nickname = result[0].NICKNAME;
+
+        res.json({ success: true, nickname });
     });
-  });
-  
+});
+
 
 app.post('/comment', (req, res) => {
     const { postId, commentWriter, comment, date } = req.body;
@@ -655,46 +650,45 @@ app.post('/sendNotification', (req, res) => {
     }
 });
 
-// 소켓 연결 및 댓글 저장 시 알림 전송 로직
-io.on('connection', (socket) => {
-    // 클라이언트가 연결되면 소켓 ID와 사용자 ID를 맵에 추가
-    socket.on('setUserId', (userId) => {
-        userSocketMap.set(userId, socket.id);
-    });
-
-    // 클라이언트에서 댓글 저장 시
-    socket.on('saveComment', ({ postId, commenterId }) => {
-        // 글 작성자의 소켓 ID를 맵에서 찾음
-        const authorSocketId = userSocketMap.get(postId);
-
-        if (authorSocketId) {
-            // 해당 글 작성자에게 알림 전송
-            io.to(authorSocketId).emit('newComment', { postId, commenterId });
+app.post('/sendCommentNotification', (req, res) => {
+    let messages = [];
+    for (let pushToken of req.body.tokens) {
+        console.log('token for문');
+        // 각 토큰이 올바른 형식인지 확인합니다.
+        if (!Expo.isExpoPushToken(pushToken)) {
+            console.error(`Push token ${pushToken} is not a valid Expo push token`);
+            continue;
         }
-    });
 
-    // 연결이 끊기면 맵에서 해당 소켓 ID 제거
-    socket.on('disconnect', () => {
-        userSocketMap.forEach((value, key) => {
-            if (value === socket.id) {
-                userSocketMap.delete(key);
-            }
-        });
-    });
+        console.log('pushToken: ', pushToken);
+
+        // 메세지 생성
+        messages.push({
+            to: 'pushToken',
+            sound: 'default',
+            title: '댓글 달렸음',
+            body: '확인 부탁~~',
+            data: { withSome: 'data' },
+        })
+    }
+
+    // 메세지를 한번에 많이 보낼 경우 분할해서 보냅니다.
+    let chunks = expo.chunkPushNotifications(messages);
+
+    for (let chunk of chunks) {
+        try {
+            let receipts = expo.sendPushNotificationsAsync(chunk);
+
+            console.log(receipts);
+
+            res.status(200).send({ success: true });
+
+        } catch (error) {
+            console.error(error);
+
+            res.status(500).send({ success: false });
+
+            return;
+        }
+    }
 });
-
-// 클라이언트로부터 댓글 저장 요청이 오면
-app.post('/saveComment', (req, res) => {
-    const { postId, commenterId } = req.body;
-
-    // 클라이언트에게 댓글 저장 알림 전송
-    io.emit('saveComment', { postId, commenterId });
-
-    res.status(200).send('Comment saved successfully');
-});
-
-
-
-// server.listen(port, () => {
-//   console.log(`Server is running on http://localhost:${port}`);
-// });

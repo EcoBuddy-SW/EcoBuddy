@@ -147,17 +147,6 @@ export default function WriteScreen() {
         }
     };
 
-    // // uploadImagesToFirebase 함수 사용 예시
-    // (async () => {
-    //     try {
-    //         const urls = await uploadImagesToFirebase();
-    //         console.log('All images uploaded. URLs:', urls);
-    //     } catch (error) {
-    //         console.error('Error during image upload process:', error);
-    //         console.error(error.stack);
-    //     }
-    // })();
-
     const write = async () => {
 
         setLodingModal(true); // 업로딩 시작 시 modalVisible을 true로 설정

@@ -18,7 +18,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
-import io from 'socket.io-client';
 
 export default function CommunityScreen() {
     const navigation = useNavigation();
@@ -34,45 +33,11 @@ export default function CommunityScreen() {
     // const forceUpdate = useCallback(() => updateState({}), []);
     const [originalData, setOriginalData] = useState([]);  // 원본 게시물 데이터
     const [isFiltered, setIsFiltered] = useState(false);
-    const imageArray = postData.imageUrl ? postData.imageUrl.split(', ') : [];
+    const imageArray = postData ? (postData.imageUrl ? postData.imageUrl.split(', ') : []) : [];
     const currentDateTime = new Date().toISOString().slice(0, 19).replace('T', ' '); // 현재 날짜와 시간
     const [activePostNum, setActivePostNum] = useState(null); // 댓글창 열 때 몇 번째 게시글인지 저장
     const totalImages = imageArray.length;
-    const [expoPushToken, setExpoPushToken] = useState(context.expoPushToken);
     const notificationListener = useRef();
-    
-    const userId = context.userId;
-
-    // 클라이언트에서 소켓 생성
-    const socket = io('http://localhost:3000');
-
-    // 소켓 연결 성공 시
-    socket.on('connect', () => {
-        console.log('Socket.IO 연결 성공');
-        // 여기에서 필요한 로직 수행
-    });
-
-
-    // 글을 열 때 소켓 연결을 유지하고 사용자 ID를 서버에 전송
-    useEffect(() => {
-        socket.emit('setUserId', userId);
-
-        return () => {
-            socket.disconnect(); // 컴포넌트 언마운트 시 소켓 연결 해제
-        };
-    }, [userId]);
-
-    // 댓글 알림 수신
-    useEffect(() => {
-        socket.on('newComment', ({ postId, commenterId }) => {
-            // postId와 commenterId를 이용하여 알림을 처리
-            // 예: 알림 모달 표시 또는 다른 사용자에게 알림을 표시하는 로직
-        });
-
-        return () => {
-            socket.off('newComment'); // 컴포넌트 언마운트 시 이벤트 리스너 제거
-        };
-    }, []);
 
     useEffect(() => {
         // 초기 렌더링 시 API 호출
@@ -274,15 +239,17 @@ export default function CommunityScreen() {
                     <TouchableWithoutFeedback onPress={() => toggleCommentBox()}>
                         <View style={styles.modal}>
                             <ScrollView style={styles.modalContent}>
-                                {comments.map((comment, index) => {
-                                    console.log('comment:', comment);
-                                    return (
-                                        <View key={index} style={styles.comment}>
-                                            <Text style={styles.commentWriter}>{comment.commentWriter}</Text>
-                                            <Text style={styles.commentText}>{comment.comment}</Text>
-                                        </View>
-                                    );
-                                })}
+                                <View onStartShouldSetResponder={() => true}>
+                                    {comments.map((comment, index) => {
+                                        // console.log('comment:', comment);
+                                        return (
+                                            <View key={index} style={styles.comment}>
+                                                <Text style={styles.commentWriter}>{comment.commentWriter}</Text>
+                                                <Text style={styles.commentText}>{comment.comment}</Text>
+                                            </View>
+                                        );
+                                    })}
+                                </View>
                             </ScrollView>
                             <KeyboardAvoidingView style={styles.container} behavior="padding">
                                 <View style={styles.commentBox}>
@@ -347,7 +314,7 @@ export default function CommunityScreen() {
                 .then((response) => {
                     if (Array.isArray(response.data)) {
                         setComments(response.data);
-                        console.log('댓글 데이터:', response.data);
+                        // console.log('댓글 데이터:', response.data);
                     }
                 })
                 .catch((error) => {
@@ -355,6 +322,37 @@ export default function CommunityScreen() {
                 });
         }
     }
+
+    const sendCommentNotification = async (tokens) => {
+        console.log('Tokens:', tokens);
+        try {
+            const response = await axios.post(`http://${context.ip}:3003/sendCommentNotification`, {
+                tokens: tokens,
+            });
+
+            if (response.data.success) {
+                console.log('Notifications sent successfully');
+            } else {
+                console.log('Failed to send notifications');
+            }
+        } catch (error) {
+            // 오류 처리
+            console.error('Axios 오류:', error);
+
+            if (error.response) {
+                // 서버 응답 오류
+                console.error('서버 응답 상태 코드:', error.response.status);
+            } else if (error.request) {
+                // 요청 전송 오류
+                console.error('요청 전송 중 오류가 발생했습니다.');
+            } else {
+                // 기타 오류
+                console.error('오류 메시지:', error.message);
+            }
+        }
+    };
+
+
     const submitComment = async () => {
         console.log('postNum 2: ', activePostNum)
         if (newComment.trim() !== '') {
@@ -365,9 +363,6 @@ export default function CommunityScreen() {
                     const success = await comment(activePostNum);
                     if (success) {
                         fetchComments(activePostNum);
-
-                        // 댓글이 성공적으로 등록되었을 때, 해당 글 작성자에게 알림 전송
-                        socket.emit('saveComment', { postId: activePostNum, commenterId: context.userId });
                     } else {
                         console.error('댓글 등록 실패');
                     }
@@ -409,6 +404,9 @@ export default function CommunityScreen() {
 
             if (response.data.success) {
                 console.log(response.data);
+                const token = context.expoPushToken // 여기서 호출
+                console.log('submitComment_token: ', token);
+                sendCommentNotification([token]);
                 return true; // 댓글 등록 성공
             } else {
                 console.error(response.data.message);
@@ -418,23 +416,6 @@ export default function CommunityScreen() {
             console.error(error);
             return false; // 댓글 등록 실패
         }
-    }
-
-    function renderImages(images) {
-        return images.map((imageUrl, index) => (
-            <View
-                key={index}
-                style={[
-                    styles.imageContainer,
-                    { display: index === currentImageIndex ? 'flex' : 'none' }
-                ]}
-            >
-                <Image
-                    source={{ uri: imageUrl.trim() }}
-                    style={styles.image}
-                />
-            </View>
-        ));
     }
 
     return (
@@ -593,6 +574,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     modalContent: {
+        // flex: 1,
         backgroundColor: 'white',
         maxHeight: '70%',
         borderTopLeftRadius: 20,
