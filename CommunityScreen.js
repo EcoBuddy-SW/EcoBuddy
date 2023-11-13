@@ -18,7 +18,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
-import Swiper from 'react-native-swiper';
+import io from 'socket.io-client';
 
 export default function CommunityScreen() {
     const navigation = useNavigation();
@@ -38,32 +38,39 @@ export default function CommunityScreen() {
     const currentDateTime = new Date().toISOString().slice(0, 19).replace('T', ' '); // 현재 날짜와 시간
     const [activePostNum, setActivePostNum] = useState(null); // 댓글창 열 때 몇 번째 게시글인지 저장
     const totalImages = imageArray.length;
-    // const postId = postData && postData[currentImageIndex] ? postData[currentImageIndex].postId : null;
+    const [expoPushToken, setExpoPushToken] = useState(context.expoPushToken);
+    const notificationListener = useRef();
+
+    // 클라이언트에서 소켓 생성
+    const socket = io('http://localhost:3000');
+
+    // 소켓 연결 성공 시
+    socket.on('connect', () => {
+        console.log('Socket.IO 연결 성공');
+        // 여기에서 필요한 로직 수행
+    });
 
 
-    // useEffect(() => {
-    //     // API를 호출하여 게시물 데이터를 가져옴
-    //     axios.get(`http://${context.ip}:3003/community`, {
-    //         headers: {
-    //             'Cache-Control': 'no-cache',
-    //         },
-    //     })
-    //         .then((response) => {
-    //             console.log('API 응답:', response.data);
-    //             if (Array.isArray(response.data) && response.data.length === 0) {
-    //                 console.log('서버에서 데이터가 없습니다.');
-    //                 // 빈 배열을 받으면 "등록된 글이 없습니다" 메시지 표시
-    //                 setPostData(null);
-    //             } else {
-    //                 setOriginalData(response.data); // 원본 데이터 저장
-    //                 setPostData([...response.data]);
-    //                 fetchComments(response.data);
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error('API 호출 실패:', error);
-    //         });
-    // }, []);
+    // 글을 열 때 소켓 연결을 유지하고 사용자 ID를 서버에 전송
+    useEffect(() => {
+        socket.emit('setUserId', userId);
+
+        return () => {
+            socket.disconnect(); // 컴포넌트 언마운트 시 소켓 연결 해제
+        };
+    }, [userId]);
+
+    // 댓글 알림 수신
+    useEffect(() => {
+        socket.on('newComment', ({ postId, commenterId }) => {
+            // postId와 commenterId를 이용하여 알림을 처리
+            // 예: 알림 모달 표시 또는 다른 사용자에게 알림을 표시하는 로직
+        });
+
+        return () => {
+            socket.off('newComment'); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+        };
+    }, []);
 
     useEffect(() => {
         // 초기 렌더링 시 API 호출
@@ -346,7 +353,6 @@ export default function CommunityScreen() {
                 });
         }
     }
-
     const submitComment = async () => {
         console.log('postNum 2: ', activePostNum)
         if (newComment.trim() !== '') {
@@ -357,6 +363,9 @@ export default function CommunityScreen() {
                     const success = await comment(activePostNum);
                     if (success) {
                         fetchComments(activePostNum);
+
+                        // 댓글이 성공적으로 등록되었을 때, 해당 글 작성자에게 알림 전송
+                        socket.emit('saveComment', { postId: activePostNum, commenterId: context.userId });
                     } else {
                         console.error('댓글 등록 실패');
                     }
@@ -597,7 +606,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Pretendard-Regular',
         fontSize: 16,
     },
-    commentWriter:{
+    commentWriter: {
         fontFamily: 'Pretendard-Regular',
         color: 'lightgray',
         fontSize: 13,

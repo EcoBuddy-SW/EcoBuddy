@@ -94,7 +94,7 @@ export default function App() {
   const [location, setLocation] = useState(null); //위치
   const [userId, setUserId] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
-  const [ip, setIp] = useState('10.20.100.95'); // IPv4 주소로
+  const [ip, setIp] = useState('10.20.100.97'); // IPv4 주소로
   const [locstate, setLocstate] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   ///////////////////// 알림

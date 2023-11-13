@@ -10,10 +10,16 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const dbconfig = require('../config/database.js');
 const connection = mysql.createConnection(dbconfig);
+
 connection.connect();
 
 const app = express();
 let expo = new Expo({});
+
+const http = require('http');
+const socketIo = require('socket.io');
+const server = http.createServer(app);
+const io = socketIo(server);
 
 const sessionStore = new MySQLStore(dbconfig);
 
@@ -507,50 +513,6 @@ app.post('/delAccount', (req, res) => {
 //   res.status(200).send({ success: true });
 // });
 
-
-app.post('/sendNotification', (req, res) => {
-    let messages = [];
-    for (let pushToken of req.body.tokens) {
-        console.log('token for문');
-        // 각 토큰이 올바른 형식인지 확인합니다.
-        if (!Expo.isExpoPushToken(pushToken)) {
-            console.error(`Push token ${pushToken} is not a valid Expo push token`);
-            continue;
-        }
-
-        console.log('pushToken: ', pushToken);
-
-        // 메세지 생성
-        messages.push({
-            to: pushToken,
-            sound: 'default',
-            title: '서윤아 로그인 좀 하자',
-            body: '로그인 성공이요~~',
-            data: { withSome: 'data' },
-        })
-    }
-
-    // 메세지를 한번에 많이 보낼 경우 분할해서 보냅니다.
-    let chunks = expo.chunkPushNotifications(messages);
-
-    for (let chunk of chunks) {
-        try {
-            let receipts = expo.sendPushNotificationsAsync(chunk);
-
-            console.log(receipts);
-
-            res.status(200).send({ success: true });
-
-        } catch (error) {
-            console.error(error);
-
-            res.status(500).send({ success: false });
-
-            return;
-        }
-    }
-});
-
 app.post('/write', (req, res) => {
     const { writer, context, imageUrl, date } = req.body;
 
@@ -649,3 +611,90 @@ app.get('/commentList', (req, res) => {
         }
     });
 });
+
+app.post('/sendNotification', (req, res) => {
+    let messages = [];
+    for (let pushToken of req.body.tokens) {
+        console.log('token for문');
+        // 각 토큰이 올바른 형식인지 확인합니다.
+        if (!Expo.isExpoPushToken(pushToken)) {
+            console.error(`Push token ${pushToken} is not a valid Expo push token`);
+            continue;
+        }
+
+        console.log('pushToken: ', pushToken);
+
+        // 메세지 생성
+        messages.push({
+            to: pushToken,
+            sound: 'default',
+            title: '서윤아 로그인 좀 하자',
+            body: '로그인 성공이요~~',
+            data: { withSome: 'data' },
+        })
+    }
+
+    // 메세지를 한번에 많이 보낼 경우 분할해서 보냅니다.
+    let chunks = expo.chunkPushNotifications(messages);
+
+    for (let chunk of chunks) {
+        try {
+            let receipts = expo.sendPushNotificationsAsync(chunk);
+
+            console.log(receipts);
+
+            res.status(200).send({ success: true });
+
+        } catch (error) {
+            console.error(error);
+
+            res.status(500).send({ success: false });
+
+            return;
+        }
+    }
+});
+
+// 소켓 연결 및 댓글 저장 시 알림 전송 로직
+io.on('connection', (socket) => {
+    // 클라이언트가 연결되면 소켓 ID와 사용자 ID를 맵에 추가
+    socket.on('setUserId', (userId) => {
+        userSocketMap.set(userId, socket.id);
+    });
+
+    // 클라이언트에서 댓글 저장 시
+    socket.on('saveComment', ({ postId, commenterId }) => {
+        // 글 작성자의 소켓 ID를 맵에서 찾음
+        const authorSocketId = userSocketMap.get(postId);
+
+        if (authorSocketId) {
+            // 해당 글 작성자에게 알림 전송
+            io.to(authorSocketId).emit('newComment', { postId, commenterId });
+        }
+    });
+
+    // 연결이 끊기면 맵에서 해당 소켓 ID 제거
+    socket.on('disconnect', () => {
+        userSocketMap.forEach((value, key) => {
+            if (value === socket.id) {
+                userSocketMap.delete(key);
+            }
+        });
+    });
+});
+
+// 클라이언트로부터 댓글 저장 요청이 오면
+app.post('/saveComment', (req, res) => {
+    const { postId, commenterId } = req.body;
+
+    // 클라이언트에게 댓글 저장 알림 전송
+    io.emit('saveComment', { postId, commenterId });
+
+    res.status(200).send('Comment saved successfully');
+});
+
+
+
+// server.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });
