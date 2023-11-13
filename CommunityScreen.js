@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect, useCallback, useRef } from 'react';
 import LocationContext from './LocationContext';
 import {
     View,
@@ -40,6 +40,8 @@ export default function CommunityScreen() {
     const totalImages = imageArray.length;
     const [expoPushToken, setExpoPushToken] = useState(context.expoPushToken);
     const notificationListener = useRef();
+    
+    const userId = context.userId;
 
     // 클라이언트에서 소켓 생성
     const socket = io('http://localhost:3000');
