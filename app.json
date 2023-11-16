@@ -1,30 +1,88 @@
 {
   "expo": {
-    "name": "EcoBuddy",
-    "slug": "EcoBuddy",
+    "name": "ecobuddy",
+    "slug": "ecobuddy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "notification": {
+      "color": "#F3933F",
+      "icon": "./assets/images/96x96.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(EcoBuddy) needs access to your Camera.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(EcoBuddy) needs access to your Microphone."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(EcoBuddy) to access your photos.",
+          "savePhotosPermission": "Allow $(EcoBuddy) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(ECOBUDDY) to use your location."
+        }
+      ]
+    ],
     "splash": {
-      "image": "./assets/ecoBuddy_Logo.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff",
-      "packagerOpts": {
-        "hostType": "tunnel",
-        "tunnel": "10.20.100.40"
-      }
+      "image": "./assets/ecoBuddy_Logo-removebg-preview.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#5A8C6B"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(EcoBuddy) needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "$(EcoBuddy) needs access to your Microphone."
+      },
+      "config": {
+        "googleMapsApiKey": "d1d59c3959f65eca05bdfc46b8679b77"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/mother-earth-day.png",
         "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.parkseoyun.EcoBuddy",
+      "config": {
+        "googleMaps": {
+          "apiKey": "d1d59c3959f65eca05bdfc46b8679b77"
+        }
       }
     },
     "web": {
@@ -32,7 +90,13 @@
     },
     "extra": {
       "eas": {
-        "projectId": "402bee7c-6f53-42ec-9f24-9885cd78a082"
+        "projectId": "e6b26bee-aece-4cfd-8ce0-3bc9c9940d1a",
+        "tokens": [
+          "ExponentPushToken[XvhlDAP6t7Zn68v9Hl0Sp9]"
+        ],
+        "notification": {
+          "icon": "./assets/ecoBuddy_Logo-removebg-preview.png"
+        }
       }
     }
   }
